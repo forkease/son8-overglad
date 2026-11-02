@@ -22,6 +22,9 @@
 
 // for v functions
 #include <array>
+// for info log and maybe string related calls
+#include <cstring>
+#include <string_view>
 
 #include <cassert>
 #include <type_traits>
@@ -751,6 +754,45 @@ namespace son8::overglad::types {
         operator GLuint( ) const noexcept { return index_; }
         auto index( ) const noexcept { return index_; }
     }; // class `Program`
+
+    template< unsigned Capacity = 1u << 13u >
+    class Info final {
+        static_assert( 1u << 6 <= Capacity and Capacity <= 1u << 13u
+            , "son8::overglad: Capacity required to be in range [64,8'192]" );
+        using View_ = std::string_view;
+        using Size_ = decltype( Capacity );
+        using Char_ = GLchar;
+        Char_ buffer_[Capacity] = { };
+        Size_ cursor_{ };
+    public:
+        Info( ) = default;
+        constexpr auto capacity( ) const noexcept { return Capacity; }
+        auto size( ) const noexcept { return cursor_; }
+        auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
+        auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
+        bool is_empty( ) const noexcept { return cursor_ == 0; }
+        void clear( ) noexcept { cursor_ = 0u; buffer_[0] = '\0'; }
+        auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
+        auto unused( ) const noexcept {
+            return ( Capacity > cursor_ + 1u ) ? ( Capacity - cursor_ - 1u ) : 0u;
+        }
+        bool commit( Size_ written ) noexcept {
+            cursor_ = ( cursor_ + written >= Capacity ) ? ( Capacity - 1u ) : ( cursor_ + written );
+            buffer_[cursor_] = '\0';
+            return unused( ) > 0u;
+        }
+        bool append( View_ view, Size_ written = 0u ) noexcept {
+            if ( not commit( written )) return false;
+
+            View_ fit = view.substr( 0u, unused( ));
+            std::memcpy( buffer_ + cursor_, fit.data( ), fit.size( ));
+
+            cursor_ += static_cast< Size_ >( fit.size( ));
+            buffer_[cursor_] = '\0';
+
+            return true;
+        }
+    }; // class Info
 #endif// version 2.1
 
 #ifdef SON8_OVERGLAD_VERSION_3_3

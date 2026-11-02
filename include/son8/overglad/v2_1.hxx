@@ -131,7 +131,10 @@ namespace son8::overglad {
     // TODO: GetShaderiv
     SON8_OVERGLAD_FUNC is_program( GLuint program )
     { return glad_glIsProgram( program ); }
-    // TODO: GetProgramiv,GetAttachedShaders,GetShaderInfoLog,GetProgramInfoLog,GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*
+    // TODO: GetProgramiv,GetAttachedShaders
+    // ,GetShaderInfoLog,GetProgramInfoLog,
+    //SON8_OVERGLAD_FUNC info( types::Shader, types::Info )
+    // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*
     // compatibility
 #ifndef SON8_OVERGLAD_PROFILE_CORE
 #endif//SON8_OVERGLAD_PROFILE_CORE
