@@ -212,7 +212,7 @@ namespace son8::overglad {
     { glad_glWindowPos3dv( coords.data( ) ); }
 #endif // not core profile functions
     // DEPRECATED
-#ifdef  SON8_OVERGLAD_INCLUDE_DEPRECATED
+#ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
 
     // Chapter 2: OpenGL Operation
 

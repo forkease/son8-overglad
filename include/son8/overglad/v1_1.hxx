@@ -128,7 +128,9 @@ namespace son8::overglad {
 
     SON8_OVERGLAD_PROC scissor( GLint left, GLint bottom, GLsizei width, GLsizei height ) noexcept
     { glad_glScissor( left, bottom, width, height ); }
+
     // TODO: StencilFunc, StencilOp
+
     SON8_OVERGLAD_PROC depth( enums::Func func ) noexcept
     { glad_glDepthFunc( static_cast< GLenum >( func ) ); }
 
@@ -590,7 +592,7 @@ namespace son8::overglad {
     SON8_OVERGLAD_PROC pop_client_attrib( ) noexcept
     { glad_glPopClientAttrib( ); }
 #endif // not core profile functions
-// INFO: skip profile and version macros for DEPRECATED as in glad header not doing this either (TODO?)
+    // DEPRECATED
 #ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
 
     // Chapter 2: OpenGL Operation
@@ -1071,7 +1073,7 @@ namespace son8::overglad {
     { glPushClientAttrib( mask ); }
     SON8_OVERGLAD_DEPR pop_attrib( )
     { glPopAttrib( ); }
-#endif//SON8_OVERGLAD_INCLUDE_DEPRECATED
+#endif // include deprecated functions
 } // namespace son8::overglad
 
 #endif // INCLUDE GUARD

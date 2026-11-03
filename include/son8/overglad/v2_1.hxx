@@ -148,24 +148,24 @@ namespace son8::overglad {
     { return glad_glIsProgram( program ); }
 
     // TODO: GetProgramiv,GetAttachedShaders
-    // ,GetShaderInfoLog,GetProgramInfoLog,
+
     template< unsigned Capacity >
-    SON8_OVERGLAD_DISC info( types::Shader shader, types::Info< Capacity > &infoLog, std::string_view prepend = "" ) {
-        if ( not infoLog.append( prepend ) ) return false;
+    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, types::Shader shader, std::string_view prepend = "" ) {
+        if ( not log.append( prepend ) ) return false;
 
         GLsizei written = 0;
-        glad_glGetShaderInfoLog( shader, infoLog.unused( ), &written, infoLog.writer( ));
+        glad_glGetShaderInfoLog( shader, log.unused( ), &written, log.writer( ));
 
-        return infoLog.commit( written );
+        return log.commit( written );
     }
     template< unsigned Capacity >
-    SON8_OVERGLAD_DISC info( types::Program program, types::Info< Capacity > &infoLog, std::string_view prepend = "" ) {
-        if ( not infoLog.append( prepend ) ) return false;
+    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, types::Program program, std::string_view prepend = "" ) {
+        if ( not log.append( prepend ) ) return false;
 
         GLsizei written = 0;
-        glad_glGetProgramInfoLog( program, infoLog.unused( ), &written, infoLog.writer( ));
+        glad_glGetProgramInfoLog( program, log.unused( ), &written, log.writer( ));
 
-        return infoLog.commit( written );
+        return log.commit( written );
     }
 
     // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*

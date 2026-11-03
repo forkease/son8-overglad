@@ -605,7 +605,7 @@ namespace son8::overglad::types {
 #endif
         GLuint index_;
     public:
-        Object( GLuint index = 0 ) : index_{ index } { }
+        explicit Object( GLuint index = 0 ) : index_{ index } { }
         operator GLuint( ) const { return index_; }
         auto index( ) const { return index_; }
         auto data( ) -> GLuint * { return &index_; }
@@ -619,7 +619,7 @@ namespace son8::overglad::types {
         GLuint *data_;
         GLsizei size_;
     public:
-        Objects( GLsizei size = 8 ) : data_{ new GLuint[size] }, size_{ size } { zero( ); }
+        explicit Objects( GLsizei size = 8 ) : data_{ new GLuint[size] }, size_{ size } { zero( ); }
         ~Objects( ) { delete [] data_; }
         Objects( Objects && ) = delete;
         Objects( Objects const & ) = delete;
@@ -678,7 +678,7 @@ namespace son8::overglad::types {
         GLuint index_;
     public:
         using type = Type;
-        constexpr Attrib( GLuint index = 0 ) : index_{ index } { };
+        constexpr explicit Attrib( GLuint index = 0 ) : index_{ index } { };
         constexpr auto size( ) const noexcept { return Size; }
         constexpr bool norm( ) const noexcept { return Norm; }
         constexpr auto index( ) const noexcept { return index_; }
@@ -742,7 +742,7 @@ namespace son8::overglad::types {
     class Shader final {
         GLuint index_;
     public:
-        Shader( GLuint index = 0 ) : index_{ index } { };
+        explicit Shader( GLuint index = 0 ) : index_{ index } { };
         operator GLuint( ) const noexcept { return index_; }
         auto index( ) const noexcept { return index_; }
     }; // class `Shader`
@@ -750,7 +750,7 @@ namespace son8::overglad::types {
     class Program final {
         GLuint index_;
     public:
-        Program( GLuint index = 0 ) : index_{ index } { };
+        explicit Program( GLuint index = 0 ) : index_{ index } { };
         operator GLuint( ) const noexcept { return index_; }
         auto index( ) const noexcept { return index_; }
     }; // class `Program`
