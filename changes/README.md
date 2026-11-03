@@ -3,6 +3,17 @@
 
 ## Branch: main
 
+### `v0.8.3` - 2026-11-03
+
+#### Added
+
+- Info class and info functions that design to retrieve informational logs about shader and program compilation status
+- Tiny, Small, Middle, Average, Default, Common, Large, Huge aliases for Info class buffer capacity from `64 Bytes` to `8 KiB`
+
+#### Changed
+
+- Objects, Shader, Program, and Attib one argument constructors explicit
+
 ### `v0.8.2` - 2026-07-24
 
 #### Added
