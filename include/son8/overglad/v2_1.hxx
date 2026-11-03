@@ -100,17 +100,17 @@ namespace son8::overglad {
 
     // TODO: VertexAttribPointer,EnableVertexAttribArray,DisableVertexAttribArray
 
-    SON8_OVERGLAD_FUNC shader( enums::Shader type )
-    { return types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ) ) }; }
+    SON8_OVERGLAD_FUNC gen( types::Shader &shader, enums::Shader type )
+    { shader = types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ) ) }; }
 
     // TODO: ShaderSource
 
-    SON8_OVERGLAD_PROC compile( types::Shader shader )
+    SON8_OVERGLAD_PROC compile( types::Shader &shader )
     { glad_glCompileShader( shader.index( ) ); }
-    SON8_OVERGLAD_PROC free( types::Shader shader )
+    SON8_OVERGLAD_PROC del( types::Shader shader )
     { glad_glDeleteShader( shader.index( ) ); }
-    SON8_OVERGLAD_FUNC program( )
-    { return types::Program{ glad_glCreateProgram( ) }; }
+    SON8_OVERGLAD_FUNC gen( types::Program &program )
+    { program = types::Program{ glad_glCreateProgram( ) }; }
     SON8_OVERGLAD_PROC attach( types::Program program, types::Shader shader )
     { glad_glAttachShader( program.index( ), shader.index( ) ); }
     SON8_OVERGLAD_PROC detach( types::Program program, types::Shader shader )
@@ -119,9 +119,9 @@ namespace son8::overglad {
     { glad_glLinkProgram( program.index( ) ); }
     SON8_OVERGLAD_PROC bind( types::Program program )
     { glad_glUseProgram( program.index( ) ); }
-    SON8_OVERGLAD_PROC unbind( enums::Program unused )
+    SON8_OVERGLAD_PROC free( enums::Program unused )
     { glad_glUseProgram( static_cast< GLuint >( unused ) ); }
-    SON8_OVERGLAD_PROC free( types::Program program )
+    SON8_OVERGLAD_PROC del( types::Program program )
     { glad_glDeleteProgram( program.index( ) ); }
 
     // TODO: GetActiveAttrib,GetAttribLocation,BindAttribLocation,GetUniformLocation,GetActiveUniform,Uniform*,UniformMatrix*
