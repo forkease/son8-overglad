@@ -6,7 +6,7 @@ usage:
 	@cat Makefile.usage.txt
 cmake:
 	@echo "configure project into build directory"
-	@cmake -B $(BUILD) -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	@cmake -B $(BUILD) -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DSON8_OVERGLAD_DUMMY_FACE_BUILD=ON
 ninja:
 	@echo "generates project into build directory"
 	@ninja -C $(BUILD)
