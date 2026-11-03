@@ -19,8 +19,8 @@ namespace son8::overglad {
         static_assert( obj::validate( Type ), "Unsupported object type for generation");
         if constexpr ( Named ) {
             if/*_*/ constexpr ( obj::is_texture( Type ) ) glad_glCreateTextures( object.type( ), 1, object.data( ) );
-            else if constexpr ( obj::is_buffer( Type ) ) glad_glGenBuffers( 1, object.data( ) );
-            else if constexpr ( obj::is_vertex( Type ) ) glad_glGenVertexArrays( 1, object.data( ) );
+            else if constexpr ( obj::is_buffer( Type ) ) glad_glCreateBuffers( 1, object.data( ) );
+            else if constexpr ( obj::is_vertex( Type ) ) glad_glCreateVertexArrays( 1, object.data( ) );
             else if constexpr ( obj::is_pipeline( Type ) ) glad_glCreateProgramPipelines( 1, object.data( ) );
         } else {
             if/*_*/ constexpr ( obj::is_texture( Type ) ) glad_glGenTextures( 1, object.data( ) );
@@ -37,8 +37,8 @@ namespace son8::overglad {
         static_assert( obj::validate( Type ), "Unsupported object type for generation" );
         if constexpr ( Named ) {
             if/*_*/ constexpr ( obj::is_texture( Type ) ) glad_glCreateTextures( objects.type( ), objects.size( ), objects.data( ) );
-            else if constexpr ( obj::is_buffer( Type ) ) glad_glGenBuffers( objects.size( ), objects.data( ) );
-            else if constexpr ( obj::is_vertex( Type ) ) glad_glGenVertexArrays( objects.size( ), objects.data( ) );
+            else if constexpr ( obj::is_buffer( Type ) ) glad_glCreateBuffers( objects.size( ), objects.data( ) );
+            else if constexpr ( obj::is_vertex( Type ) ) glad_glCreateVertexArrays( objects.size( ), objects.data( ) );
             else if constexpr ( obj::is_pipeline( Type ) ) glad_glCreateProgramPipelines( objects.size( ), objects.data( ) );
         } else {
             if/*_*/ constexpr ( obj::is_texture( Type ) ) glad_glGenTextures( objects.size( ), objects.data( ) );

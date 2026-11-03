@@ -101,33 +101,33 @@ namespace son8::overglad {
     // TODO: VertexAttribPointer,EnableVertexAttribArray,DisableVertexAttribArray
 
     SON8_OVERGLAD_FUNC gen( types::Shader &shader, enums::Shader type )
-    { shader = types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ) ) }; }
+    { shader = types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ))}; }
 
     // TODO: ShaderSource
 
     SON8_OVERGLAD_PROC compile( types::Shader &shader )
-    { glad_glCompileShader( shader.index( ) ); }
+    { glad_glCompileShader( shader.index( )); }
     SON8_OVERGLAD_PROC del( types::Shader shader )
-    { glad_glDeleteShader( shader.index( ) ); }
+    { glad_glDeleteShader( shader.index( )); }
     SON8_OVERGLAD_FUNC gen( types::Program &program )
-    { program = types::Program{ glad_glCreateProgram( ) }; }
+    { program = types::Program{ glad_glCreateProgram( )}; }
     SON8_OVERGLAD_PROC attach( types::Program program, types::Shader shader )
-    { glad_glAttachShader( program.index( ), shader.index( ) ); }
+    { glad_glAttachShader( program.index( ), shader.index( )); }
     SON8_OVERGLAD_PROC detach( types::Program program, types::Shader shader )
-    { glad_glDetachShader( program.index( ), shader.index( ) ); }
+    { glad_glDetachShader( program.index( ), shader.index( )); }
     SON8_OVERGLAD_PROC link( types::Program program )
-    { glad_glLinkProgram( program.index( ) ); }
+    { glad_glLinkProgram( program.index( )); }
     SON8_OVERGLAD_PROC bind( types::Program program )
-    { glad_glUseProgram( program.index( ) ); }
+    { glad_glUseProgram( program.index( )); }
     SON8_OVERGLAD_PROC free( [[maybe_unused]] types::Program unused )
     { glad_glUseProgram(  0u ); }
     SON8_OVERGLAD_PROC del( types::Program program )
-    { glad_glDeleteProgram( program.index( ) ); }
+    { glad_glDeleteProgram( program.index( )); }
 
     // TODO: GetActiveAttrib,GetAttribLocation,BindAttribLocation,GetUniformLocation,GetActiveUniform,Uniform*,UniformMatrix*
 
     SON8_OVERGLAD_PROC validate( types::Program program )
-    { glad_glValidateProgram( program.index( ) ); }
+    { glad_glValidateProgram( program.index( )); }
 
     // Chapter 4: Per-Fragment Operations and the Framebuffer
 

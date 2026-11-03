@@ -612,7 +612,7 @@ namespace son8::overglad::types {
         GLuint *data_;
         GLsizei size_;
     public:
-        explicit Objects( GLsizei size = 8 ) : data_{ new GLuint[size] }, size_{ size } { zero( ); }
+        explicit Objects( GLsizei size ) : data_{ new GLuint[size] }, size_{ size } { zero( ); }
         ~Objects( ) { delete [] data_; }
         Objects( Objects && ) = delete;
         Objects( Objects const & ) = delete;
