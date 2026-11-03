@@ -754,48 +754,59 @@ namespace son8::overglad::types {
         operator GLuint( ) const noexcept { return index_; }
         auto index( ) const noexcept { return index_; }
     }; // class `Program`
-
-    template< unsigned Capacity = 1u << 13u >
+    // Possibly just a temporary solution to simplify querying info logs
+    template< unsigned Capacity = 1u << 10u >
     class Info final {
         static_assert( 1u << 6 <= Capacity and Capacity <= 1u << 13u
-            , "son8::overglad: Capacity required to be in range [64,8'192]" );
+            , "son8::overglad: Info Capacity required to be in range [ 64 ; 8'192 ]" );
         using View_ = std::string_view;
         using Size_ = decltype( Capacity );
         using Char_ = GLchar;
         Char_ buffer_[Capacity] = { };
         Size_ cursor_{ };
+        auto last_Index( ) const noexcept { return Capacity - 1u; }
     public:
         Info( ) = default;
         constexpr auto capacity( ) const noexcept { return Capacity; }
         auto size( ) const noexcept { return cursor_; }
         auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
         auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
-        bool is_empty( ) const noexcept { return cursor_ == 0; }
+        bool is_empty( ) const noexcept { return cursor_ == 0u; }
+        auto unused( ) const noexcept { return last_Index( ) - cursor_; }
         void clear( ) noexcept {
+            buffer_[0] = '\0';
             cursor_ = 0u;
-            std::memset( buffer_, 0, sizeof buffer_);
         }
         auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
-        auto unused( ) const noexcept {
-            return ( Capacity > cursor_ + 1u ) ? ( Capacity - cursor_ - 1u ) : 0u;
-        }
         bool commit( Size_ written ) noexcept {
-            cursor_ = ( cursor_ + written >= Capacity ) ? ( Capacity - 1u ) : ( cursor_ + written );
+            cursor_ += ( written > unused( )) ? unused( ) : written;
             buffer_[cursor_] = '\0';
+            // is still can put something
             return unused( ) > 0u;
         }
-        bool append( View_ view, Size_ written = 0u ) noexcept {
-            if ( not commit( written )) return false;
+        bool append( View_ view ) noexcept {
+            if ( not unused( )) { return false; }
 
-            View_ fit = view.substr( 0u, unused( ));
-            std::memcpy( buffer_ + cursor_, fit.data( ), fit.size( ));
+            Size_ overflow = ( view.size( ) > unused( )) ? ( view.size( ) - unused( )) : 0u;
+            view.remove_suffix( overflow );
 
-            cursor_ += static_cast< Size_ >( fit.size( ));
+            std::memcpy( buffer_ + cursor_, view.data( ), view.size( ));
+            cursor_ += static_cast< Size_ >( view.size( ));
             buffer_[cursor_] = '\0';
 
             return true;
         }
     }; // class Info
+    // Info aliases
+    using InfoTiny = Info< 1u << 6u >; // ----  64B
+    using InfoSmall = Info< 1u << 7u >; // --- 128B
+    using InfoMedium = Info< 1u << 8u >; // -- 256B
+    using InfoAverage = Info< 1u << 9u >; // - 512B
+    using InfoDefault = Info< 1u << 10u >; //  1KiB
+    using InfoCommon = Info< 1u << 11u >; // - 2KiB
+    using InfoLarge = Info< 1u << 12u >; // -- 4KiB
+    using InfoHuge = Info< 1u << 13u >; // --- 8KiB
+
 #endif// version 2.1
 
 #ifdef SON8_OVERGLAD_VERSION_3_3

@@ -149,7 +149,24 @@ namespace son8::overglad {
 
     // TODO: GetProgramiv,GetAttachedShaders
     // ,GetShaderInfoLog,GetProgramInfoLog,
-    //SON8_OVERGLAD_FUNC info( types::Shader, types::Info )
+    template< unsigned Capacity >
+    SON8_OVERGLAD_DISC info( types::Shader shader, types::Info< Capacity > &infoLog, std::string_view prepend = "" ) {
+        if ( not infoLog.append( prepend ) ) return false;
+
+        GLsizei written = 0;
+        glad_glGetShaderInfoLog( shader, infoLog.unused( ), &written, infoLog.writer( ));
+
+        return infoLog.commit( written );
+    }
+    template< unsigned Capacity >
+    SON8_OVERGLAD_DISC info( types::Program program, types::Info< Capacity > &infoLog, std::string_view prepend = "" ) {
+        if ( not infoLog.append( prepend ) ) return false;
+
+        GLsizei written = 0;
+        glad_glGetProgramInfoLog( program, infoLog.unused( ), &written, infoLog.writer( ));
+
+        return infoLog.commit( written );
+    }
 
     // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*
 
