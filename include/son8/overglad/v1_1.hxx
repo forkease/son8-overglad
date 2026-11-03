@@ -75,13 +75,25 @@ namespace son8::overglad {
     template< types::Object_::Type Type, bool Named >
     SON8_OVERGLAD_PROC bind( types::Object< Type, Named > object )
     {
-        assert( object.index( ) != 0 );
         using obj = types::Object_;
-        static_assert( obj::validate( Type ), "Unsupported object type for binding" );
+        static_assert( obj::validate( Type ), "son8::overglad: Unsupported object type for binding" );
+        assert( object.index( ) != 0 and "son8::overglad: binding requires properly GENerated object" );
         if/*_*/ constexpr ( obj::is_texture( Type ) ) glad_glBindTexture( object.type( ), object );
         else if constexpr ( obj::is_buffer( Type ) ) glad_glBindBuffer( object.type( ), object );
         else if constexpr ( obj::is_vertex( Type ) ) glad_glBindVertexArray( object );
         else if constexpr ( obj::is_pipeline( Type ) ) glad_glBindProgramPipeline( object );
+    }
+
+    template< types::Object_::Type Type, bool Named >
+    SON8_OVERGLAD_PROC free( types::Object< Type, Named > object )
+    {
+        using obj = types::Object_;
+        static_assert( obj::validate( Type ), "son8::overglad: Unsupported object type for freeing (unbind)" );
+        assert( object.index( ) == 0 and "son8::overglad: freeing (unbind) requires dummy object" );
+        if/*_*/ constexpr ( obj::is_texture( Type ) ) glad_glBindTexture( object.type( ), 0 );
+        else if constexpr ( obj::is_buffer( Type ) ) glad_glBindBuffer( object.type( ), 0 );
+        else if constexpr ( obj::is_vertex( Type ) ) glad_glBindVertexArray( 0 );
+        else if constexpr ( obj::is_pipeline( Type ) ) glad_glBindProgramPipeline( 0 );
     }
 
     // Chapter 2: OpenGL Operation

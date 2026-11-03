@@ -447,13 +447,6 @@ namespace son8::overglad::enums {
     }; // enum class `Render`
 #endif // not core
 
-#ifdef SON8_OVERGLAD_VERSION_2_1
-    // `UseProgram(unused)`
-    enum class Program : GLenum {
-        All = 0x0u,
-    }; // enum class Program
-#endif // version 2.1
-
 #ifndef SON8_OVERGLAD_PROFILE_CORE
     enum class Server : GLbitfield {
         Current     = 0x00000001,

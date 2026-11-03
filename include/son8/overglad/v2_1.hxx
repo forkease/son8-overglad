@@ -119,8 +119,8 @@ namespace son8::overglad {
     { glad_glLinkProgram( program.index( ) ); }
     SON8_OVERGLAD_PROC bind( types::Program program )
     { glad_glUseProgram( program.index( ) ); }
-    SON8_OVERGLAD_PROC free( enums::Program unused )
-    { glad_glUseProgram( static_cast< GLuint >( unused ) ); }
+    SON8_OVERGLAD_PROC free( [[maybe_unused]] types::Program unused )
+    { glad_glUseProgram(  0u ); }
     SON8_OVERGLAD_PROC del( types::Program program )
     { glad_glDeleteProgram( program.index( ) ); }
 
