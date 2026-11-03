@@ -19,7 +19,7 @@
 
 // empty as compatibility (cb) profile does not introduce new functionality
 
-#endif//SON8_OVERGLAD_C4_3_HXX
+#endif // INCLUDE GUARD
 
 // Apache License 2.0
 // NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>

@@ -83,10 +83,14 @@ namespace son8::overglad {
         else if constexpr ( obj::is_vertex( Type ) ) glad_glBindVertexArray( object );
         else if constexpr ( obj::is_pipeline( Type ) ) glad_glBindProgramPipeline( object );
     }
+
     // Chapter 2: OpenGL Operation
+
     SON8_OVERGLAD_FUNC get( ) noexcept
     { return static_cast< enums::Error >( glad_glGetError( ) ); }
+
     // TODO: DrawArrays, DrawElements
+
     SON8_OVERGLAD_PROC depth_range( GLdouble n, GLdouble f ) noexcept
     { glad_glDepthRange( n, f ); }
     SON8_OVERGLAD_PROC viewport( ) noexcept
@@ -103,29 +107,38 @@ namespace son8::overglad {
     { glad_glDisable( static_cast< GLenum >( cap ) ); }
     SON8_OVERGLAD_PROC front_face( enums::Dir dir ) noexcept
     { glad_glFrontFace( static_cast< GLenum >( dir ) ); }
+
     // Chapter 3: Rasterization
+
     SON8_OVERGLAD_PROC point_size( GLfloat size ) noexcept
     { glad_glPointSize( size ); }
     SON8_OVERGLAD_PROC line_width( GLfloat width ) noexcept
     { glad_glLineWidth( width ); }
     SON8_OVERGLAD_PROC cull( enums::Face face ) noexcept
     { glad_glCullFace( static_cast< GLenum >( face ) ); }
-    // in core profile face is always Front_Back, so use it by default
+    // NOTE: in core profile face is always Front_Back, so use it by default
     SON8_OVERGLAD_PROC mode( enums::Polygon m ) noexcept
     { glad_glPolygonMode( static_cast< GLenum >( enums::Face::Front_Back ), static_cast< GLenum >( m ) ); }
     SON8_OVERGLAD_PROC polygon_offset( GLfloat factor, GLfloat units ) noexcept
     { glad_glPolygonOffset( factor, units ); }
+
     // TODO: PixelStore, TexImage, CopyTexImage, TexSubImage, CopyTexSubImage, TexParameter
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     SON8_OVERGLAD_PROC scissor( GLint left, GLint bottom, GLsizei width, GLsizei height ) noexcept
     { glad_glScissor( left, bottom, width, height ); }
     // TODO: StencilFunc, StencilOp
     SON8_OVERGLAD_PROC depth( enums::Func func ) noexcept
     { glad_glDepthFunc( static_cast< GLenum >( func ) ); }
+
     // TODO: BlendFunc
+
     SON8_OVERGLAD_PROC logic( enums::Op op ) noexcept
     { glad_glLogicOp( static_cast< GLenum >( op ) ); }
+
     // TODO: DrawBuffer
+
     SON8_OVERGLAD_PROC color_mask( GLboolean r, GLboolean g, GLboolean b, GLboolean a ) noexcept
     { glad_glColorMask( r, g, b, a ); }
     SON8_OVERGLAD_PROC depth_mask( GLboolean mask ) noexcept
@@ -148,24 +161,36 @@ namespace son8::overglad {
     { glad_glClearDepth( d ); }
     SON8_OVERGLAD_PROC clear_stencil( GLint s ) noexcept
     { glad_glClearStencil( s ); }
+
     // TODO: ReadPixels, ReadBuffer
+
     // Chapter 5: Special Functions
+
     SON8_OVERGLAD_PROC flush( ) noexcept
     { glad_glFlush( ); }
     SON8_OVERGLAD_PROC finish( ) noexcept
     { glad_glFinish( ); }
     SON8_OVERGLAD_PROC mode( enums::Hint hint, enums::Care care ) noexcept
     { glad_glHint( static_cast< GLenum >( hint ), static_cast< GLenum >( care ) ); }
+
     // Chapter 6: State and State Requests
+
     // TODO: GetBooleanv, GetIntegerv, GetFloatv, GetDoublev
+
     SON8_OVERGLAD_FUNC get( enums::Capability cap ) noexcept
     { return static_cast< bool >( glad_glIsEnabled( static_cast< GLenum >( cap ) ) ); }
+
     // TODO: GetTexParameter*, GetTexLevelParameter*, GetTexImage
+
     SON8_OVERGLAD_FUNC is_texture( GLuint index ) noexcept
     { return glad_glIsTexture( index ); }
+
     // TODO: GetPointerv, GetString
+
 #ifndef SON8_OVERGLAD_PROFILE_CORE
+
     // Chapter 2: OpenGL Operation
+
     SON8_OVERGLAD_PROC begin( ) noexcept
     { glad_glBegin( static_cast< GLenum >( enums::Draw::Default ) ); }
     SON8_OVERGLAD_PROC begin( enums::Draw mode ) noexcept
@@ -392,14 +417,18 @@ namespace son8::overglad {
     { glad_glIndexdv( index.data( ) ); }
     SON8_OVERGLAD_PROC index( types::array1ub const &index ) noexcept
     { glad_glIndexubv( index.data( ) ); }
+
     // TODO: {EdgeFlag|TexCoord|Color|Index|Vertex}Pointer
+
     SON8_OVERGLAD_PROC enable( enums::ClientState array ) noexcept
     { glad_glEnableClientState( static_cast< GLenum >( array ) ); }
     SON8_OVERGLAD_PROC disable( enums::ClientState array ) noexcept
     { glad_glDisableClientState( static_cast< GLenum >( array ) ); }
     SON8_OVERGLAD_PROC array_element( GLint i ) noexcept
     { glad_glArrayElement( i ); }
+
     // TODO: InterleavedArrays
+
     SON8_OVERGLAD_PROC rect( GLint x1, GLint y1, GLint x2, GLint y2 ) noexcept
     { glad_glRecti( x1, y1, x2, y2 ); }
     SON8_OVERGLAD_PROC rect( GLshort x1, GLshort y1, GLshort x2, GLshort y2 ) noexcept
@@ -448,7 +477,9 @@ namespace son8::overglad {
     { glad_glPushMatrix( ); }
     SON8_OVERGLAD_PROC pop_matrix( ) noexcept
     { glad_glPopMatrix( ); }
+
     // TODO: TexGen
+
     SON8_OVERGLAD_PROC clip( enums::Plane plane, types::array4d const &eqn ) noexcept
     { glad_glClipPlane( static_cast< GLenum >( plane ), eqn.data( ) ); }
     SON8_OVERGLAD_PROC raster_pos( GLint x, GLint y ) noexcept
@@ -499,36 +530,57 @@ namespace son8::overglad {
     { glad_glRasterPos4fv( coords.data( ) ); }
     SON8_OVERGLAD_PROC raster_pos( types::array4d const &coords ) noexcept
     { glad_glRasterPos4dv( coords.data( ) ); }
+
     // TODO: Material, Light, LightModel, ColorMaterial, ShadeModel
+
     // Chapter 3: Rasterization
+
     SON8_OVERGLAD_PROC line_stipple( GLint factor, GLushort pattern ) noexcept
     { glad_glLineStipple( factor, pattern ); }
+
     // TODO: PolygonStipple
+
     SON8_OVERGLAD_PROC mode( enums::Face face, enums::Polygon m ) noexcept
     { glad_glPolygonMode( static_cast< GLenum >( face ), static_cast< GLenum >( m ) ); }
+
     // TODO: PixelTransfer*, PixelMap*, DrawPixels
+
     SON8_OVERGLAD_PROC pixel_zoom( GLfloat x, GLfloat y ) noexcept
     { glad_glPixelZoom( x, y ); }
+
     // TODO: Bitmap, AreTexturesResident, PrioritizeTextures, TexEnv, Fog
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     // TODO: AlphaFunc
+
     SON8_OVERGLAD_PROC index_mask( GLuint mask ) noexcept
     { glad_glIndexMask( mask ); }
     SON8_OVERGLAD_PROC clear_index( GLuint index ) noexcept
     { glad_glClearIndex( index ); }
     SON8_OVERGLAD_PROC clear_accum( GLfloat r, GLfloat g, GLfloat b, GLfloat a ) noexcept
     { glad_glClearAccum( r, g, b, a ); }
+
     // TODO: Accum, CopyPixels
+
     // Chapter 5: Special Functions
+
     // TODO: Map+, EvalCoord+, MapGrid+, EvalMesh+, EvalPoint, InitNames, PopName, PushName, LoadName
+
     SON8_OVERGLAD_FUNC mode( enums::Render m ) noexcept
     { return glad_glRenderMode( static_cast< GLenum >( m ) ); }
+
     // TODO: SelectBuffer, FeedbackBuffer, Passthrough, NewList
+
     SON8_OVERGLAD_PROC end_list( ) noexcept
     { glad_glEndList( ); }
+
     // TODO: CallList, CallLists, ListBase, GenLists, IsList, DeleteLists
+
     // Chapter 6: State and State Requests
+
     // TODO: GetClipPlane, GetLight+, GetMaterial+, GetTexEnv+, GetTexGen+, GetPixelMap+, GetMap+, GetPolygonStipple
+
     SON8_OVERGLAD_PROC push_attrib( enums::Server bitfield ) noexcept
     { glad_glPushAttrib( static_cast< GLbitfield >( bitfield ) ); }
     SON8_OVERGLAD_PROC push_attrib( enums::Client bitfield ) noexcept
@@ -537,10 +589,12 @@ namespace son8::overglad {
     { glad_glPopAttrib( ); }
     SON8_OVERGLAD_PROC pop_client_attrib( ) noexcept
     { glad_glPopClientAttrib( ); }
-#endif//SON8_OVERGLAD_PROFILE_CORE
+#endif // not core profile functions
 // INFO: skip profile and version macros for DEPRECATED as in glad header not doing this either (TODO?)
-#ifdef  SON8_OVERGLAD_INCLUDE_DEPRECATED
+#ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
+
     // Chapter 2: OpenGL Operation
+
     SON8_OVERGLAD_DEPR get_error( )
     { return glGetError( ); }
     SON8_OVERGLAD_DEPR begin( GLenum mode )
@@ -767,7 +821,9 @@ namespace son8::overglad {
     { glColorMaterial( face, mode ); }
     SON8_OVERGLAD_DEPR shade_model( GLenum mode )
     { glShadeModel( mode ); }
+
     // Chapter 3: Rasterization
+
     SON8_OVERGLAD_DEPR polygon_stipple( GLubyte const *pattern )
     { glPolygonStipple( pattern ); }
     SON8_OVERGLAD_DEPR cull_face( GLenum mode )
@@ -842,7 +898,9 @@ namespace son8::overglad {
     { glFogiv( pname, params ); }
     SON8_OVERGLAD_DEPR fog( GLenum pname, GLfloat const *params )
     { glFogfv( pname, params ); }
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     SON8_OVERGLAD_DEPR alpha_func( GLenum func, GLclampf ref )
     { glAlphaFunc( func, ref ); }
     SON8_OVERGLAD_DEPR stencil_func( GLenum func, GLint ref, GLuint mask )
@@ -869,7 +927,9 @@ namespace son8::overglad {
     { glReadBuffer( buf ); }
     SON8_OVERGLAD_DEPR copy_pixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum type )
     { glCopyPixels( x, y, width, height, type ); }
+
     // Chapter 5: Special Functions
+
     SON8_OVERGLAD_DEPR map( GLenum type, GLfloat u1, GLfloat u2, GLint stride, GLint order, GLfloat const *points )
     { glMap1f( type, u1, u2, stride, order, points ); }
     SON8_OVERGLAD_DEPR map( GLenum type, GLdouble u1, GLdouble u2, GLint stride, GLint order, GLdouble const *points )
@@ -948,7 +1008,9 @@ namespace son8::overglad {
     { glDeleteLists( list, range ); }
     SON8_OVERGLAD_DEPR hint( GLenum target, GLenum hint )
     { glHint( target, hint ); }
+
     // Chapter 6: State and State Requests
+
     SON8_OVERGLAD_DEPR get_boolean( GLenum value, GLboolean *data )
     { glGetBooleanv( value, data ); }
     SON8_OVERGLAD_DEPR get_integer( GLenum value, GLint *data )
@@ -1012,7 +1074,7 @@ namespace son8::overglad {
 #endif//SON8_OVERGLAD_INCLUDE_DEPRECATED
 } // namespace son8::overglad
 
-#endif//SON8_OVERGLAD_V1_1_HXX
+#endif // INCLUDE GUARD
 
 // Apache License 2.0
 // NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>

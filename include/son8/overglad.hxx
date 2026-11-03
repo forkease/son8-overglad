@@ -771,7 +771,10 @@ namespace son8::overglad::types {
         auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
         auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
         bool is_empty( ) const noexcept { return cursor_ == 0; }
-        void clear( ) noexcept { cursor_ = 0u; buffer_[0] = '\0'; }
+        void clear( ) noexcept {
+            cursor_ = 0u;
+            std::memset( buffer_, 0, sizeof buffer_);
+        }
         auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
         auto unused( ) const noexcept {
             return ( Capacity > cursor_ + 1u ) ? ( Capacity - cursor_ - 1u ) : 0u;
@@ -832,46 +835,82 @@ namespace son8::overglad::types {
 
 #ifdef  SON8_OVERGLAD_VERSION_4_6
 namespace son8::overglad {
-    // core
+    // CORE
+
     // Chapter 2: OpenGL Fundamentals
+
     // TODO: `GetGraphicsResetStatus`
+
     // Chapter 4: Event Model
+
     // TODO: `CreateQueries,GetQueryBufferObject(i|ui|i64|ui64)v`
+
     // Chapter 6: Buffer Objects
-    // TODO: `CreateBuffers,BindBuffersRange,BindBuffersBase,BufferStorage,NamedBufferStorage,NamedBufferData,NamedBufferSubData,ClearNamedBufferSubData,ClearNamedBufferData,MapNamedBufferRange,MapNamedBuffer,FlushMappedNamedBufferRange,UnmapNamedBuffer,CopyNamedBufferSubData,GetNamedBufferParameteriv,GetNamedBufferParameteri64v,GetNamedBufferSubData,GetNamedBufferPointerv`
+
+    // TODO: `CreateBuffers,BindBuffersRange,BindBuffersBase,BufferStorage,NamedBufferStorage,NamedBufferData,NamedBufferSubData
+    // ,ClearNamedBufferSubData,ClearNamedBufferData,MapNamedBufferRange,MapNamedBuffer,FlushMappedNamedBufferRange,UnmapNamedBuffer
+    // ,CopyNamedBufferSubData,GetNamedBufferParameteriv,GetNamedBufferParameteri64v,GetNamedBufferSubData,GetNamedBufferPointerv`
+
     // Chapter 7: Programs and Shaders
+
     // TODO: `SpecializeShader,CreateProgramPipelines,MemoryBarrierByRegion`
+
     // Chapter 8: Textures and Samplers
-    // TODO: `BindTextures,BindTextureUnit,CreateTextures,CreateSamplers,BindSamplers,SamplerParameter[if],TextureSubImage[123]D,CopyTextureSubImage[123]D,CompressedTextureSubImage[123]D,TextureBufferRange,TextureBuffer,TextureParameter[if]v?,TextureParameterI(i|ui)v,GetTextureParameter[if]v,GetTextureParameterI(i|ui)v,GetTextureLevelParameter[if]v,GetTextureImage,GetnTexImage,GetTextureSubImage,GetCompressedTextureImage,GetnCompressedTexImage,GetCompressedTextureSubImage,GenerateTextureMipmap,TextureStorage2DMultisample,TextureStorage3DMultisample,ClearTexSubImage,ClearTexImage,BindImageTextures`
+
+    // TODO: `BindTextures,BindTextureUnit,CreateTextures,CreateSamplers,BindSamplers,SamplerParameter[if],TextureSubImage[123]D
+    // ,CopyTextureSubImage[123]D,CompressedTextureSubImage[123]D,TextureBufferRange,TextureBuffer,TextureParameter[if]v?
+    // ,TextureParameterI(i|ui)v,GetTextureParameter[if]v,GetTextureParameterI(i|ui)v,GetTextureLevelParameter[if]v,GetTextureImage
+    // ,GetnTexImage,GetTextureSubImage,GetCompressedTextureImage,GetnCompressedTexImage,GetCompressedTextureSubImage
+    // ,GenerateTextureMipmap,TextureStorage2DMultisample,TextureStorage3DMultisample,ClearTexSubImage,ClearTexImage,BindImageTextures`
+
     // Chapter 9: Framebuffers and Framebuffer Objects
+
     // TODO: `CreateFramebuffers,NamedFramebufferParameteri,GetNamedFramebufferParameteriv,GetNamedFramebufferAttachmentParameteriv,CreateRenderbuffers,NamedRenderbufferStorageMultisample,NamedRenderbufferStorage,GetNamedRenderbufferParameteriv,NamedFramebufferRenderbuffer,NamedFramebufferTexture,NamedFramebufferTextureLayer`
+
     SON8_OVERGLAD_PROC texture_barrier( ) noexcept
     { glad_glTextureBarrier( ); }
+
     // TODO: `CheckNamedFramebufferStatus`
+
     // Chapter 10: Vertex Specification and Drawing Commands
+
     // TODO: `CreateVertexArrays,VertexArrayElementBuffer,VertexArrayAttrib[IL]?Format,VertexArrayVertexBuffer,BindVertexBuffers,VertexArrayVertexBuffers,VertexArrayAttribBinding,EnableVertexArrayAttrib,DisableVertexArrayAttrib,VertexArrayBindingDivisor,MultiDrawArraysIndirectCount,MultiDrawElementsIndirectCount,GetVertexArrayiv,GetVertexArrayIndexediv,GetVertexArrayIndexed64iv`
+
     // Chapter 13: Fixed-Function Vertex Post - Processing
+
     // TODO: `CreateTransformFeedbacks,TransformFeedbackBufferRange,TransformFeedbackBufferBase,ClipControl`
+
     // Chapter 14: Fixed-Function Primitive Assembly and Rasterization
+
     SON8_OVERGLAD_PROC polygon_offset( GLfloat factor, GLfloat units, GLfloat clamp ) noexcept
     { glad_glPolygonOffsetClamp( factor, units, clamp ); }
+
     // Chapter 17: Writing Fragments and Samples to the Framebuffer
+
     // TODO: `NamedFramebufferDrawBuffer,NamedFramebufferDrawBuffers,ClearNamedFramebuffer([if]|ui)v,ClearNamedFramebufferfi,InvalidateNamedFramebufferSubData,InvalidateNamedFramebufferData`
+
     // Chapter 18: Drawing, Reading, and Copying Pixels
+
     // TODO: `NamedFramebufferReadBuffer,ReadnPixels,BlitNamedFramebuffer`
     // Chapter 21: Special Functions
+
     // TODO: `GetnMap`
-    // compatibility
+
+    // COMPATIBILITY
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // Chapter 14: Fixed-Function Primitive Assembly and Rasterization
     // TODO: `GetnPolygonStipple`
-#   endif // not core
+#   endif // not core profile
     // deprecated
-#   ifdef  SON8_OVERGLAD_INCLUDE_DEPRECATED
-    // Chapter 2: OpenGL Fundamentals
+#   ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
+
+// Chapter 2: OpenGL Fundamentals
+
     SON8_OVERGLAD_DEPR get_graphics_reset_status( )
     { return glGetGraphicsResetStatus( ); }
+
     // Chapter 4: Event Model
+
     SON8_OVERGLAD_DEPR create_queries( GLenum target, GLsizei n, GLuint *ids )
     { glCreateQueries( target, n, ids ); }
     SON8_OVERGLAD_DEPR get_query_buffer_object_i( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
@@ -882,7 +921,9 @@ namespace son8::overglad {
     { glGetQueryBufferObjecti64v( id, buffer, pname, offset ); }
     SON8_OVERGLAD_DEPR get_query_buffer_object_ui64( GLuint id, GLuint buffer, GLenum pname, GLintptr offset )
     { glGetQueryBufferObjectui64v( id, buffer, pname, offset ); }
+
     // Chapter 6: Buffer Objects
+
     SON8_OVERGLAD_DEPR create_buffers( GLsizei n, GLuint *buffers )
     { glCreateBuffers( n, buffers ); }
     SON8_OVERGLAD_DEPR bind_buffers_range( GLenum target, GLuint first, GLsizei count
@@ -923,7 +964,9 @@ namespace son8::overglad {
     { glGetNamedBufferSubData( buffer, offset, size, data ); }
     SON8_OVERGLAD_DEPR get_named_buffer_pointer( GLuint buffer, GLenum pname, GLvoid **data ) // TODO verify const ** in specification
     { glGetNamedBufferPointerv( buffer, pname, data ); }
+
     // Chapter 7: Programs and Shaders
+
     SON8_OVERGLAD_DEPR specialize_shader( GLuint shader, char const *pEntryPoint, GLuint numSpecializationConstants
         , GLuint const *pConstantIndex, GLuint const *pConstantValue )
     { glSpecializeShader( shader, pEntryPoint, numSpecializationConstants, pConstantIndex, pConstantValue ); }
@@ -931,7 +974,9 @@ namespace son8::overglad {
     { glCreateProgramPipelines( n, pipelines ); }
     SON8_OVERGLAD_DEPR memory_barrier_by_region( GLbitfield barriers )
     { glMemoryBarrierByRegion( barriers ); }
+
     // Chapter 8: Textures and Samplers
+
     SON8_OVERGLAD_DEPR bind_textures( GLuint first, GLsizei count, GLuint const *textures )
     { glBindTextures( first, count, textures ); }
     SON8_OVERGLAD_DEPR bind_texture_unit( GLuint unit, GLuint texture )
@@ -1048,7 +1093,9 @@ namespace son8::overglad {
     { glClearTexImage( texture, level, format, type, data ); }
     SON8_OVERGLAD_DEPR bind_image_textures( GLuint first, GLsizei count, GLuint const *textures )
     { glBindImageTextures( first, count, textures ); }
+
     // Chapter 9: Framebuffers and Framebuffer Objects
+
     SON8_OVERGLAD_DEPR create_framebuffers( GLsizei n, GLuint *framebuffers )
     { glCreateFramebuffers( n, framebuffers ); }
     SON8_OVERGLAD_DEPR named_framebuffer_parameter( GLuint framebuffer, GLenum pname, GLint param )
@@ -1074,7 +1121,9 @@ namespace son8::overglad {
     { glNamedFramebufferTextureLayer( framebuffer, attachment, texture, level, layer ); }
     SON8_OVERGLAD_DEPR check_named_framebuffer_status( GLuint framebuffer, GLenum target )
     { return glCheckNamedFramebufferStatus( framebuffer, target ); }
+
     // Chapter 10: Vertex Specification and Drawing Commands
+
     SON8_OVERGLAD_DEPR create_vertex_arrays( GLsizei n, GLuint *arrays )
     { glCreateVertexArrays( n, arrays ); }
     SON8_OVERGLAD_DEPR vertex_array_element_buffer( GLuint vaobj, GLuint buffer )
@@ -1114,7 +1163,9 @@ namespace son8::overglad {
     { glGetVertexArrayIndexediv( vaobj, index, pname, param ); }
     SON8_OVERGLAD_DEPR get_vertex_array_indexed( GLuint vaobj, GLuint index, GLenum pname, GLint64 *param )
     { glGetVertexArrayIndexed64iv( vaobj, index, pname, param ); }
+
     // Chapter 13: Fixed-Function Vertex Post - Processing
+
     SON8_OVERGLAD_DEPR create_transform_feedbacks( GLsizei n, GLuint *ids )
     { glCreateTransformFeedbacks( n, ids ); }
     SON8_OVERGLAD_DEPR transform_feedback_buffer_range( GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size )
@@ -1123,12 +1174,16 @@ namespace son8::overglad {
     { glTransformFeedbackBufferBase( xfb, index, buffer ); }
     SON8_OVERGLAD_DEPR clip_control( GLenum origin, GLenum depth )
     { glClipControl( origin, depth ); }
+
     // Chapter 14: Fixed-Function Primitive Assembly and Rasterization
+
     SON8_OVERGLAD_DEPR get_polygon_stipple( GLsizei bufSize, GLubyte *pattern ) // TODO: spec uses GLvoid * for pattern
     { glGetnPolygonStipple( bufSize, pattern ); }
     SON8_OVERGLAD_DEPR polygon_offset_clamp( GLfloat factor, GLfloat units, GLfloat clamp )
     { glPolygonOffsetClamp( factor, units, clamp ); }
+
     // Chapter 17: Writing Fragments and Samples to the Framebuffer
+
     SON8_OVERGLAD_DEPR named_framebuffer_draw_buffer( GLuint framebuffer, GLenum buf )
     { glNamedFramebufferDrawBuffer( framebuffer, buf ); }
     SON8_OVERGLAD_DEPR named_framebuffer_draw_buffers( GLuint framebuffer, GLsizei n, GLenum const *bufs )
@@ -1146,7 +1201,9 @@ namespace son8::overglad {
     { glInvalidateNamedFramebufferSubData( framebuffer, numAttachments, attachments, x, y, width, height ); }
     SON8_OVERGLAD_DEPR invalidate_named_framebuffer_data( GLuint framebuffer, GLsizei numAttachments, GLenum const *attachments )
     { glInvalidateNamedFramebufferData( framebuffer, numAttachments, attachments ); }
+
     // Chapter 18: Drawing, Reading, and Copying Pixels
+
     SON8_OVERGLAD_DEPR named_framebuffer_read_buffer( GLuint framebuffer, GLenum src )
     { glNamedFramebufferReadBuffer( framebuffer, src ); }
     SON8_OVERGLAD_DEPR read_pixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, GLvoid *data )
@@ -1156,25 +1213,29 @@ namespace son8::overglad {
         , GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1
         , GLbitfield mask, GLenum filter )
     { glBlitNamedFramebuffer( readFramebuffer, drawFramebuffer, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter ); }
+
     // Chapter 21: Special Functions
+
     SON8_OVERGLAD_DEPR get_map( GLenum map, GLenum value, GLsizei bufSize, GLint *data )
     { glGetnMapiv( map, value, bufSize, data ); }
     SON8_OVERGLAD_DEPR get_map( GLenum map, GLenum value, GLsizei bufSize, GLfloat *data )
     { glGetnMapfv( map, value, bufSize, data ); }
     SON8_OVERGLAD_DEPR get_map( GLenum map, GLenum value, GLsizei bufSize, GLdouble *data )
     { glGetnMapdv( map, value, bufSize, data ); }
+
     // Chapter 22
+
     SON8_OVERGLAD_DEPR get_transform_feedback( GLuint xfb, GLenum pname, GLint *param )
     { glGetTransformFeedbackiv( xfb, pname, param ); }
     SON8_OVERGLAD_DEPR get_transform_feedback( GLuint xfb, GLenum pname, GLuint index, GLint *param )
     { glGetTransformFeedbacki_v( xfb, pname, index, param ); }
     SON8_OVERGLAD_DEPR get_transform_feedback( GLuint xfb, GLenum pname, GLuint index, GLint64 *param )
     { glGetTransformFeedbacki64_v( xfb, pname, index, param ); }
-#   endif // include deprecated
+#   endif // deprecated functions
 } // namespace son8::overglad
 #endif // version 4.6
 
-#endif // header
+#endif // INCLUDE GUARD
 
 // Apache License 2.0
 // NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>

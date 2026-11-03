@@ -11,10 +11,13 @@
 #endif         //SON8_OVERGLAD_DEFINED
 
 namespace son8::overglad {
-    // core
+    // CORE
+
     // Chapter 2: OpenGL Operation
+
     // TODO: MultiDrawArrays,MultiDrawElements,DrawRangeElements
     // TODO: BufferData,BufferSubData,MapBuffer
+
     template< types::Object_::Type Type, bool Name >
     SON8_OVERGLAD_FUNC unmap( types::Object< Type, Name > buffer )
     {
@@ -23,26 +26,41 @@ namespace son8::overglad {
     }
     SON8_OVERGLAD_PROC active_texture( enums::Multi texture )
     { glad_glActiveTexture( static_cast< GLenum >( texture ) ); }
+
     // Chapter 3: Rasterization
+
     // TODO: PointParameter,TexImage3D,TexSubImage3D,CopyTexSubImage3D,CompressedTexImage[123]D,CompressedTexSubImage[123]D
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     SON8_OVERGLAD_FUNC sample_coverage( GLfloat value, GLboolean invert )
     { return glad_glSampleCoverage( value, invert ); }
+
     // TODO: BeginQuery,EndQuery,GenQueries,DeleteQueries
+
     SON8_OVERGLAD_PROC mode( enums::Equation equation )
     { glad_glBlendEquation( static_cast< GLenum >( equation ) ); }
+
     // TODO: BlendFuncSeparate
+
     SON8_OVERGLAD_PROC blend_color( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
     { glad_glBlendColor( red, green, blue, alpha ); }
+
     // Chapter 6: State and State Requests
+
     SON8_OVERGLAD_FUNC is_query( GLuint id )
     { return glad_glIsQuery( id ); }
+
     // TODO: GetQueryiv,GetQueryObjectiv,GetQueryObjectuiv
+
     SON8_OVERGLAD_FUNC is_buffer( GLuint buffer )
     { return glad_glIsBuffer( buffer ); }
-#ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
+
+    // COMPATIBILITY
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+
     // Chapter 2: OpenGL Operation
+
     SON8_OVERGLAD_PROC tex_coord( enums::Multi texture, GLint s )
     { glad_glMultiTexCoord1i( static_cast< GLenum >( texture ), s ); }
     SON8_OVERGLAD_PROC tex_coord( enums::Multi texture, GLshort s )
@@ -147,7 +165,9 @@ namespace son8::overglad {
     { glad_glSecondaryColor3ubv( components.data( ) ); }
     SON8_OVERGLAD_PROC secondary_color( types::array3us const &components )
     { glad_glSecondaryColor3usv( components.data( ) ); }
+
     // TODO: SecondaryColorPointer,FogCoordPointer
+
     SON8_OVERGLAD_PROC client_active_texture( enums::Multi texture )
     { glad_glClientActiveTexture( static_cast< GLenum >( texture ) ); }
     SON8_OVERGLAD_PROC load_transpose_matrix( types::array16f const &matrix )
@@ -190,10 +210,12 @@ namespace son8::overglad {
     { glad_glWindowPos3fv( coords.data( ) ); }
     SON8_OVERGLAD_PROC window_pos( types::array3d const &coords )
     { glad_glWindowPos3dv( coords.data( ) ); }
-#endif//SON8_OVERGLAD_PROFILE_CORE
+#endif // not core profile functions
+    // DEPRECATED
 #ifdef  SON8_OVERGLAD_INCLUDE_DEPRECATED
-    // deprecated
+
     // Chapter 2: OpenGL Operation
+
     SON8_OVERGLAD_DEPR multi_tex_coord( GLenum texture, GLint s )
     { glMultiTexCoord1i( texture, s ); }
     SON8_OVERGLAD_DEPR multi_tex_coord( GLenum texture, GLshort s )
@@ -330,7 +352,9 @@ namespace son8::overglad {
     { glWindowPos3fv( coords ); }
     SON8_OVERGLAD_DEPR window_pos_3( GLdouble const *coords )
     { glWindowPos3dv( coords ); }
+
     // Chapter 3: Rasterization
+
     SON8_OVERGLAD_DEPR point_parameter( GLenum pname, GLint param )
     { glPointParameteri( pname, param ); }
     SON8_OVERGLAD_DEPR point_parameter( GLenum pname, GLfloat param )
@@ -379,7 +403,9 @@ namespace son8::overglad {
         GLsizei width, GLsizei height, GLsizei depth,
         GLenum format, GLsizei imageSize, GLvoid *data )
     { glCompressedTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data ); }
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     SON8_OVERGLAD_DEPR begin_query( GLenum target, GLuint id )
     { glBeginQuery( target, id ); }
     SON8_OVERGLAD_DEPR end_query( GLenum target )
@@ -392,7 +418,9 @@ namespace son8::overglad {
     { glBlendEquation( mode ); }
     SON8_OVERGLAD_DEPR blend_func_separate( GLenum srsRGB, GLenum dstRGB, GLenum srsAlpha, GLenum dstAlpha )
     { glBlendFuncSeparate( srsRGB, dstRGB, srsAlpha, dstAlpha ); }
+
     // Chapter 6: State and State Requests
+
     SON8_OVERGLAD_DEPR get_buffer_parameter( GLenum target, GLenum value, GLint *data )
     { glGetBufferParameteriv( target, value, data ); }
     SON8_OVERGLAD_DEPR get_compressed_tex_image( GLenum target, GLint level, GLvoid *pixels )
@@ -407,10 +435,10 @@ namespace son8::overglad {
     { glGetBufferSubData( target, offset, size, data ); }
     SON8_OVERGLAD_DEPR get_buffer_pointer( GLenum target, GLenum pname, GLvoid **params )
     { glGetBufferPointerv( target, pname, params ); }
-#endif//SON8_OVERGLAD_INCLUDE_DEPRECATED
+#endif // include deprecated functions
 } // namespace son8::overglad
 
-#endif//SON8_OVERGLAD_V1_5_HXX
+#endif // INCLUDE GUARD
 
 // Apache License 2.0
 // NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>

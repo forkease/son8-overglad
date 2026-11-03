@@ -13,8 +13,10 @@
 #endif         //SON8_OVERGLAD_DEFINED
 
 namespace son8::overglad {
-    // core
+    // CORE
+
     // Chapter 2: OpenGL Operation
+
     template< typename Type >
     SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x )
     {
@@ -95,10 +97,14 @@ namespace son8::overglad {
             }
         }
     }
+
     // TODO: VertexAttribPointer,EnableVertexAttribArray,DisableVertexAttribArray
+
     SON8_OVERGLAD_FUNC shader( enums::Shader type )
     { return types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ) ) }; }
+
     // TODO: ShaderSource
+
     SON8_OVERGLAD_PROC compile( types::Shader shader )
     { glad_glCompileShader( shader.index( ) ); }
     SON8_OVERGLAD_PROC free( types::Shader shader )
@@ -117,28 +123,40 @@ namespace son8::overglad {
     { glad_glUseProgram( static_cast< GLuint >( unused ) ); }
     SON8_OVERGLAD_PROC free( types::Program program )
     { glad_glDeleteProgram( program.index( ) ); }
+
     // TODO: GetActiveAttrib,GetAttribLocation,BindAttribLocation,GetUniformLocation,GetActiveUniform,Uniform*,UniformMatrix*
+
     SON8_OVERGLAD_PROC validate( types::Program program )
     { glad_glValidateProgram( program.index( ) ); }
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     // TODO: StencilFuncSeparate,StencilOpSeparate
     SON8_OVERGLAD_PROC blend( enums::Equation separateRGB, enums::Equation separateAlpha )
     { glad_glBlendEquationSeparate( static_cast< GLenum >( separateRGB ), static_cast< GLenum >( separateAlpha ) ); }
+
     // TODO: DrawBuffers,StencilMaskSeparate
+
     // Chapter 6: State and State Requests
+
     SON8_OVERGLAD_FUNC is_shader( GLuint shader )
     { return glad_glIsShader( shader ); }
+
     // TODO: GetShaderiv
+
     SON8_OVERGLAD_FUNC is_program( GLuint program )
     { return glad_glIsProgram( program ); }
+
     // TODO: GetProgramiv,GetAttachedShaders
     // ,GetShaderInfoLog,GetProgramInfoLog,
     //SON8_OVERGLAD_FUNC info( types::Shader, types::Info )
+
     // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*
-    // compatibility
+
+    // COMPATIBILITY
 #ifndef SON8_OVERGLAD_PROFILE_CORE
-#endif//SON8_OVERGLAD_PROFILE_CORE
-    // deprecated
+#endif // not core profile functions
+    // DEPRECATED
 #ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
     // Chapter 2: OpenGL Operation
     SON8_OVERGLAD_DEPR vertex_attrib( GLuint index, GLshort x )
@@ -337,10 +355,10 @@ namespace son8::overglad {
     { glGetUniformfv( program, location, params ); }
     SON8_OVERGLAD_DEPR get_uniform( GLuint program, GLint location, GLint *params )
     { glGetUniformiv( program, location, params ); }
-#endif//SON8_OVERGLAD_INCLUDE_DEPRECATED
+#endif // deprecated functions
 } // namespace son8::overglad
 
-#endif//SON8_OVERGLAD_V2_1_HXX
+#endif // INCLUDE GUARD
 
 // Apache License 2.0
 // NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>

@@ -15,8 +15,10 @@
 #endif         //SON8_OVERGLAD_DEFINED
 
 namespace son8::overglad {
-    // core
+    // CORE
+
     // Chapter 2: OpenGL Operation
+
     // TODO: VertexAttribI*,VertexAttribP*,VertexAttribIPointer,VertexAttribDivisor,PrimitiveRestartIndex
     // ,DrawArraysInstanced,DrawElementsInstanced,DrawElementsBaseVertex,DrawRangeElementsBaseVertex,DrawElementsInstancedBaseVertex
     // ,MultiDrawElementsBaseVertex,BindBufferRange,BindBufferBase,MapBufferRange,FlushMappedBufferRange,CopyBufferSubData
@@ -27,9 +29,13 @@ namespace son8::overglad {
     // ProvokingVertex
     SON8_OVERGLAD_PROC mode( enums::Provoke provoke )
     { glad_glProvokingVertex( static_cast< GLenum >( provoke ) ); }
+
     // Chapter 3: Rasterization
+
     // TODO: GetMultisamplefv,GenSamplers,BindSampler,SamplerParameter*,DeleteSamplers,TexImage2DMultisample,TexImage3DMultisample,TexBuffer,TexParameterI*,GenerateMipmap,BindFragDataLocationIndexed,BindFragDataLocation,GetFragDataLocation,GetFragDataIndex
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     // TODO: SampleMaski
 
     // Enablei
@@ -38,47 +44,62 @@ namespace son8::overglad {
     // Disablei
     SON8_OVERGLAD_PROC mode( enums::Disablei disablei, GLuint index )
     { glad_glDisablei( static_cast< GLenum >( disablei.value( ) ), index ); }
+
     // TODO: ColorMaski,ClearBuffer*
 
     // glClampColor: in core has only one target (use compatibility for multiple targets)
     SON8_OVERGLAD_PROC mode( enums::Clamp clamp )
     { glad_glClampColor( static_cast< GLenum >( 0x891C ), static_cast< GLenum >( clamp ) ); }
+
     // TODO: BlitFramebuffer,BindFramebuffer,DeleteFramebuffers,GenFramebuffers
     // ,BindRenderbuffer,DeleteRenderbuffers,GenRenderbuffers,RenderbufferStorageMultisample,RenderbufferStorage
     // ,FramebufferRenderbuffer,FramebufferTexture,FramebufferTexture1D,FramebufferTexture2D,FramebufferTexture3D
     // ,FramebufferTextureLayer,CheckFramebufferStatus
+
     // Chapter 5: Special Functions
+
     // TODO: QueryCounter,FenceSync,DeleteSync,ClientWaitSync,WaitSync
+
     // Chapter 6: State and State Requests
+
     // TODO: GetInteger64v,GetBooleani_v,GetIntegeri_v,GetInteger64i_v
 
     // IsEnabledi
     SON8_OVERGLAD_FUNC get( enums::Capi target, GLuint index )
     { return glad_glIsEnabledi( static_cast< GLenum >( target ), index ); }
+
     // TODO: GetTexParameterI*
 
     SON8_OVERGLAD_FUNC is_sampler( GLuint sampler )
     { return glad_glIsSampler( sampler ); }
+
     // TODO: GetSamplerParameter,GetStringi,GetQueryObjecti64v,GetQueryObjectui64v,GetSynciv
 
     SON8_OVERGLAD_FUNC is_sync( GLsync sync )
     { return glad_glIsSync( sync ); }
+
     // TODO: GetBufferParameteri64v
 
     SON8_OVERGLAD_FUNC is_vertex_array( GLuint array )
     { return glad_glIsVertexArray( array ); }
+
     // TODO: GetVertexAttribI*
 
     SON8_OVERGLAD_FUNC is_framebuffer( GLuint framebuffer )
     { return glad_glIsFramebuffer( framebuffer ); }
+
     // TODO: GetFramebufferAttachmentParameteriv
 
     SON8_OVERGLAD_FUNC is_renderbuffer( GLuint renderbuffer )
     { return glad_glIsRenderbuffer( renderbuffer ); }
+
     // TODO: GetRenderbufferParameteriv
-    // compatibility
+
+    // COMPATIBILITY
 #ifndef SON8_OVERGLAD_PROFILE_CORE
+
     // Chapter 2: OpenGL Operation
+
     template< enums::Packed Pack, unsigned Size >
     SON8_OVERGLAD_PROC vertex( types::Packed< Pack, Size > type, GLuint coords ) {
         static_assert( 2 <= Size && Size <= 4, "Invalid Size for Packed vertex" );
@@ -162,10 +183,12 @@ namespace son8::overglad {
     // glClampColor
     SON8_OVERGLAD_PROC mode( enums::ClampColor target, enums::Clamp clamp )
     { glad_glClampColor( static_cast< GLenum >( target ), static_cast< GLenum >( clamp ) ); }
-#endif//SON8_OVERGLAD_PROFILE_CORE
-    // deprecated
+#endif // not core profile functions
+    // DEPRECATED
 #ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
+
     // Chapter 2: OpenGL Operation
+
     SON8_OVERGLAD_DEPR vertex_P_2( GLenum type, GLuint coords )
     { glVertexP2ui( type, coords ); }
     SON8_OVERGLAD_DEPR vertex_P_3( GLenum type, GLuint coords )
@@ -374,7 +397,9 @@ namespace son8::overglad {
     { glEndTransformFeedback( ); }
     SON8_OVERGLAD_DEPR provoking_vertex( GLenum provokeMode )
     { glProvokingVertex( provokeMode ); }
+
     // Chapter 3: Rasterization
+
     SON8_OVERGLAD_DEPR get_multisample( GLenum pname, GLuint index, GLfloat *val )
     { glGetMultisamplefv( pname, index, val ); }
     SON8_OVERGLAD_DEPR clamp_color( GLenum target, GLenum clamp )
@@ -415,7 +440,9 @@ namespace son8::overglad {
     { return glGetFragDataLocation( program, name ); }
     SON8_OVERGLAD_DEPR get_frag_data_index( GLuint program, GLchar const *name )
     { return glGetFragDataIndex( program, name ); }
+
     // Chapter 4: Per-Fragment Operations and the Framebuffer
+
     SON8_OVERGLAD_DEPR sample_mask( GLuint maskNumber, GLbitfield mask )
     { glSampleMaski( maskNumber, mask ); }
     SON8_OVERGLAD_DEPR enable( GLenum target, GLuint index )
@@ -474,7 +501,9 @@ namespace son8::overglad {
     { glFramebufferTextureLayer( target, attachment, texture, level, layer ); }
     SON8_OVERGLAD_DEPR check_framebuffer_status( GLenum target )
     { return glCheckFramebufferStatus( target ); }
+
     // Chapter 5: Special Functions
+
     SON8_OVERGLAD_DEPR query_counter( GLuint id, GLenum target )
     { glQueryCounter( id, target ); }
     SON8_OVERGLAD_DEPR fence_sync( GLenum condition, GLbitfield flags )
@@ -485,7 +514,9 @@ namespace son8::overglad {
     { return glClientWaitSync( sync, flags, timeout ); }
     SON8_OVERGLAD_DEPR wait_sync( GLsync sync, GLbitfield flags, GLuint64 timeout )
     { glWaitSync( sync, flags, timeout ); }
+
     // Chapter 6: State and State Requests
+
     SON8_OVERGLAD_DEPR get_integer( GLenum pname, GLint64 *data )
     { glGetInteger64v( pname, data ); }
     SON8_OVERGLAD_DEPR get_boolean( GLenum target, GLuint index, GLboolean *data )
@@ -528,10 +559,10 @@ namespace son8::overglad {
     { glGetFramebufferAttachmentParameteriv( target, attachment, pname, params ); }
     SON8_OVERGLAD_DEPR get_renderbuffer_parameter( GLenum target, GLenum pname, GLint *params )
     { glGetRenderbufferParameteriv( target, pname, params ); }
-#endif//SON8_OVERGLAD_INCLUDE_DEPRECATED
+#endif // deprecated functions
 } // namespace son8::overglad
 
-#endif//SON8_OVERGLAD_V3_3_HXX
+#endif // INCLUDE GUARD
 
 // Apache License 2.0
 // NO WARRANTY OF ANY KIND see <http://www.apache.org/licenses/LICENSE-2.0>
