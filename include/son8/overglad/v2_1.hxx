@@ -149,23 +149,34 @@ namespace son8::overglad {
 
     // TODO: GetProgramiv,GetAttachedShaders
 
-    template< unsigned Capacity >
-    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, types::Shader shader, std::string_view prepend = "" ) {
-        if ( not log.append( prepend ) ) return false;
+    template< typename Target, unsigned Capacity >
+    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, Target target, std::string_view prepend = "" ) {
+        static constexpr bool Is_Shader = std::is_same_v< Target, types::Shader >;
+        static constexpr bool Is_Program = std::is_same_v< Target, types::Program >;
+        static_assert( Is_Shader or Is_Program
+            , "son8::overglad: info() required as a target Shader or Program types" );
 
+        log.checkpoint( );
+        if ( not log.append( prepend )) {
+            // NOTE: to make checkpoint behave properly within this function call
+            log.commit( 0u );
+            return false;
+        }
+        // NOTE: target log writes including null-terminated character
+        // \ but unused return size excluding it, so add it
+        auto const bufSize = static_cast< GLsizei >( 1u + log.unused( ));
         GLsizei written = 0;
-        glad_glGetShaderInfoLog( shader, log.unused( ), &written, log.writer( ));
 
-        return log.commit( written );
-    }
-    template< unsigned Capacity >
-    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, types::Program program, std::string_view prepend = "" ) {
-        if ( not log.append( prepend ) ) return false;
+        if constexpr ( Is_Shader ) {
+            glad_glGetShaderInfoLog( target, bufSize, &written, log.writer( ));
+        } else if constexpr ( Is_Program ) {
+            glad_glGetProgramInfoLog( target, bufSize, &written, log.writer( ));
+        }
 
-        GLsizei written = 0;
-        glad_glGetProgramInfoLog( program, log.unused( ), &written, log.writer( ));
+        if ( written ) { return log.commit( written ); }
 
-        return log.commit( written );
+        log.rollback( );
+        return true;
     }
 
     // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*

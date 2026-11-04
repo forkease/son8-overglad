@@ -757,48 +757,74 @@ namespace son8::overglad::types {
         using Char_ = GLchar;
         Char_ buffer_[Capacity] = { };
         Size_ cursor_{ };
+        Size_ checkpoint_{ };
         auto last_Index( ) const noexcept { return Capacity - 1u; }
+        auto cursor_Size( ) const noexcept { return cursor_ + 1u; }
+        auto commit_Unchecked( Size_ written ) {
+            cursor_ += written;
+            buffer_[cursor_] = '\0';
+        }
     public:
         Info( ) = default;
-        constexpr auto capacity( ) const noexcept { return Capacity; }
+        Info( Info const &copy ) noexcept : cursor_{ copy.cursor_ }, checkpoint_{ copy.checkpoint_ } {
+            std::memcpy( buffer_, copy.buffer_, cursor_Size( ));
+        }
+        auto operator=( Info const &copy ) noexcept -> Info & {
+            if ( this != &copy ) {
+                cursor_ = copy.cursor_;
+                checkpoint_ = copy.checkpoint_;
+                std::memcpy( buffer_, copy.buffer_, cursor_Size( ));
+            }
+
+            return *this;
+        }
+        constexpr
+        auto capacity( ) const noexcept { return Capacity; }
         auto size( ) const noexcept { return cursor_; }
         auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
         auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
         bool is_empty( ) const noexcept { return cursor_ == 0u; }
         auto unused( ) const noexcept { return last_Index( ) - cursor_; }
+        void checkpoint( ) { checkpoint_ = cursor_; }
+        void rollback( ) {
+            std::memset( buffer_ + checkpoint_, 0, cursor_ - checkpoint_ );
+            cursor_ = checkpoint_;
+        }
         void clear( ) noexcept {
-            buffer_[0] = '\0';
+            std::memset( buffer_, 0, Capacity );
             cursor_ = 0u;
+            checkpoint_ = 0u;
         }
         auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
         bool commit( Size_ written ) noexcept {
-            cursor_ += ( written > unused( )) ? unused( ) : written;
-            buffer_[cursor_] = '\0';
-            // is still can put something
-            return unused( ) > 0u;
+            bool const isCompleteWrite = ( written <= unused( ));
+            commit_Unchecked( isCompleteWrite ? written : unused( ));
+            checkpoint( );
+
+            return isCompleteWrite;
         }
         bool append( View_ view ) noexcept {
             if ( not unused( )) { return false; }
 
-            Size_ overflow = ( view.size( ) > unused( )) ? ( view.size( ) - unused( )) : 0u;
-            view.remove_suffix( overflow );
+            bool const isFullFit = ( view.size( ) <= unused( ));
 
-            std::memcpy( buffer_ + cursor_, view.data( ), view.size( ));
-            cursor_ += static_cast< Size_ >( view.size( ));
-            buffer_[cursor_] = '\0';
+            if ( not isFullFit ) { view.remove_suffix( view.size( ) - unused( )); }
 
-            return true;
+            std::memcpy( writer( ), view.data( ), view.size( ));
+            commit_Unchecked( view.size( ));
+
+            return isFullFit;
         }
-    }; // class Info
-    // Info aliases
-    using InfoTiny = Info< 1u << 6u >; // ----  64B
-    using InfoSmall = Info< 1u << 7u >; // --- 128B
-    using InfoMedium = Info< 1u << 8u >; // -- 256B
-    using InfoAverage = Info< 1u << 9u >; // - 512B
-    using InfoDefault = Info< 1u << 10u >; //  1KiB
-    using InfoCommon = Info< 1u << 11u >; // - 2KiB
-    using InfoLarge = Info< 1u << 12u >; // -- 4KiB
-    using InfoHuge = Info< 1u << 13u >; // --- 8KiB
+    }; // `class Info`
+    // `Info aliases`
+    using InfoTiny = Info< 1u << 6u >; // ----  `64B`
+    using InfoSmall = Info< 1u << 7u >; // --- `128B`
+    using InfoMedium = Info< 1u << 8u >; // -- `256B`
+    using InfoAverage = Info< 1u << 9u >; // - `512B`
+    using InfoDefault = Info< 1u << 10u >; //  `1KiB`
+    using InfoCommon = Info< 1u << 11u >; // - `2KiB`
+    using InfoLarge = Info< 1u << 12u >; // -- `4KiB`
+    using InfoHuge = Info< 1u << 13u >; // --- `8KiB`
 
 #endif// version 2.1
 
@@ -851,9 +877,7 @@ namespace son8::overglad {
 
     // Chapter 6: Buffer Objects
 
-    // TODO: `CreateBuffers,BindBuffersRange,BindBuffersBase,BufferStorage,NamedBufferStorage,NamedBufferData,NamedBufferSubData
-    // ,ClearNamedBufferSubData,ClearNamedBufferData,MapNamedBufferRange,MapNamedBuffer,FlushMappedNamedBufferRange,UnmapNamedBuffer
-    // ,CopyNamedBufferSubData,GetNamedBufferParameteriv,GetNamedBufferParameteri64v,GetNamedBufferSubData,GetNamedBufferPointerv`
+    // TODO: `CreateBuffers,BindBuffersRange,BindBuffersBase,BufferStorage,NamedBufferStorage,NamedBufferData,NamedBufferSubData,ClearNamedBufferSubData,ClearNamedBufferData,MapNamedBufferRange,MapNamedBuffer,FlushMappedNamedBufferRange,UnmapNamedBuffer,CopyNamedBufferSubData,GetNamedBufferParameteriv,GetNamedBufferParameteri64v,GetNamedBufferSubData,GetNamedBufferPointerv`
 
     // Chapter 7: Programs and Shaders
 
@@ -861,11 +885,7 @@ namespace son8::overglad {
 
     // Chapter 8: Textures and Samplers
 
-    // TODO: `BindTextures,BindTextureUnit,CreateTextures,CreateSamplers,BindSamplers,SamplerParameter[if],TextureSubImage[123]D
-    // ,CopyTextureSubImage[123]D,CompressedTextureSubImage[123]D,TextureBufferRange,TextureBuffer,TextureParameter[if]v?
-    // ,TextureParameterI(i|ui)v,GetTextureParameter[if]v,GetTextureParameterI(i|ui)v,GetTextureLevelParameter[if]v,GetTextureImage
-    // ,GetnTexImage,GetTextureSubImage,GetCompressedTextureImage,GetnCompressedTexImage,GetCompressedTextureSubImage
-    // ,GenerateTextureMipmap,TextureStorage2DMultisample,TextureStorage3DMultisample,ClearTexSubImage,ClearTexImage,BindImageTextures`
+    // TODO: `BindTextures,BindTextureUnit,CreateTextures,CreateSamplers,BindSamplers,SamplerParameter[if],TextureSubImage[123]D,CopyTextureSubImage[123]D,CompressedTextureSubImage[123]D,TextureBufferRange,TextureBuffer,TextureParameter[if]v?,TextureParameterI(i|ui)v,GetTextureParameter[if]v,GetTextureParameterI(i|ui)v,GetTextureLevelParameter[if]v,GetTextureImage,GetnTexImage,GetTextureSubImage,GetCompressedTextureImage,GetnCompressedTexImage,GetCompressedTextureSubImage,GenerateTextureMipmap,TextureStorage2DMultisample,TextureStorage3DMultisample,ClearTexSubImage,ClearTexImage,BindImageTextures`
 
     // Chapter 9: Framebuffers and Framebuffer Objects
 
