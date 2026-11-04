@@ -757,7 +757,6 @@ namespace son8::overglad::types {
         using Char_ = GLchar;
         Char_ buffer_[Capacity] = { };
         Size_ cursor_{ };
-        Size_ checkpoint_{ };
         auto last_Index( ) const noexcept { return Capacity - 1u; }
         auto cursor_Size( ) const noexcept { return cursor_ + 1u; }
         auto commit_Unchecked( Size_ written ) {
@@ -766,13 +765,12 @@ namespace son8::overglad::types {
         }
     public:
         Info( ) = default;
-        Info( Info const &copy ) noexcept : cursor_{ copy.cursor_ }, checkpoint_{ copy.checkpoint_ } {
+        Info( Info const &copy ) noexcept : cursor_{ copy.cursor_ } {
             std::memcpy( buffer_, copy.buffer_, cursor_Size( ));
         }
         auto operator=( Info const &copy ) noexcept -> Info & {
             if ( this != &copy ) {
                 cursor_ = copy.cursor_;
-                checkpoint_ = copy.checkpoint_;
                 std::memcpy( buffer_, copy.buffer_, cursor_Size( ));
             }
 
@@ -781,39 +779,41 @@ namespace son8::overglad::types {
         constexpr
         auto capacity( ) const noexcept { return Capacity; }
         auto size( ) const noexcept { return cursor_; }
+        auto left( ) const noexcept { return last_Index( ) - cursor_; }
+        bool is_empty( ) const noexcept { return 0u == size( ); }
+        bool is_full( ) const noexcept { return 0u == left( ); }
         auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
         auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
-        bool is_empty( ) const noexcept { return cursor_ == 0u; }
-        auto unused( ) const noexcept { return last_Index( ) - cursor_; }
-        void checkpoint( ) { checkpoint_ = cursor_; }
-        void rollback( ) {
-            std::memset( buffer_ + checkpoint_, 0, cursor_ - checkpoint_ );
-            cursor_ = checkpoint_;
-        }
         void clear( ) noexcept {
             std::memset( buffer_, 0, Capacity );
             cursor_ = 0u;
-            checkpoint_ = 0u;
+        }
+        bool truncate( Size_ toSize ) noexcept {
+            if ( size( ) < toSize) { return false; }
+
+            std::memset( buffer_ + toSize, 0, cursor_ - toSize );
+            cursor_ = toSize;
+
+            return true;
         }
         auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
         bool commit( Size_ written ) noexcept {
-            bool const isCompleteWrite = ( written <= unused( ));
-            commit_Unchecked( isCompleteWrite ? written : unused( ));
-            checkpoint( );
+            bool const isCompleteWrite = ( written <= left( ));
+            commit_Unchecked( isCompleteWrite ? written : left( ));
 
             return isCompleteWrite;
         }
         bool append( View_ view ) noexcept {
-            if ( not unused( )) { return false; }
+            if ( not left( )) { return false; }
 
-            bool const isFullFit = ( view.size( ) <= unused( ));
+            bool const isFullFit = ( view.size( ) <= left( ));
 
-            if ( not isFullFit ) { view.remove_suffix( view.size( ) - unused( )); }
+            if ( not isFullFit ) { view.remove_suffix( view.size( ) - left( )); }
 
             std::memcpy( writer( ), view.data( ), view.size( ));
             commit_Unchecked( view.size( ));
 
-            return isFullFit;
+            return isFullFit and left( );
         }
     }; // `class Info`
     // `Info aliases`

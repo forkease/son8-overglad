@@ -18,7 +18,7 @@ namespace son8::overglad {
     // Chapter 2: OpenGL Operation
 
     template< typename Type >
-    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x )
+    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x ) noexcept
     {
         using Attrib = types::Attrib< Type >;
         static_assert( Attrib::validate( ), "Invalid Type for vertex_attrib with Size equal 0 and 1 argument" );
@@ -27,7 +27,7 @@ namespace son8::overglad {
         else if constexpr ( std::is_same_v< Type, GLdouble > ) glad_glVertexAttrib1d( attrib.index( ), x );
     }
     template< typename Type >
-    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x, Type y )
+    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x, Type y ) noexcept
     {
         using Attrib = types::Attrib< Type >;
         static_assert( Attrib::validate( ), "Invalid Type for vertex_attrib with Size equal 0 and 2 arguments" );
@@ -36,7 +36,7 @@ namespace son8::overglad {
         else if constexpr ( std::is_same_v< Type, GLdouble > ) glad_glVertexAttrib2d( attrib.index( ), x, y );
     }
     template< typename Type >
-    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x, Type y, Type z )
+    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x, Type y, Type z ) noexcept
     {
         using Attrib = types::Attrib< Type >;
         static_assert( Attrib::validate( ), "Invalid Type for vertex_attrib with Size equal 0 and 3 arguments" );
@@ -45,7 +45,7 @@ namespace son8::overglad {
         else if constexpr ( std::is_same_v< Type, GLdouble > ) glad_glVertexAttrib3d( attrib.index( ), x, y, z );
     }
     template< typename Type >
-    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x, Type y, Type z, Type w )
+    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type > attrib, Type x, Type y, Type z, Type w ) noexcept
     {
         using Attrib = types::Attrib< Type >;
         static_assert( Attrib::validate( ), "Invalid Type for vertex_attrib with Size equal 0 and 4 arguments" );
@@ -53,10 +53,10 @@ namespace son8::overglad {
         else if constexpr ( std::is_same_v< Type, GLfloat > ) glad_glVertexAttrib4f( attrib.index( ), x, y, z, w );
         else if constexpr ( std::is_same_v< Type, GLdouble > ) glad_glVertexAttrib4d( attrib.index( ), x, y, z, w );
     }
-    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< GLubyte, 0, true > attrib, GLubyte x, GLubyte y, GLubyte z, GLubyte w )
+    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< GLubyte, 0, true > attrib, GLubyte x, GLubyte y, GLubyte z, GLubyte w ) noexcept
     { glad_glVertexAttrib4Nub( attrib.index( ), x, y, z, w ); }
     template< typename Type, unsigned Size, bool Norm >
-    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type, Size, Norm > attrib, std::array< Type, Size > const &values )
+    SON8_OVERGLAD_PROC vertex_attrib( types::Attrib< Type, Size, Norm > attrib, std::array< Type, Size > const &values ) noexcept
     {
         using Attrib = types::Attrib< Type, Size, Norm >;
         static_assert( Size <= 4, "Invalid Size for vertex_attrib" );
@@ -100,71 +100,68 @@ namespace son8::overglad {
 
     // TODO: VertexAttribPointer,EnableVertexAttribArray,DisableVertexAttribArray
 
-    SON8_OVERGLAD_FUNC gen( types::Shader &shader, enums::Shader type )
+    SON8_OVERGLAD_FUNC gen( types::Shader &shader, enums::Shader type ) noexcept
     { shader = types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ))}; }
 
     // TODO: ShaderSource
 
-    SON8_OVERGLAD_PROC compile( types::Shader &shader )
+    SON8_OVERGLAD_PROC compile( types::Shader &shader ) noexcept
     { glad_glCompileShader( shader.index( )); }
-    SON8_OVERGLAD_PROC del( types::Shader shader )
+    SON8_OVERGLAD_PROC del( types::Shader shader ) noexcept
     { glad_glDeleteShader( shader.index( )); }
-    SON8_OVERGLAD_FUNC gen( types::Program &program )
+    SON8_OVERGLAD_FUNC gen( types::Program &program ) noexcept
     { program = types::Program{ glad_glCreateProgram( )}; }
-    SON8_OVERGLAD_PROC attach( types::Program program, types::Shader shader )
+    SON8_OVERGLAD_PROC attach( types::Program program, types::Shader shader ) noexcept
     { glad_glAttachShader( program.index( ), shader.index( )); }
-    SON8_OVERGLAD_PROC detach( types::Program program, types::Shader shader )
+    SON8_OVERGLAD_PROC detach( types::Program program, types::Shader shader ) noexcept
     { glad_glDetachShader( program.index( ), shader.index( )); }
-    SON8_OVERGLAD_PROC link( types::Program program )
+    SON8_OVERGLAD_PROC link( types::Program program ) noexcept
     { glad_glLinkProgram( program.index( )); }
-    SON8_OVERGLAD_PROC bind( types::Program program )
+    SON8_OVERGLAD_PROC bind( types::Program program ) noexcept
     { glad_glUseProgram( program.index( )); }
-    SON8_OVERGLAD_PROC free( [[maybe_unused]] types::Program unused )
+    SON8_OVERGLAD_PROC free( [[maybe_unused]] types::Program unused ) noexcept
     { glad_glUseProgram(  0u ); }
-    SON8_OVERGLAD_PROC del( types::Program program )
+    SON8_OVERGLAD_PROC del( types::Program program ) noexcept
     { glad_glDeleteProgram( program.index( )); }
 
     // TODO: GetActiveAttrib,GetAttribLocation,BindAttribLocation,GetUniformLocation,GetActiveUniform,Uniform*,UniformMatrix*
 
-    SON8_OVERGLAD_PROC validate( types::Program program )
+    SON8_OVERGLAD_PROC validate( types::Program program ) noexcept
     { glad_glValidateProgram( program.index( )); }
 
     // Chapter 4: Per-Fragment Operations and the Framebuffer
 
     // TODO: StencilFuncSeparate,StencilOpSeparate
-    SON8_OVERGLAD_PROC blend( enums::Equation separateRGB, enums::Equation separateAlpha )
+    SON8_OVERGLAD_PROC blend( enums::Equation separateRGB, enums::Equation separateAlpha ) noexcept
     { glad_glBlendEquationSeparate( static_cast< GLenum >( separateRGB ), static_cast< GLenum >( separateAlpha ) ); }
 
     // TODO: DrawBuffers,StencilMaskSeparate
 
     // Chapter 6: State and State Requests
 
-    SON8_OVERGLAD_FUNC is_shader( GLuint shader )
+    SON8_OVERGLAD_FUNC is_shader( GLuint shader ) noexcept
     { return glad_glIsShader( shader ); }
 
     // TODO: GetShaderiv
 
-    SON8_OVERGLAD_FUNC is_program( GLuint program )
+    SON8_OVERGLAD_FUNC is_program( GLuint program ) noexcept
     { return glad_glIsProgram( program ); }
 
     // TODO: GetProgramiv,GetAttachedShaders
 
     template< typename Target, unsigned Capacity >
     SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, Target target, std::string_view prepend = "" ) {
+        using namespace std::string_view_literals;
         static constexpr bool Is_Shader = std::is_same_v< Target, types::Shader >;
         static constexpr bool Is_Program = std::is_same_v< Target, types::Program >;
         static_assert( Is_Shader or Is_Program
             , "son8::overglad: info() required as a target Shader or Program types" );
+        auto prevSize = log.size( );
 
-        log.checkpoint( );
-        if ( not log.append( prepend )) {
-            // NOTE: to make checkpoint behave properly within this function call
-            log.commit( 0u );
-            return false;
-        }
+        if ( not log.append( prepend )) { return false; }
         // NOTE: target log writes including null-terminated character
         // \ but unused return size excluding it, so add it
-        auto const bufSize = static_cast< GLsizei >( 1u + log.unused( ));
+        auto const bufSize = static_cast< GLsizei >( 1u + log.left( ));
         GLsizei written = 0;
 
         if constexpr ( Is_Shader ) {
@@ -172,11 +169,19 @@ namespace son8::overglad {
         } else if constexpr ( Is_Program ) {
             glad_glGetProgramInfoLog( target, bufSize, &written, log.writer( ));
         }
+        // NOTE: here truncate should always return true (as prevSize can never be larger then current size)
+        // \ log writes nothing, remove header
+        if ( not written) { return log.truncate( prevSize ); }
 
-        if ( written ) { return log.commit( written ); }
+        bool result = log.commit( written );
+        // NOTE: sometimes driver returns info log without new line character
+        // \ do not like this behavior on some usage of log display, so fix this here
+        if ( result and log.left( ) and log.view( ).back() != '\n' ) {
+            log.append( "\n"sv );
+        }
 
-        log.rollback( );
-        return true;
+        return result;
+
     }
 
     // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*
