@@ -14,10 +14,10 @@
 #define SON8_OVERGLAD_VERSION 0x0406CE
 #endif                      // defined
 
-#include <glad/son8/source.h>
+#include <glad/son8/gl/source.h>
 
 #ifdef SON8_OVERGLAD_INCLUDE_DEPRECATED
-#include <glad/son8/define.h>
+#include <glad/son8/gl/define.h>
 #endif
 
 // for v functions
