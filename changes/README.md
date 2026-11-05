@@ -3,6 +3,9 @@
 
 ## Branch: main
 
+### `v0.9.0` - 2026-11-05
+> TODO: changes description
+
 ### `v0.8.3` - 2026-11-03
 
 #### Added
