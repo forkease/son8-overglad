@@ -13,7 +13,7 @@
 namespace son8::overglad {
     // Special, object type generation
     template< types::Object_::Type Type, bool Named >
-    SON8_OVERGLAD_PROC gen( types::Object< Type, Named > &object )
+    SON8_OVERGLAD_PROC gen( types::Object< Type, Named > &object ) noexcept
     {
         using obj = types::Object_;
         static_assert( obj::validate( Type ), "Unsupported object type for generation");
@@ -31,7 +31,7 @@ namespace son8::overglad {
     }
 
     template< types::Object_::Type Type, bool Named >
-    SON8_OVERGLAD_PROC gen( types::Objects< Type, Named > &objects )
+    SON8_OVERGLAD_PROC gen( types::Objects< Type, Named > &objects ) noexcept
     {
         using obj = types::Object_;
         static_assert( obj::validate( Type ), "Unsupported object type for generation" );
@@ -49,7 +49,7 @@ namespace son8::overglad {
     }
 
     template< types::Object_::Type Type, bool Named >
-    SON8_OVERGLAD_PROC del( types::Object< Type, Named > &object )
+    SON8_OVERGLAD_PROC del( types::Object< Type, Named > &object ) noexcept
     {
         using obj = types::Object_;
         static_assert( obj::validate( Type ), "Unsupported object type for deletion" );
@@ -61,7 +61,7 @@ namespace son8::overglad {
     }
 
     template< types::Object_::Type Type, bool Named >
-    SON8_OVERGLAD_PROC del( types::Objects< Type, Named > &objects )
+    SON8_OVERGLAD_PROC del( types::Objects< Type, Named > &objects ) noexcept
     {
         using obj = types::Object_;
         static_assert( obj::validate( Type ), "Unsupported object type for deletion" );
@@ -73,7 +73,7 @@ namespace son8::overglad {
     }
 
     template< types::Object_::Type Type, bool Named >
-    SON8_OVERGLAD_PROC bind( types::Object< Type, Named > object )
+    SON8_OVERGLAD_PROC bind( types::Object< Type, Named > object ) noexcept
     {
         using obj = types::Object_;
         static_assert( obj::validate( Type ), "son8::overglad: Unsupported object type for binding" );
@@ -85,7 +85,7 @@ namespace son8::overglad {
     }
 
     template< types::Object_::Type Type, bool Named >
-    SON8_OVERGLAD_PROC free( types::Object< Type, Named > object )
+    SON8_OVERGLAD_PROC free( types::Object< Type, Named > object ) noexcept
     {
         using obj = types::Object_;
         static_assert( obj::validate( Type ), "son8::overglad: Unsupported object type for freeing (unbind)" );

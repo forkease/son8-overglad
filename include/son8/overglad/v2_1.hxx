@@ -102,9 +102,29 @@ namespace son8::overglad {
 
     SON8_OVERGLAD_FUNC gen( types::Shader &shader, enums::Shader type ) noexcept
     { shader = types::Shader{ glad_glCreateShader( static_cast< GLenum >( type ))}; }
+    SON8_OVERGLAD_PROC source( types::Shader shader, types::Source view ) noexcept {
+        GLchar const *pointer[1] = { view.data( ) };
+        GLint length[1] = { static_cast< GLint >( view.size( )) };
+        glad_glShaderSource( shader, 1, pointer, length );
+    }
+    template< size_t Array_Size >
+    SON8_OVERGLAD_PROC sources( types::Shader shader, types::Sources< Array_Size > const &views ) noexcept {
+        static constexpr auto Count = views.size( );
+        static_assert( 2 <= Count,
+            "son8::overglad: sources() required at least 2 source chucks, maybe use types::Source" );
+        static_assert( Count <= 64,
+            "son8::overglad: sources() requires no more than 64 source chucks" );
+        GLchar const *pointers[Count];
+        GLint lengths[Count];
+        auto index = 0u;
 
-    // TODO: ShaderSource
+        for ( auto i = 0u; i < Count; ++i ) {
+            pointers[i] = views[i].data( );
+            lengths[i] = views[i].size( );
+        }
 
+        glad_glShaderSource( shader, Count, pointers, lengths );
+    }
     SON8_OVERGLAD_PROC compile( types::Shader &shader ) noexcept
     { glad_glCompileShader( shader.index( )); }
     SON8_OVERGLAD_PROC del( types::Shader shader ) noexcept
@@ -150,7 +170,7 @@ namespace son8::overglad {
     // TODO: GetProgramiv,GetAttachedShaders
 
     template< typename Target, unsigned Capacity >
-    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, Target target, std::string_view prepend = "" ) {
+    SON8_OVERGLAD_DISC info( types::Info< Capacity > &log, Target target, std::string_view prepend = "" ) noexcept {
         using namespace std::string_view_literals;
         static constexpr bool Is_Shader = std::is_same_v< Target, types::Shader >;
         static constexpr bool Is_Program = std::is_same_v< Target, types::Program >;

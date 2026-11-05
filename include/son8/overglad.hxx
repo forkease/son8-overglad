@@ -747,6 +747,10 @@ namespace son8::overglad::types {
         operator GLuint( ) const noexcept { return index_; }
         auto index( ) const noexcept { return index_; }
     }; // class `Program`
+    // temporary solution to passing sources for shaders
+    using Source = std::string_view;
+    template< unsigned Array_Size >
+    using Sources = std::array< Source, Array_Size >;
     // Possibly just a temporary solution to simplify querying info logs
     template< unsigned Capacity = 1u << 10u >
     class Info final {
