@@ -502,40 +502,77 @@ namespace son8::overglad::enums {
 } // namespace son8::overglad::enums
 namespace son8::overglad::types {
 #ifndef SON8_OVERGLAD_PROFILE_CORE
-    using array1i       = std::array< GLint, 1 >;
-    using array1s       = std::array< GLshort, 1 >;
-    using array1f       = std::array< GLfloat, 1 >;
-    using array1d       = std::array< GLdouble, 1 >;
-    using array1ub      = std::array< GLubyte, 1 >;
-    using array1bool    = std::array< GLboolean, 1 >;
-
-    using array2i       = std::array< GLint, 2 >;
-    using array2s       = std::array< GLshort, 2 >;
-    using array2f       = std::array< GLfloat, 2 >;
-    using array2d       = std::array< GLdouble, 2 >;
-
-    using array3i       = std::array< GLint, 3 >;
-    using array3b       = std::array< GLbyte, 3 >;
-    using array3s       = std::array< GLshort, 3 >;
-    using array3f       = std::array< GLfloat, 3 >;
-    using array3d       = std::array< GLdouble, 3 >;
-    using array3ui      = std::array< GLuint, 3 >;
-    using array3ub      = std::array< GLubyte, 3 >;
-    using array3us      = std::array< GLushort, 3 >;
-
-    using array4i       = std::array< GLint, 4 >;
-    using array4b       = std::array< GLbyte, 4 >;
-    using array4s       = std::array< GLshort, 4 >;
-    using array4f       = std::array< GLfloat, 4 >;
-    using array4d       = std::array< GLdouble, 4 >;
-    using array4ui      = std::array< GLuint, 4 >;
-    using array4ub      = std::array< GLubyte, 4 >;
-    using array4us      = std::array< GLushort, 4 >;
-
-    using array16f      = std::array< GLfloat, 16 >;
-    using array16d      = std::array< GLdouble, 16 >;
+    // `size 1`
+    using Array1i    = std::array< GLint, 1 >;
+    using Array1s    = std::array< GLshort, 1 >;
+    using Array1f    = std::array< GLfloat, 1 >;
+    using Array1d    = std::array< GLdouble, 1 >;
+    using Array1ub   = std::array< GLubyte, 1 >;
+    using Array1bool = std::array< GLboolean, 1 >;
+    // `size 2`
+    using Array2i    = std::array< GLint, 2 >;
+    using Array2s    = std::array< GLshort, 2 >;
+    using Array2f    = std::array< GLfloat, 2 >;
+    using Array2d    = std::array< GLdouble, 2 >;
+    // `size 3`
+    using Array3i    = std::array< GLint, 3 >;
+    using Array3b    = std::array< GLbyte, 3 >;
+    using Array3s    = std::array< GLshort, 3 >;
+    using Array3f    = std::array< GLfloat, 3 >;
+    using Array3d    = std::array< GLdouble, 3 >;
+    using Array3ui   = std::array< GLuint, 3 >;
+    using Array3ub   = std::array< GLubyte, 3 >;
+    using Array3us   = std::array< GLushort, 3 >;
+    // `size 4`
+    using Array4i    = std::array< GLint, 4 >;
+    using Array4b    = std::array< GLbyte, 4 >;
+    using Array4s    = std::array< GLshort, 4 >;
+    using Array4f    = std::array< GLfloat, 4 >;
+    using Array4d    = std::array< GLdouble, 4 >;
+    using Array4ui   = std::array< GLuint, 4 >;
+    using Array4ub   = std::array< GLubyte, 4 >;
+    using Array4us   = std::array< GLushort, 4 >;
+    // `size 16`
+    using Array16f   = std::array< GLfloat, 16 >;
+    using Array16d   = std::array< GLdouble, 16 >;
+    // deprecated renamed aliases
+    // `size 1`
+    using array1i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 1 >;
+    using array1s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 1 >;
+    using array1f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 1 >;
+    using array1d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 1 >;
+    using array1ub   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLubyte, 1 >;
+    using array1bool [[deprecated( "renamed to start with capital letter" )]] = std::array< GLboolean, 1 >;
+    // `size 2`
+    using array2i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 2 >;
+    using array2s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 2 >;
+    using array2f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 2 >;
+    using array2d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 2 >;
+    // `size 3`
+    using array3i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 3 >;
+    using array3b    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLbyte, 3 >;
+    using array3s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 3 >;
+    using array3f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 3 >;
+    using array3d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 3 >;
+    using array3ui   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLuint, 3 >;
+    using array3ub   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLubyte, 3 >;
+    using array3us   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLushort, 3 >;
+    // `size 4`
+    using array4i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 4 >;
+    using array4b    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLbyte, 4 >;
+    using array4s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 4 >;
+    using array4f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 4 >;
+    using array4d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 4 >;
+    using array4ui   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLuint, 4 >;
+    using array4ub   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLubyte, 4 >;
+    using array4us   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLushort, 4 >;
+    // `size 16`
+    using array16f   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 16 >;
+    using array16d   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 16 >;
 #   ifdef SON8_OVERGLAD_VERSION_3_3
-    using array1ui     = std::array< GLuint, 1 >;
+    using Array1ui   = std::array< GLuint, 1 >;
+    // deprecated renamed aliases
+    using array1ui   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLuint, 1 >;
 #   endif // version 3.3
 #endif// not core
 
@@ -701,36 +738,68 @@ namespace son8::overglad::types {
         };
     }; // class `Attrib`
     // `coord attribs`
-    using attrib0s      = Attrib< GLshort >;
-    using attrib0f      = Attrib< GLfloat >;
-    using attrib0d      = Attrib< GLdouble >;
+    using Attrib0s      = Attrib< GLshort >;
+    using Attrib0f      = Attrib< GLfloat >;
+    using Attrib0d      = Attrib< GLdouble >;
     // `array attribs`
-    using attrib1s      = Attrib< GLshort, 1 >;
-    using attrib2s      = Attrib< GLshort, 2 >;
-    using attrib3s      = Attrib< GLshort, 3 >;
-    using attrib4s      = Attrib< GLshort, 4 >;
-    using attrib1f      = Attrib< GLfloat, 1 >;
-    using attrib2f      = Attrib< GLfloat, 2 >;
-    using attrib3f      = Attrib< GLfloat, 3 >;
-    using attrib4f      = Attrib< GLfloat, 4 >;
-    using attrib1d      = Attrib< GLdouble, 1 >;
-    using attrib2d      = Attrib< GLdouble, 2 >;
-    using attrib3d      = Attrib< GLdouble, 3 >;
-    using attrib4d      = Attrib< GLdouble, 4 >;
-    using attrib4b      = Attrib< GLbyte, 4 >;
-    using attrib4i      = Attrib< GLint, 4 >;
-    using attrib4ub     = Attrib< GLubyte, 4 >;
-    using attrib4us     = Attrib< GLushort, 4 >;
-    using attrib4ui     = Attrib< GLuint, 4 >;
+    using Attrib1s      = Attrib< GLshort, 1 >;
+    using Attrib2s      = Attrib< GLshort, 2 >;
+    using Attrib3s      = Attrib< GLshort, 3 >;
+    using Attrib4s      = Attrib< GLshort, 4 >;
+    using Attrib1f      = Attrib< GLfloat, 1 >;
+    using Attrib2f      = Attrib< GLfloat, 2 >;
+    using Attrib3f      = Attrib< GLfloat, 3 >;
+    using Attrib4f      = Attrib< GLfloat, 4 >;
+    using Attrib1d      = Attrib< GLdouble, 1 >;
+    using Attrib2d      = Attrib< GLdouble, 2 >;
+    using Attrib3d      = Attrib< GLdouble, 3 >;
+    using Attrib4d      = Attrib< GLdouble, 4 >;
+    using Attrib4b      = Attrib< GLbyte, 4 >;
+    using Attrib4i      = Attrib< GLint, 4 >;
+    using Attrib4ub     = Attrib< GLubyte, 4 >;
+    using Attrib4us     = Attrib< GLushort, 4 >;
+    using Attrib4ui     = Attrib< GLuint, 4 >;
     // `coord attribs normalized`
-    using attrib0Nub    = Attrib< GLubyte, 0, true >;
+    using Attrib0Nub    = Attrib< GLubyte, 0, true >;
     // `array attribs normalized`
-    using attrib4Ni     = Attrib< GLint, 4, true >;
-    using attrib4Nb     = Attrib< GLbyte, 4, true >;
-    using attrib4Ns     = Attrib< GLshort, 4, true >;
-    using attrib4Nui    = Attrib< GLuint, 4, true >;
-    using attrib4Nub    = Attrib< GLubyte, 4, true >;
-    using attrib4Nus    = Attrib< GLushort, 4, true >;
+    using Attrib4Ni     = Attrib< GLint, 4, true >;
+    using Attrib4Nb     = Attrib< GLbyte, 4, true >;
+    using Attrib4Ns     = Attrib< GLshort, 4, true >;
+    using Attrib4Nui    = Attrib< GLuint, 4, true >;
+    using Attrib4Nub    = Attrib< GLubyte, 4, true >;
+    using Attrib4Nus    = Attrib< GLushort, 4, true >;
+    // deprecated (renamed)
+    // `coord attribs`
+    using attrib0s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort >;
+    using attrib0f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat >;
+    using attrib0d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble >;
+    // `array attribs`
+    using attrib1s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 1 >;
+    using attrib2s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 2 >;
+    using attrib3s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 3 >;
+    using attrib4s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 4 >;
+    using attrib1f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 1 >;
+    using attrib2f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 2 >;
+    using attrib3f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 3 >;
+    using attrib4f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 4 >;
+    using attrib1d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 1 >;
+    using attrib2d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 2 >;
+    using attrib3d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 3 >;
+    using attrib4d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 4 >;
+    using attrib4b   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLbyte, 4 >;
+    using attrib4i   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLint, 4 >;
+    using attrib4ub  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLubyte, 4 >;
+    using attrib4us  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLushort, 4 >;
+    using attrib4ui  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLuint, 4 >;
+    // `coord attribs normalized`
+    using attrib0Nub [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLubyte, 0, true >;
+    // `array attribs normalized`
+    using attrib4Ni  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLint, 4, true >;
+    using attrib4Nb  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLbyte, 4, true >;
+    using attrib4Ns  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 4, true >;
+    using attrib4Nui [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLuint, 4, true >;
+    using attrib4Nub [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLubyte, 4, true >;
+    using attrib4Nus [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLushort, 4, true >;
 
     class Shader final {
         GLuint index_;
@@ -841,14 +910,23 @@ namespace son8::overglad::types {
         constexpr auto pack( ) const noexcept { return Pack; }
     }; // struct `Packed`
 
-    using packed1u  = Packed< enums::Packed::Unsign, 1 >;
-    using packed1s  = Packed< enums::Packed::Signed, 1 >;
-    using packed2u  = Packed< enums::Packed::Unsign, 2 >;
-    using packed2s  = Packed< enums::Packed::Signed, 2 >;
-    using packed3u  = Packed< enums::Packed::Unsign, 3 >;
-    using packed3s  = Packed< enums::Packed::Signed, 3 >;
-    using packed4u  = Packed< enums::Packed::Unsign, 4 >;
-    using packed4s  = Packed< enums::Packed::Signed, 4 >;
+    using Packed1u = Packed< enums::Packed::Unsign, 1 >;
+    using Packed1s = Packed< enums::Packed::Signed, 1 >;
+    using Packed2u = Packed< enums::Packed::Unsign, 2 >;
+    using Packed2s = Packed< enums::Packed::Signed, 2 >;
+    using Packed3u = Packed< enums::Packed::Unsign, 3 >;
+    using Packed3s = Packed< enums::Packed::Signed, 3 >;
+    using Packed4u = Packed< enums::Packed::Unsign, 4 >;
+    using Packed4s = Packed< enums::Packed::Signed, 4 >;
+
+    using packed1u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 1 >;
+    using packed1s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 1 >;
+    using packed2u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 2 >;
+    using packed2s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 2 >;
+    using packed3u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 3 >;
+    using packed3s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 3 >;
+    using packed4u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 4 >;
+    using packed4s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 4 >;
 
 #endif // version 3.3
 
