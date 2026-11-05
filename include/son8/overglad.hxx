@@ -23,11 +23,88 @@
 // for v functions
 #include <array>
 // for info log and maybe string related calls
+#include <cassert>
 #include <cstring>
 #include <string_view>
 
-#include <cassert>
 #include <type_traits>
+
+namespace son8::overglad::field {
+
+#ifdef SON8_OVERGLAD_VERSION_4_3
+    // `MemoryBarrier`
+    enum class Barrier : GLbitfield {
+        Attrib      = 0x00000001,
+        Element     = 0x00000002,
+        Uniform     = 0x00000004,
+        Fetch       = 0x00000008,
+        Image       = 0x00000020,
+        Command     = 0x00000040,
+        Pixel       = 0x00000080,
+        Texture     = 0x00000100,
+        Buffer      = 0x00000200,
+        Frame       = 0x00000400,
+        Feedback    = 0x00000800,
+        Counter     = 0x00001000,
+        Storage     = 0x00002000,
+        All         = 0xFFFFFFFF,
+    }; // enum class `Barrier`
+#endif // version 4.3
+    // `Clear`
+    enum class Clear : GLbitfield {
+        Depth   = 0x00000100,
+        Stencil = 0x00000400,
+        Color   = 0x00004000,
+#ifdef SON8_OVERGLAD_PROFILE_CORE
+        All     = Depth | Stencil | Color,
+#else
+        Accum   = 0x00000200,
+        All     = Depth | Accum | Stencil | Color,
+#endif // core
+    }; // enum class `Clear`
+
+    constexpr Clear operator|( Clear a, Clear b ) noexcept
+    { return static_cast< Clear >( static_cast< GLbitfield >( a ) | static_cast< GLbitfield >( b ) ); }
+
+#ifndef SON8_OVERGLAD_PROFILE_CORE
+    // `PushClientAttrib`
+    enum class Client : GLbitfield {
+        Pixel   = 0x00000001,
+        Vertex  = 0x00000002,
+        All     = 0xFFFFFFFF,
+    };
+#endif // not core
+
+#ifndef SON8_OVERGLAD_PROFILE_CORE
+    enum class Server : GLbitfield {
+        Current     = 0x00000001,
+        Point       = 0x00000002,
+        Line        = 0x00000004,
+        Polygon     = 0x00000008,
+        Stipple     = 0x00000010,
+        Pixel       = 0x00000020,
+        Lightning   = 0x00000040,
+        Fog         = 0x00000080,
+        Depth       = 0x00000100,
+        Accum       = 0x00000200,
+        Stencil     = 0x00000400,
+        Viewport    = 0x00000800,
+        Transform   = 0x00001000,
+        Enable      = 0x00002000,
+        Color       = 0x00004000,
+        Hint        = 0x00008000,
+        Eval        = 0x00010000,
+        List        = 0x00020000,
+        Texture     = 0x00040000,
+        Scissor     = 0x00080000,
+#   ifdef SON8_OVERGLAD_VERSION_1_5
+        Multisample = 0x20000000,
+#   endif // version 1.5
+        All         = 0xFFFFFFFF,
+    }; // enum class `Server`
+#endif // not core
+
+} // namespace `son8::overglad::field`
 
 namespace son8::overglad::enums {
 #ifdef SON8_OVERGLAD_VERSION_1_5
@@ -50,27 +127,6 @@ namespace son8::overglad::enums {
         Element = 0x8893,
     }; // enum class `Buffer`
 #endif // version 1.5
-
-#ifdef SON8_OVERGLAD_VERSION_4_3
-    // `MemoryBarrier`
-    enum class Barrier : GLbitfield {
-        Attrib      = 0x00000001,
-        Element     = 0x00000002,
-        Uniform     = 0x00000004,
-        Fetch       = 0x00000008,
-        Image       = 0x00000020,
-        Command     = 0x00000040,
-        Pixel       = 0x00000080,
-        Texture     = 0x00000100,
-        Buffer      = 0x00000200,
-        Frame       = 0x00000400,
-        Feedback    = 0x00000800,
-        Counter     = 0x00001000,
-        Storage     = 0x00002000,
-        All         = 0xFFFFFFFF,
-    }; // enum class `Barrier`
-#endif // version 4.3
-
     // `Enable, Disable, IsEnabled`
     enum class Capability : GLenum {
         Polygon_Smooth          = 0x0B41,
@@ -193,31 +249,6 @@ namespace son8::overglad::enums {
     }; // enum class `ClampColor`
 #   endif
 #endif//SON8_OVERGLAD_VERSION_3_3
-
-    // `Clear`
-    enum class Clearbit : GLbitfield {
-        Depth   = 0x00000100,
-        Stencil = 0x00000400,
-        Color   = 0x00004000,
-#ifdef SON8_OVERGLAD_PROFILE_CORE
-        All     = Depth | Stencil | Color,
-#else
-        Accum   = 0x00000200,
-        All     = Depth | Accum | Stencil | Color,
-#endif // core
-    }; // enum class `Clearbit`
-
-    constexpr Clearbit operator|( Clearbit a, Clearbit b ) noexcept
-    { return static_cast< Clearbit >( static_cast< GLbitfield >( a ) | static_cast< GLbitfield >( b ) ); }
-
-#ifndef SON8_OVERGLAD_PROFILE_CORE
-    // `PushClientAttrib`
-    enum class Client : GLbitfield {
-        Pixel   = 0x00000001,
-        Vertex  = 0x00000002,
-        All     = 0xFFFFFFFF,
-    };
-#endif // not core
 
 #ifndef SON8_OVERGLAD_PROFILE_CORE
     // `EnableClientState, DisableClientState`
@@ -448,42 +479,6 @@ namespace son8::overglad::enums {
 #endif // not core
 
 #ifdef SON8_OVERGLAD_VERSION_2_1
-    // `UseProgram(unused)`
-    enum class Program : GLenum {
-        All = 0x0u,
-    }; // enum class Program
-#endif // version 2.1
-
-#ifndef SON8_OVERGLAD_PROFILE_CORE
-    enum class Server : GLbitfield {
-        Current     = 0x00000001,
-        Point       = 0x00000002,
-        Line        = 0x00000004,
-        Polygon     = 0x00000008,
-        Stipple     = 0x00000010,
-        Pixel       = 0x00000020,
-        Lightning   = 0x00000040,
-        Fog         = 0x00000080,
-        Depth       = 0x00000100,
-        Accum       = 0x00000200,
-        Stencil     = 0x00000400,
-        Viewport    = 0x00000800,
-        Transform   = 0x00001000,
-        Enable      = 0x00002000,
-        Color       = 0x00004000,
-        Hint        = 0x00008000,
-        Eval        = 0x00010000,
-        List        = 0x00020000,
-        Texture     = 0x00040000,
-        Scissor     = 0x00080000,
-#   ifdef SON8_OVERGLAD_VERSION_1_5
-        Multisample = 0x20000000,
-#   endif // version 1.5
-        All         = 0xFFFFFFFF,
-    }; // enum class `Server`
-#endif // not core
-
-#ifdef SON8_OVERGLAD_VERSION_2_1
     // `CreateShader`
     enum class Shader : GLenum {
         Fragment    = 0x8B30,
@@ -509,40 +504,77 @@ namespace son8::overglad::enums {
 } // namespace son8::overglad::enums
 namespace son8::overglad::types {
 #ifndef SON8_OVERGLAD_PROFILE_CORE
-    using array1i       = std::array< GLint, 1 >;
-    using array1s       = std::array< GLshort, 1 >;
-    using array1f       = std::array< GLfloat, 1 >;
-    using array1d       = std::array< GLdouble, 1 >;
-    using array1ub      = std::array< GLubyte, 1 >;
-    using array1bool    = std::array< GLboolean, 1 >;
-
-    using array2i       = std::array< GLint, 2 >;
-    using array2s       = std::array< GLshort, 2 >;
-    using array2f       = std::array< GLfloat, 2 >;
-    using array2d       = std::array< GLdouble, 2 >;
-
-    using array3i       = std::array< GLint, 3 >;
-    using array3b       = std::array< GLbyte, 3 >;
-    using array3s       = std::array< GLshort, 3 >;
-    using array3f       = std::array< GLfloat, 3 >;
-    using array3d       = std::array< GLdouble, 3 >;
-    using array3ui      = std::array< GLuint, 3 >;
-    using array3ub      = std::array< GLubyte, 3 >;
-    using array3us      = std::array< GLushort, 3 >;
-
-    using array4i       = std::array< GLint, 4 >;
-    using array4b       = std::array< GLbyte, 4 >;
-    using array4s       = std::array< GLshort, 4 >;
-    using array4f       = std::array< GLfloat, 4 >;
-    using array4d       = std::array< GLdouble, 4 >;
-    using array4ui      = std::array< GLuint, 4 >;
-    using array4ub      = std::array< GLubyte, 4 >;
-    using array4us      = std::array< GLushort, 4 >;
-
-    using array16f      = std::array< GLfloat, 16 >;
-    using array16d      = std::array< GLdouble, 16 >;
+    // `size 1`
+    using Array1i    = std::array< GLint, 1 >;
+    using Array1s    = std::array< GLshort, 1 >;
+    using Array1f    = std::array< GLfloat, 1 >;
+    using Array1d    = std::array< GLdouble, 1 >;
+    using Array1ub   = std::array< GLubyte, 1 >;
+    using Array1bool = std::array< GLboolean, 1 >;
+    // `size 2`
+    using Array2i    = std::array< GLint, 2 >;
+    using Array2s    = std::array< GLshort, 2 >;
+    using Array2f    = std::array< GLfloat, 2 >;
+    using Array2d    = std::array< GLdouble, 2 >;
+    // `size 3`
+    using Array3i    = std::array< GLint, 3 >;
+    using Array3b    = std::array< GLbyte, 3 >;
+    using Array3s    = std::array< GLshort, 3 >;
+    using Array3f    = std::array< GLfloat, 3 >;
+    using Array3d    = std::array< GLdouble, 3 >;
+    using Array3ui   = std::array< GLuint, 3 >;
+    using Array3ub   = std::array< GLubyte, 3 >;
+    using Array3us   = std::array< GLushort, 3 >;
+    // `size 4`
+    using Array4i    = std::array< GLint, 4 >;
+    using Array4b    = std::array< GLbyte, 4 >;
+    using Array4s    = std::array< GLshort, 4 >;
+    using Array4f    = std::array< GLfloat, 4 >;
+    using Array4d    = std::array< GLdouble, 4 >;
+    using Array4ui   = std::array< GLuint, 4 >;
+    using Array4ub   = std::array< GLubyte, 4 >;
+    using Array4us   = std::array< GLushort, 4 >;
+    // `size 16`
+    using Array16f   = std::array< GLfloat, 16 >;
+    using Array16d   = std::array< GLdouble, 16 >;
+    // deprecated renamed aliases
+    // `size 1`
+    using array1i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 1 >;
+    using array1s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 1 >;
+    using array1f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 1 >;
+    using array1d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 1 >;
+    using array1ub   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLubyte, 1 >;
+    using array1bool [[deprecated( "renamed to start with capital letter" )]] = std::array< GLboolean, 1 >;
+    // `size 2`
+    using array2i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 2 >;
+    using array2s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 2 >;
+    using array2f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 2 >;
+    using array2d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 2 >;
+    // `size 3`
+    using array3i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 3 >;
+    using array3b    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLbyte, 3 >;
+    using array3s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 3 >;
+    using array3f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 3 >;
+    using array3d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 3 >;
+    using array3ui   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLuint, 3 >;
+    using array3ub   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLubyte, 3 >;
+    using array3us   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLushort, 3 >;
+    // `size 4`
+    using array4i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 4 >;
+    using array4b    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLbyte, 4 >;
+    using array4s    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLshort, 4 >;
+    using array4f    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 4 >;
+    using array4d    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 4 >;
+    using array4ui   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLuint, 4 >;
+    using array4ub   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLubyte, 4 >;
+    using array4us   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLushort, 4 >;
+    // `size 16`
+    using array16f   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLfloat, 16 >;
+    using array16d   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLdouble, 16 >;
 #   ifdef SON8_OVERGLAD_VERSION_3_3
-    using array1ui     = std::array< GLuint, 1 >;
+    using Array1ui   = std::array< GLuint, 1 >;
+    // deprecated renamed aliases
+    using array1ui   [[deprecated( "renamed to start with capital letter" )]] = std::array< GLuint, 1 >;
 #   endif // version 3.3
 #endif// not core
 
@@ -619,7 +651,7 @@ namespace son8::overglad::types {
         GLuint *data_;
         GLsizei size_;
     public:
-        explicit Objects( GLsizei size = 8 ) : data_{ new GLuint[size] }, size_{ size } { zero( ); }
+        explicit Objects( GLsizei size ) : data_{ new GLuint[size] }, size_{ size } { zero( ); }
         ~Objects( ) { delete [] data_; }
         Objects( Objects && ) = delete;
         Objects( Objects const & ) = delete;
@@ -708,36 +740,68 @@ namespace son8::overglad::types {
         };
     }; // class `Attrib`
     // `coord attribs`
-    using attrib0s      = Attrib< GLshort >;
-    using attrib0f      = Attrib< GLfloat >;
-    using attrib0d      = Attrib< GLdouble >;
+    using Attrib0s      = Attrib< GLshort >;
+    using Attrib0f      = Attrib< GLfloat >;
+    using Attrib0d      = Attrib< GLdouble >;
     // `array attribs`
-    using attrib1s      = Attrib< GLshort, 1 >;
-    using attrib2s      = Attrib< GLshort, 2 >;
-    using attrib3s      = Attrib< GLshort, 3 >;
-    using attrib4s      = Attrib< GLshort, 4 >;
-    using attrib1f      = Attrib< GLfloat, 1 >;
-    using attrib2f      = Attrib< GLfloat, 2 >;
-    using attrib3f      = Attrib< GLfloat, 3 >;
-    using attrib4f      = Attrib< GLfloat, 4 >;
-    using attrib1d      = Attrib< GLdouble, 1 >;
-    using attrib2d      = Attrib< GLdouble, 2 >;
-    using attrib3d      = Attrib< GLdouble, 3 >;
-    using attrib4d      = Attrib< GLdouble, 4 >;
-    using attrib4b      = Attrib< GLbyte, 4 >;
-    using attrib4i      = Attrib< GLint, 4 >;
-    using attrib4ub     = Attrib< GLubyte, 4 >;
-    using attrib4us     = Attrib< GLushort, 4 >;
-    using attrib4ui     = Attrib< GLuint, 4 >;
+    using Attrib1s      = Attrib< GLshort, 1 >;
+    using Attrib2s      = Attrib< GLshort, 2 >;
+    using Attrib3s      = Attrib< GLshort, 3 >;
+    using Attrib4s      = Attrib< GLshort, 4 >;
+    using Attrib1f      = Attrib< GLfloat, 1 >;
+    using Attrib2f      = Attrib< GLfloat, 2 >;
+    using Attrib3f      = Attrib< GLfloat, 3 >;
+    using Attrib4f      = Attrib< GLfloat, 4 >;
+    using Attrib1d      = Attrib< GLdouble, 1 >;
+    using Attrib2d      = Attrib< GLdouble, 2 >;
+    using Attrib3d      = Attrib< GLdouble, 3 >;
+    using Attrib4d      = Attrib< GLdouble, 4 >;
+    using Attrib4b      = Attrib< GLbyte, 4 >;
+    using Attrib4i      = Attrib< GLint, 4 >;
+    using Attrib4ub     = Attrib< GLubyte, 4 >;
+    using Attrib4us     = Attrib< GLushort, 4 >;
+    using Attrib4ui     = Attrib< GLuint, 4 >;
     // `coord attribs normalized`
-    using attrib0Nub    = Attrib< GLubyte, 0, true >;
+    using Attrib0Nub    = Attrib< GLubyte, 0, true >;
     // `array attribs normalized`
-    using attrib4Ni     = Attrib< GLint, 4, true >;
-    using attrib4Nb     = Attrib< GLbyte, 4, true >;
-    using attrib4Ns     = Attrib< GLshort, 4, true >;
-    using attrib4Nui    = Attrib< GLuint, 4, true >;
-    using attrib4Nub    = Attrib< GLubyte, 4, true >;
-    using attrib4Nus    = Attrib< GLushort, 4, true >;
+    using Attrib4Ni     = Attrib< GLint, 4, true >;
+    using Attrib4Nb     = Attrib< GLbyte, 4, true >;
+    using Attrib4Ns     = Attrib< GLshort, 4, true >;
+    using Attrib4Nui    = Attrib< GLuint, 4, true >;
+    using Attrib4Nub    = Attrib< GLubyte, 4, true >;
+    using Attrib4Nus    = Attrib< GLushort, 4, true >;
+    // deprecated (renamed)
+    // `coord attribs`
+    using attrib0s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort >;
+    using attrib0f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat >;
+    using attrib0d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble >;
+    // `array attribs`
+    using attrib1s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 1 >;
+    using attrib2s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 2 >;
+    using attrib3s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 3 >;
+    using attrib4s   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 4 >;
+    using attrib1f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 1 >;
+    using attrib2f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 2 >;
+    using attrib3f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 3 >;
+    using attrib4f   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLfloat, 4 >;
+    using attrib1d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 1 >;
+    using attrib2d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 2 >;
+    using attrib3d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 3 >;
+    using attrib4d   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLdouble, 4 >;
+    using attrib4b   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLbyte, 4 >;
+    using attrib4i   [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLint, 4 >;
+    using attrib4ub  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLubyte, 4 >;
+    using attrib4us  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLushort, 4 >;
+    using attrib4ui  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLuint, 4 >;
+    // `coord attribs normalized`
+    using attrib0Nub [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLubyte, 0, true >;
+    // `array attribs normalized`
+    using attrib4Ni  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLint, 4, true >;
+    using attrib4Nb  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLbyte, 4, true >;
+    using attrib4Ns  [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLshort, 4, true >;
+    using attrib4Nui [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLuint, 4, true >;
+    using attrib4Nub [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLubyte, 4, true >;
+    using attrib4Nus [[deprecated( "renamed to start with capital letter" )]] = Attrib< GLushort, 4, true >;
 
     class Shader final {
         GLuint index_;
@@ -754,6 +818,10 @@ namespace son8::overglad::types {
         operator GLuint( ) const noexcept { return index_; }
         auto index( ) const noexcept { return index_; }
     }; // class `Program`
+    // temporary solution to passing sources for shaders
+    using Source = std::string_view;
+    template< unsigned Array_Size >
+    using Sources = std::array< Source, Array_Size >;
     // Possibly just a temporary solution to simplify querying info logs
     template< unsigned Capacity = 1u << 10u >
     class Info final {
@@ -765,47 +833,73 @@ namespace son8::overglad::types {
         Char_ buffer_[Capacity] = { };
         Size_ cursor_{ };
         auto last_Index( ) const noexcept { return Capacity - 1u; }
+        auto cursor_Size( ) const noexcept { return cursor_ + 1u; }
+        auto commit_Unchecked( Size_ written ) {
+            cursor_ += written;
+            buffer_[cursor_] = '\0';
+        }
     public:
         Info( ) = default;
-        constexpr auto capacity( ) const noexcept { return Capacity; }
+        Info( Info const &copy ) noexcept : cursor_{ copy.cursor_ } {
+            std::memcpy( buffer_, copy.buffer_, cursor_Size( ));
+        }
+        auto operator=( Info const &copy ) noexcept -> Info & {
+            if ( this != &copy ) {
+                cursor_ = copy.cursor_;
+                std::memcpy( buffer_, copy.buffer_, cursor_Size( ));
+            }
+
+            return *this;
+        }
+        constexpr
+        auto capacity( ) const noexcept { return Capacity; }
         auto size( ) const noexcept { return cursor_; }
+        auto left( ) const noexcept { return last_Index( ) - cursor_; }
+        bool is_empty( ) const noexcept { return 0u == size( ); }
+        bool is_full( ) const noexcept { return 0u == left( ); }
         auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
-        auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
-        bool is_empty( ) const noexcept { return cursor_ == 0u; }
-        auto unused( ) const noexcept { return last_Index( ) - cursor_; }
+        auto c_reader( ) const noexcept  -> Char_ const * { return buffer_; }
         void clear( ) noexcept {
-            buffer_[0] = '\0';
+            std::memset( buffer_, 0, Capacity );
             cursor_ = 0u;
         }
-        auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
-        bool commit( Size_ written ) noexcept {
-            cursor_ += ( written > unused( )) ? unused( ) : written;
-            buffer_[cursor_] = '\0';
-            // is still can put something
-            return unused( ) > 0u;
-        }
-        bool append( View_ view ) noexcept {
-            if ( not unused( )) { return false; }
+        bool truncate( Size_ toSize ) noexcept {
+            if ( size( ) < toSize) { return false; }
 
-            Size_ overflow = ( view.size( ) > unused( )) ? ( view.size( ) - unused( )) : 0u;
-            view.remove_suffix( overflow );
-
-            std::memcpy( buffer_ + cursor_, view.data( ), view.size( ));
-            cursor_ += static_cast< Size_ >( view.size( ));
-            buffer_[cursor_] = '\0';
+            std::memset( buffer_ + toSize, 0, cursor_ - toSize );
+            cursor_ = toSize;
 
             return true;
         }
-    }; // class Info
-    // Info aliases
-    using InfoTiny = Info< 1u << 6u >; // ----  64B
-    using InfoSmall = Info< 1u << 7u >; // --- 128B
-    using InfoMedium = Info< 1u << 8u >; // -- 256B
-    using InfoAverage = Info< 1u << 9u >; // - 512B
-    using InfoDefault = Info< 1u << 10u >; //  1KiB
-    using InfoCommon = Info< 1u << 11u >; // - 2KiB
-    using InfoLarge = Info< 1u << 12u >; // -- 4KiB
-    using InfoHuge = Info< 1u << 13u >; // --- 8KiB
+        auto c_writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
+        bool commit( Size_ written ) noexcept {
+            bool const isCompleteWrite = ( written <= left( ));
+            commit_Unchecked( isCompleteWrite ? written : left( ));
+
+            return isCompleteWrite;
+        }
+        bool append( View_ view ) noexcept {
+            if ( not left( )) { return false; }
+
+            bool const isFullFit = ( view.size( ) <= left( ));
+
+            if ( not isFullFit ) { view.remove_suffix( view.size( ) - left( )); }
+
+            std::memcpy( c_writer( ), view.data( ), view.size( ));
+            commit_Unchecked( view.size( ));
+
+            return isFullFit;
+        }
+    }; // `class Info`
+    // `Info aliases`
+    using InfoTiny = Info< 1u << 6u >; // ----  `64B`
+    using InfoSmall = Info< 1u << 7u >; // --- `128B`
+    using InfoMedium = Info< 1u << 8u >; // -- `256B`
+    using InfoAverage = Info< 1u << 9u >; // - `512B`
+    using InfoDefault = Info< 1u << 10u >; //  `1KiB`
+    using InfoCommon = Info< 1u << 11u >; // - `2KiB`
+    using InfoLarge = Info< 1u << 12u >; // -- `4KiB`
+    using InfoHuge = Info< 1u << 13u >; // --- `8KiB`
 
 #endif// version 2.1
 
@@ -818,14 +912,23 @@ namespace son8::overglad::types {
         constexpr auto pack( ) const noexcept { return Pack; }
     }; // struct `Packed`
 
-    using packed1u  = Packed< enums::Packed::Unsign, 1 >;
-    using packed1s  = Packed< enums::Packed::Signed, 1 >;
-    using packed2u  = Packed< enums::Packed::Unsign, 2 >;
-    using packed2s  = Packed< enums::Packed::Signed, 2 >;
-    using packed3u  = Packed< enums::Packed::Unsign, 3 >;
-    using packed3s  = Packed< enums::Packed::Signed, 3 >;
-    using packed4u  = Packed< enums::Packed::Unsign, 4 >;
-    using packed4s  = Packed< enums::Packed::Signed, 4 >;
+    using Packed1u = Packed< enums::Packed::Unsign, 1 >;
+    using Packed1s = Packed< enums::Packed::Signed, 1 >;
+    using Packed2u = Packed< enums::Packed::Unsign, 2 >;
+    using Packed2s = Packed< enums::Packed::Signed, 2 >;
+    using Packed3u = Packed< enums::Packed::Unsign, 3 >;
+    using Packed3s = Packed< enums::Packed::Signed, 3 >;
+    using Packed4u = Packed< enums::Packed::Unsign, 4 >;
+    using Packed4s = Packed< enums::Packed::Signed, 4 >;
+
+    using packed1u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 1 >;
+    using packed1s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 1 >;
+    using packed2u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 2 >;
+    using packed2s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 2 >;
+    using packed3u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 3 >;
+    using packed3s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 3 >;
+    using packed4u [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Unsign, 4 >;
+    using packed4s [[deprecated( "renamed to start with capital letter" )]] = Packed< enums::Packed::Signed, 4 >;
 
 #endif // version 3.3
 
@@ -858,9 +961,7 @@ namespace son8::overglad {
 
     // Chapter 6: Buffer Objects
 
-    // TODO: `CreateBuffers,BindBuffersRange,BindBuffersBase,BufferStorage,NamedBufferStorage,NamedBufferData,NamedBufferSubData
-    // ,ClearNamedBufferSubData,ClearNamedBufferData,MapNamedBufferRange,MapNamedBuffer,FlushMappedNamedBufferRange,UnmapNamedBuffer
-    // ,CopyNamedBufferSubData,GetNamedBufferParameteriv,GetNamedBufferParameteri64v,GetNamedBufferSubData,GetNamedBufferPointerv`
+    // TODO: `CreateBuffers,BindBuffersRange,BindBuffersBase,BufferStorage,NamedBufferStorage,NamedBufferData,NamedBufferSubData,ClearNamedBufferSubData,ClearNamedBufferData,MapNamedBufferRange,MapNamedBuffer,FlushMappedNamedBufferRange,UnmapNamedBuffer,CopyNamedBufferSubData,GetNamedBufferParameteriv,GetNamedBufferParameteri64v,GetNamedBufferSubData,GetNamedBufferPointerv`
 
     // Chapter 7: Programs and Shaders
 
@@ -868,11 +969,7 @@ namespace son8::overglad {
 
     // Chapter 8: Textures and Samplers
 
-    // TODO: `BindTextures,BindTextureUnit,CreateTextures,CreateSamplers,BindSamplers,SamplerParameter[if],TextureSubImage[123]D
-    // ,CopyTextureSubImage[123]D,CompressedTextureSubImage[123]D,TextureBufferRange,TextureBuffer,TextureParameter[if]v?
-    // ,TextureParameterI(i|ui)v,GetTextureParameter[if]v,GetTextureParameterI(i|ui)v,GetTextureLevelParameter[if]v,GetTextureImage
-    // ,GetnTexImage,GetTextureSubImage,GetCompressedTextureImage,GetnCompressedTexImage,GetCompressedTextureSubImage
-    // ,GenerateTextureMipmap,TextureStorage2DMultisample,TextureStorage3DMultisample,ClearTexSubImage,ClearTexImage,BindImageTextures`
+    // TODO: `BindTextures,BindTextureUnit,CreateTextures,CreateSamplers,BindSamplers,SamplerParameter[if],TextureSubImage[123]D,CopyTextureSubImage[123]D,CompressedTextureSubImage[123]D,TextureBufferRange,TextureBuffer,TextureParameter[if]v?,TextureParameterI(i|ui)v,GetTextureParameter[if]v,GetTextureParameterI(i|ui)v,GetTextureLevelParameter[if]v,GetTextureImage,GetnTexImage,GetTextureSubImage,GetCompressedTextureImage,GetnCompressedTexImage,GetCompressedTextureSubImage,GenerateTextureMipmap,TextureStorage2DMultisample,TextureStorage3DMultisample,ClearTexSubImage,ClearTexImage,BindImageTextures`
 
     // Chapter 9: Framebuffers and Framebuffer Objects
 

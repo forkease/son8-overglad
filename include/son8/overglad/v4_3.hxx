@@ -29,14 +29,14 @@ namespace son8::overglad {
 
     // Chapter 7: Programs and Shaders
 
-    SON8_OVERGLAD_PROC release_shader_compiler( )
+    SON8_OVERGLAD_PROC release_shader_compiler( ) noexcept
     { glad_glReleaseShaderCompiler( ); }
 
     // TODO: ShaderBinary,ProgramParameteri,CreateShaderProgramv
     // ,GetProgramInterfaceiv,GetProgramResourceIndex,GetProgramResourceName,GetProgramResourceiv,GetProgramResourceLocation
     // ,GetProgramResourceLocationIndex
 
-    SON8_OVERGLAD_FUNC is_pipeline( GLuint pipeline )
+    SON8_OVERGLAD_FUNC is_pipeline( GLuint pipeline ) noexcept
     { return glad_glIsProgramPipeline( pipeline ); }
 
     // TODO: UseProgramStages,ActiveShaderProgram,GetProgramBinary,ProgramBinary,GetActiveAtomicCounterBufferiv
@@ -44,7 +44,7 @@ namespace son8::overglad {
     // ,GetSubroutineIndex,GetActiveSubroutineName,GetSubroutineUniformLocation,GetActiveSubroutineUniformName
     // ,GetActiveSubroutineUniformiv,UniformSubroutinesuiv
 
-    SON8_OVERGLAD_PROC memory_barrier( enums::Barrier barriers )
+    SON8_OVERGLAD_PROC memory_barrier( field::Barrier barriers ) noexcept
     { glad_glMemoryBarrier( static_cast< GLenum >( barriers ) ); }
 
     // TODO: GetProgramPipelineiv,GetProgramPipelineInfoLog,GetShaderPrecisionFormat,GetUniformdv,GetUniformSubroutineuiv,GetProgramStageiv
@@ -74,7 +74,7 @@ namespace son8::overglad {
 
     // TODO: GenTransformFeedbacks,DeleteTransformFeedbacks
 
-    SON8_OVERGLAD_FUNC is_transform_feedback( GLuint id )
+    SON8_OVERGLAD_FUNC is_transform_feedback( GLuint id ) noexcept
     { return glad_glIsTransformFeedback( id ); }
 
     // TODO: BindTransformFeedback,PauseTransformFeedback,ResumeTransformFeedback,DrawTransformFeedback
@@ -89,7 +89,7 @@ namespace son8::overglad {
 
     // TODO: ScissorArrayv,ScissorIndexed,ScissorIndexedv,BlendEquationi,BlendEquationSeparatei,BlendFunci,BlendFuncSeparatei
 
-    SON8_OVERGLAD_PROC clear_depth( GLfloat depth )
+    SON8_OVERGLAD_PROC clear_depth( GLfloat depth ) noexcept
     { glad_glClearDepthf( depth ); }
 
     // TODO: ,InvalidateSubFramebuffer,InvalidateFramebuffer

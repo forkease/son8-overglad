@@ -27,7 +27,7 @@ namespace son8::overglad {
     // ,GetTransformFeedbackVarying,BeginConditionalRender,EndConditionalRender,BeginTransformFeedback,EndTransformFeedback
 
     // ProvokingVertex
-    SON8_OVERGLAD_PROC mode( enums::Provoke provoke )
+    SON8_OVERGLAD_PROC mode( enums::Provoke provoke ) noexcept
     { glad_glProvokingVertex( static_cast< GLenum >( provoke ) ); }
 
     // Chapter 3: Rasterization
@@ -39,16 +39,16 @@ namespace son8::overglad {
     // TODO: SampleMaski
 
     // Enablei
-    SON8_OVERGLAD_PROC mode( enums::Enablei enablei, GLuint index )
+    SON8_OVERGLAD_PROC mode( enums::Enablei enablei, GLuint index ) noexcept
     { glad_glEnablei( static_cast< GLenum >( enablei.value( ) ), index ); }
     // Disablei
-    SON8_OVERGLAD_PROC mode( enums::Disablei disablei, GLuint index )
+    SON8_OVERGLAD_PROC mode( enums::Disablei disablei, GLuint index ) noexcept
     { glad_glDisablei( static_cast< GLenum >( disablei.value( ) ), index ); }
 
     // TODO: ColorMaski,ClearBuffer*
 
     // glClampColor: in core has only one target (use compatibility for multiple targets)
-    SON8_OVERGLAD_PROC mode( enums::Clamp clamp )
+    SON8_OVERGLAD_PROC mode( enums::Clamp clamp ) noexcept
     { glad_glClampColor( static_cast< GLenum >( 0x891C ), static_cast< GLenum >( clamp ) ); }
 
     // TODO: BlitFramebuffer,BindFramebuffer,DeleteFramebuffers,GenFramebuffers
@@ -65,32 +65,32 @@ namespace son8::overglad {
     // TODO: GetInteger64v,GetBooleani_v,GetIntegeri_v,GetInteger64i_v
 
     // IsEnabledi
-    SON8_OVERGLAD_FUNC get( enums::Capi target, GLuint index )
+    SON8_OVERGLAD_FUNC get( enums::Capi target, GLuint index ) noexcept
     { return glad_glIsEnabledi( static_cast< GLenum >( target ), index ); }
 
     // TODO: GetTexParameterI*
 
-    SON8_OVERGLAD_FUNC is_sampler( GLuint sampler )
+    SON8_OVERGLAD_FUNC is_sampler( GLuint sampler ) noexcept
     { return glad_glIsSampler( sampler ); }
 
     // TODO: GetSamplerParameter,GetStringi,GetQueryObjecti64v,GetQueryObjectui64v,GetSynciv
 
-    SON8_OVERGLAD_FUNC is_sync( GLsync sync )
+    SON8_OVERGLAD_FUNC is_sync( GLsync sync ) noexcept
     { return glad_glIsSync( sync ); }
 
     // TODO: GetBufferParameteri64v
 
-    SON8_OVERGLAD_FUNC is_vertex_array( GLuint array )
+    SON8_OVERGLAD_FUNC is_vertex_array( GLuint array ) noexcept
     { return glad_glIsVertexArray( array ); }
 
     // TODO: GetVertexAttribI*
 
-    SON8_OVERGLAD_FUNC is_framebuffer( GLuint framebuffer )
+    SON8_OVERGLAD_FUNC is_framebuffer( GLuint framebuffer ) noexcept
     { return glad_glIsFramebuffer( framebuffer ); }
 
     // TODO: GetFramebufferAttachmentParameteriv
 
-    SON8_OVERGLAD_FUNC is_renderbuffer( GLuint renderbuffer )
+    SON8_OVERGLAD_FUNC is_renderbuffer( GLuint renderbuffer ) noexcept
     { return glad_glIsRenderbuffer( renderbuffer ); }
 
     // TODO: GetRenderbufferParameteriv
@@ -101,21 +101,21 @@ namespace son8::overglad {
     // Chapter 2: OpenGL Operation
 
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC vertex( types::Packed< Pack, Size > type, GLuint coords ) {
+    SON8_OVERGLAD_PROC vertex( types::Packed< Pack, Size > type, GLuint coords ) noexcept {
         static_assert( 2 <= Size && Size <= 4, "Invalid Size for Packed vertex" );
         if/*_*/ constexpr ( Size == 2 ) glad_glVertexP2ui( static_cast< GLenum >( type.pack( ) ), coords );
         else if constexpr ( Size == 3 ) glad_glVertexP3ui( static_cast< GLenum >( type.pack( ) ), coords );
         else if constexpr ( Size == 4 ) glad_glVertexP4ui( static_cast< GLenum >( type.pack( ) ), coords );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC vertex( types::Packed< Pack, Size > type, types::array1ui const &coords ) {
+    SON8_OVERGLAD_PROC vertex( types::Packed< Pack, Size > type, types::Array1ui const &coords ) noexcept {
         static_assert( 2 <= Size && Size <= 4, "Invalid Size for Packed vertex" );
         if/*_*/ constexpr ( Size == 2 ) glad_glVertexP2uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
         else if constexpr ( Size == 3 ) glad_glVertexP3uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
         else if constexpr ( Size == 4 ) glad_glVertexP4uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC tex_coord( types::Packed< Pack, Size > type, GLuint coords ) {
+    SON8_OVERGLAD_PROC tex_coord( types::Packed< Pack, Size > type, GLuint coords ) noexcept {
         static_assert( 1 <= Size && Size <= 4, "Invalid Size for Packed tex_coord" );
         if/*_*/ constexpr ( Size == 1 ) glad_glTexCoordP1ui( static_cast< GLenum >( type.pack( ) ), coords );
         else if constexpr ( Size == 2 ) glad_glTexCoordP2ui( static_cast< GLenum >( type.pack( ) ), coords );
@@ -123,7 +123,7 @@ namespace son8::overglad {
         else if constexpr ( Size == 4 ) glad_glTexCoordP4ui( static_cast< GLenum >( type.pack( ) ), coords );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC tex_coord( types::Packed< Pack, Size > type, types::array1ui const &coords ) {
+    SON8_OVERGLAD_PROC tex_coord( types::Packed< Pack, Size > type, types::Array1ui const &coords ) noexcept {
         static_assert( 1 <= Size && Size <= 4, "Invalid Size for Packed tex_coord" );
         if/*_*/ constexpr ( Size == 1 ) glad_glTexCoordP1uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
         else if constexpr ( Size == 2 ) glad_glTexCoordP2uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
@@ -131,7 +131,7 @@ namespace son8::overglad {
         else if constexpr ( Size == 4 ) glad_glTexCoordP4uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC tex_coord( enums::Multi texture, types::Packed< Pack, Size > type, GLuint coords ) {
+    SON8_OVERGLAD_PROC tex_coord( enums::Multi texture, types::Packed< Pack, Size > type, GLuint coords ) noexcept {
         static_assert( 1 <= Size && Size <= 4, "Invalid Size for Packed Multi tex_coord" );
         if/*_*/ constexpr ( Size == 1 ) glad_glMultiTexCoordP1ui( static_cast< GLenum >( texture ), static_cast< GLenum >( type.pack( ) ), coords );
         else if constexpr ( Size == 2 ) glad_glMultiTexCoordP2ui( static_cast< GLenum >( texture ), static_cast< GLenum >( type.pack( ) ), coords );
@@ -139,7 +139,7 @@ namespace son8::overglad {
         else if constexpr ( Size == 4 ) glad_glMultiTexCoordP4ui( static_cast< GLenum >( texture ), static_cast< GLenum >( type.pack( ) ), coords );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC tex_coord( enums::Multi texture, types::Packed< Pack, Size > type, types::array1ui const &coords ) {
+    SON8_OVERGLAD_PROC tex_coord( enums::Multi texture, types::Packed< Pack, Size > type, types::Array1ui const &coords ) noexcept {
         static_assert( 1 <= Size && Size <= 4, "Invalid Size for Packed Multi tex_coord" );
         if/*_*/ constexpr ( Size == 1 ) glad_glMultiTexCoordP1uiv( static_cast< GLenum >( texture ), static_cast< GLenum >( type.pack( ) ), coords.data( ) );
         else if constexpr ( Size == 2 ) glad_glMultiTexCoordP2uiv( static_cast< GLenum >( texture ), static_cast< GLenum >( type.pack( ) ), coords.data( ) );
@@ -147,41 +147,41 @@ namespace son8::overglad {
         else if constexpr ( Size == 4 ) glad_glMultiTexCoordP4uiv( static_cast< GLenum >( texture ), static_cast< GLenum >( type.pack( ) ), coords.data( ) );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC normal( types::Packed< Pack, Size > type, GLuint coords ) {
+    SON8_OVERGLAD_PROC normal( types::Packed< Pack, Size > type, GLuint coords ) noexcept {
         static_assert( Size == 3, "Invalid Size for Packed normal" );
         glad_glNormalP3ui( static_cast< GLenum >( type.pack( ) ), coords );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC normal( types::Packed< Pack, Size > type, types::array1ui const &coords ) {
+    SON8_OVERGLAD_PROC normal( types::Packed< Pack, Size > type, types::Array1ui const &coords ) noexcept {
         static_assert( Size == 3, "Invalid Size for Packed normal" );
         if constexpr ( Size == 3 ) glad_glNormalP3uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC color( types::Packed< Pack, Size > type, GLuint coords ) {
+    SON8_OVERGLAD_PROC color( types::Packed< Pack, Size > type, GLuint coords ) noexcept {
         static_assert( 3 <= Size && Size <= 4, "Invalid Size for Packed color" );
         if/*_*/ constexpr ( Size == 3 ) glad_glColorP3ui( static_cast< GLenum >( type.pack( ) ), coords );
         else if constexpr ( Size == 4 ) glad_glColorP4ui( static_cast< GLenum >( type.pack( ) ), coords );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC color( types::Packed< Pack, Size > type, types::array1ui const &coords ) {
+    SON8_OVERGLAD_PROC color( types::Packed< Pack, Size > type, types::Array1ui const &coords ) noexcept {
         static_assert( 3 <= Size && Size <= 4, "Invalid Size for Packed color" );
         if/*_*/ constexpr ( Size == 3 ) glad_glColorP3uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
         else if constexpr ( Size == 4 ) glad_glColorP4uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC secondary_color( types::Packed< Pack, Size > type, GLuint coords ) {
+    SON8_OVERGLAD_PROC secondary_color( types::Packed< Pack, Size > type, GLuint coords ) noexcept {
         static_assert( Size == 3, "Invalid Size for Packed secondary_color" );
         glad_glSecondaryColorP3ui( static_cast< GLenum >( type.pack( ) ), coords );
     }
     template< enums::Packed Pack, unsigned Size >
-    SON8_OVERGLAD_PROC secondary_color( types::Packed< Pack, Size > type, types::array1ui const &coords ) {
+    SON8_OVERGLAD_PROC secondary_color( types::Packed< Pack, Size > type, types::Array1ui const &coords ) noexcept {
         static_assert( Size == 3, "Invalid Size for Packed secondary_color" );
         glad_glSecondaryColorP3uiv( static_cast< GLenum >( type.pack( ) ), coords.data( ) );
     }
     // Chapter 3: Rasterization
 
     // glClampColor
-    SON8_OVERGLAD_PROC mode( enums::ClampColor target, enums::Clamp clamp )
+    SON8_OVERGLAD_PROC mode( enums::ClampColor target, enums::Clamp clamp ) noexcept
     { glad_glClampColor( static_cast< GLenum >( target ), static_cast< GLenum >( clamp ) ); }
 #endif // not core profile functions
     // DEPRECATED
