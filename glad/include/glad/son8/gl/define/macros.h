@@ -9,7 +9,7 @@
 #ifndef SON8_OVERGLAD_GLAD_SON8_DEFINE_GLOBAL_H
 #define SON8_OVERGLAD_GLAD_SON8_DEFINE_GLOBAL_H
 
-#include <glad/son8/source.h>
+#include <glad/son8/gl/source.h>
 
 #define glAccum glad_glAccum
 #define glActiveShaderProgram glad_glActiveShaderProgram

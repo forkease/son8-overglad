@@ -111,7 +111,7 @@ extern "C" {
 
 #define GLAD_UNUSED(x) (void)(x)
 
-#include <glad/son8/header.h>
+#include <glad/son8/gl/header.h>
 
 #ifndef GLAPI
 #define GLAPI GLAD_API_CALL
@@ -168,10 +168,10 @@ GLAD_API_CALL int GLAD_GL_VERSION_4_5;
 #define GL_VERSION_4_6 1
 GLAD_API_CALL int GLAD_GL_VERSION_4_6;
 
-#include <glad/son8/source.h>
-#include <glad/son8/define.h>
+#include <glad/son8/gl/source.h>
+#include <glad/son8/gl/define.h>
 
-#include <glad/son8/loader.h>
+#include <glad/son8/gl/loader.h>
 
 #ifdef __cplusplus
 }

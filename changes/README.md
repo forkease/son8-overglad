@@ -120,6 +120,15 @@
 
 ## Branch: glad
 
+### v0.0.7 - 2026-11-05
+> Breaking change
+
+#### Changes (Breaking)
+> reason (`<glad/gl.h>`) seems to generic position that could possibly cause issues with system path
+
+- moved headers inside `glad/include/glad/son8` to `gl` subfolder
+- moved `glad/include/glad/gl.h` to `son8` subfolder
+
 ### `v0.0.6` - 2026-04-20
 > add license related notices and other documentation related adjustments
 

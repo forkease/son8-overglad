@@ -9,7 +9,7 @@
 #ifndef SON8_OVERGLAD_GLAD_SON8_LOADER_H
 #define SON8_OVERGLAD_GLAD_SON8_LOADER_H
 
-#include <glad/son8/header.h>
+#include <glad/son8/gl/header.h>
 
 #ifndef GLAD_GL_H_
 extern "C" {
