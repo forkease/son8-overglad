@@ -783,7 +783,7 @@ namespace son8::overglad::types {
         bool is_empty( ) const noexcept { return 0u == size( ); }
         bool is_full( ) const noexcept { return 0u == left( ); }
         auto view( ) const noexcept { return View_{ buffer_, cursor_ }; }
-        auto c_str( ) const noexcept  -> Char_ const * { return buffer_; }
+        auto c_reader( ) const noexcept  -> Char_ const * { return buffer_; }
         void clear( ) noexcept {
             std::memset( buffer_, 0, Capacity );
             cursor_ = 0u;
@@ -796,7 +796,7 @@ namespace son8::overglad::types {
 
             return true;
         }
-        auto writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
+        auto c_writer( ) noexcept -> Char_ *  { return buffer_ + cursor_; }
         bool commit( Size_ written ) noexcept {
             bool const isCompleteWrite = ( written <= left( ));
             commit_Unchecked( isCompleteWrite ? written : left( ));
@@ -810,10 +810,10 @@ namespace son8::overglad::types {
 
             if ( not isFullFit ) { view.remove_suffix( view.size( ) - left( )); }
 
-            std::memcpy( writer( ), view.data( ), view.size( ));
+            std::memcpy( c_writer( ), view.data( ), view.size( ));
             commit_Unchecked( view.size( ));
 
-            return isFullFit and left( );
+            return isFullFit;
         }
     }; // `class Info`
     // `Info aliases`

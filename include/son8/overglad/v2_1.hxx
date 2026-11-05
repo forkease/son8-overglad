@@ -158,16 +158,16 @@ namespace son8::overglad {
             , "son8::overglad: info() required as a target Shader or Program types" );
         auto prevSize = log.size( );
 
-        if ( not log.append( prepend )) { return false; }
+        if ( not log.append( prepend ) or not log.left( )) { return false; }
         // NOTE: target log writes including null-terminated character
         // \ but unused return size excluding it, so add it
         auto const bufSize = static_cast< GLsizei >( 1u + log.left( ));
         GLsizei written = 0;
 
         if constexpr ( Is_Shader ) {
-            glad_glGetShaderInfoLog( target, bufSize, &written, log.writer( ));
+            glad_glGetShaderInfoLog( target, bufSize, &written, log.c_writer( ));
         } else if constexpr ( Is_Program ) {
-            glad_glGetProgramInfoLog( target, bufSize, &written, log.writer( ));
+            glad_glGetProgramInfoLog( target, bufSize, &written, log.c_writer( ));
         }
         // NOTE: here truncate should always return true (as prevSize can never be larger then current size)
         // \ log writes nothing, remove header
@@ -181,7 +181,6 @@ namespace son8::overglad {
         }
 
         return result;
-
     }
 
     // TODO: GetShaderSource,GetVertexAttrib*,GetVertexAttribPointerv,GetUniform*
