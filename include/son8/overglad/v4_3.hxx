@@ -44,7 +44,7 @@ namespace son8::overglad {
     // ,GetSubroutineIndex,GetActiveSubroutineName,GetSubroutineUniformLocation,GetActiveSubroutineUniformName
     // ,GetActiveSubroutineUniformiv,UniformSubroutinesuiv
 
-    SON8_OVERGLAD_PROC memory_barrier( enums::Barrier barriers ) noexcept
+    SON8_OVERGLAD_PROC memory_barrier( field::Barrier barriers ) noexcept
     { glad_glMemoryBarrier( static_cast< GLenum >( barriers ) ); }
 
     // TODO: GetProgramPipelineiv,GetProgramPipelineInfoLog,GetShaderPrecisionFormat,GetUniformdv,GetUniformSubroutineuiv,GetProgramStageiv

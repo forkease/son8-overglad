@@ -159,7 +159,7 @@ namespace son8::overglad {
     { glad_glDepthMask( mask ); }
     SON8_OVERGLAD_PROC stencil_mask( GLuint mask ) noexcept
     { glad_glStencilMask( mask ); }
-    SON8_OVERGLAD_PROC clear( enums::Clearbit mask ) noexcept
+    SON8_OVERGLAD_PROC clear( field::Clear mask ) noexcept
     { glad_glClear( static_cast< GLbitfield >( mask ) ); }
     SON8_OVERGLAD_PROC clear_color( ) noexcept
     { glad_glClearColor( 0.f, 0.f, 0.f, 0.f ); }
@@ -213,7 +213,7 @@ namespace son8::overglad {
     { glad_glEnd( ); }
     SON8_OVERGLAD_PROC edge_flag( GLboolean flag ) noexcept
     { glad_glEdgeFlag( flag ); }
-    SON8_OVERGLAD_PROC edge_flag( types::array1bool const &flagv ) noexcept
+    SON8_OVERGLAD_PROC edge_flag( types::Array1bool const &flagv ) noexcept
     { glad_glEdgeFlagv( flagv.data( ) ); }
     SON8_OVERGLAD_PROC vertex( GLint x, GLint y ) noexcept
     { glad_glVertex2i( x, y ); }
@@ -239,29 +239,29 @@ namespace son8::overglad {
     { glad_glVertex4f( x, y, z, w ); }
     SON8_OVERGLAD_PROC vertex( GLdouble x, GLdouble y, GLdouble z, GLdouble w ) noexcept
     { glad_glVertex4d( x, y, z, w ); }
-    SON8_OVERGLAD_PROC vertex( types::array2i const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array2i const &coords ) noexcept
     { glad_glVertex2iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array2s const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array2s const &coords ) noexcept
     { glad_glVertex2sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array2f const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array2f const &coords ) noexcept
     { glad_glVertex2fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array2d const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array2d const &coords ) noexcept
     { glad_glVertex2dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array3i const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array3i const &coords ) noexcept
     { glad_glVertex3iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array3s const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array3s const &coords ) noexcept
     { glad_glVertex3sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array3f const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array3f const &coords ) noexcept
     { glad_glVertex3fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array3d const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array3d const &coords ) noexcept
     { glad_glVertex3dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array4i const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array4i const &coords ) noexcept
     { glad_glVertex4iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array4s const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array4s const &coords ) noexcept
     { glad_glVertex4sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array4f const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array4f const &coords ) noexcept
     { glad_glVertex4fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC vertex( types::array4d const &coords ) noexcept
+    SON8_OVERGLAD_PROC vertex( types::Array4d const &coords ) noexcept
     { glad_glVertex4dv( coords.data( ) ); }
     SON8_OVERGLAD_PROC tex_coord( GLint s ) noexcept
     { glad_glTexCoord1i( s ); }
@@ -295,37 +295,37 @@ namespace son8::overglad {
     { glad_glTexCoord4f( s, t, p, q ); }
     SON8_OVERGLAD_PROC tex_coord( GLdouble s, GLdouble t, GLdouble p, GLdouble q ) noexcept
     { glad_glTexCoord4d( s, t, p, q ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array1i const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array1i const &coords ) noexcept
     { glad_glTexCoord1iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array1s const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array1s const &coords ) noexcept
     { glad_glTexCoord1sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array1f const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array1f const &coords ) noexcept
     { glad_glTexCoord1fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array1d const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array1d const &coords ) noexcept
     { glad_glTexCoord1dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array2i const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array2i const &coords ) noexcept
     { glad_glTexCoord2iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array2s const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array2s const &coords ) noexcept
     { glad_glTexCoord2sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array2f const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array2f const &coords ) noexcept
     { glad_glTexCoord2fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array2d const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array2d const &coords ) noexcept
     { glad_glTexCoord2dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array3i const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array3i const &coords ) noexcept
     { glad_glTexCoord3iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array3s const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array3s const &coords ) noexcept
     { glad_glTexCoord3sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array3f const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array3f const &coords ) noexcept
     { glad_glTexCoord3fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array3d const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array3d const &coords ) noexcept
     { glad_glTexCoord3dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array4i const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array4i const &coords ) noexcept
     { glad_glTexCoord4iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array4s const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array4s const &coords ) noexcept
     { glad_glTexCoord4sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array4f const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array4f const &coords ) noexcept
     { glad_glTexCoord4fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC tex_coord( types::array4d const &coords ) noexcept
+    SON8_OVERGLAD_PROC tex_coord( types::Array4d const &coords ) noexcept
     { glad_glTexCoord4dv( coords.data( ) ); }
     SON8_OVERGLAD_PROC normal( GLbyte x, GLbyte y, GLbyte z ) noexcept
     { glad_glNormal3b( x, y, z ); }
@@ -337,15 +337,15 @@ namespace son8::overglad {
     { glad_glNormal3f( x, y, z ); }
     SON8_OVERGLAD_PROC normal( GLdouble x, GLdouble y, GLdouble z ) noexcept
     { glad_glNormal3d( x, y, z ); }
-    SON8_OVERGLAD_PROC normal( types::array3i const &coords ) noexcept
+    SON8_OVERGLAD_PROC normal( types::Array3i const &coords ) noexcept
     { glad_glNormal3iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC normal( types::array3b const &coords ) noexcept
+    SON8_OVERGLAD_PROC normal( types::Array3b const &coords ) noexcept
     { glad_glNormal3bv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC normal( types::array3s const &coords ) noexcept
+    SON8_OVERGLAD_PROC normal( types::Array3s const &coords ) noexcept
     { glad_glNormal3sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC normal( types::array3f const &coords ) noexcept
+    SON8_OVERGLAD_PROC normal( types::Array3f const &coords ) noexcept
     { glad_glNormal3fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC normal( types::array3d const &coords ) noexcept
+    SON8_OVERGLAD_PROC normal( types::Array3d const &coords ) noexcept
     { glad_glNormal3dv( coords.data( ) ); }
     SON8_OVERGLAD_PROC color( GLint r, GLint g, GLint b ) noexcept
     { glad_glColor3i( r, g, b ); }
@@ -379,37 +379,37 @@ namespace son8::overglad {
     { glad_glColor4f( r, g, b, a ); }
     SON8_OVERGLAD_PROC color( GLdouble r, GLdouble g, GLdouble b, GLdouble a ) noexcept
     { glad_glColor4d( r, g, b, a ); }
-    SON8_OVERGLAD_PROC color( types::array3i const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3i const &components ) noexcept
     { glad_glColor3iv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3b const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3b const &components ) noexcept
     { glad_glColor3bv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3s const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3s const &components ) noexcept
     { glad_glColor3sv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3f const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3f const &components ) noexcept
     { glad_glColor3fv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3d const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3d const &components ) noexcept
     { glad_glColor3dv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3ui const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3ui const &components ) noexcept
     { glad_glColor3uiv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3ub const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3ub const &components ) noexcept
     { glad_glColor3ubv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array3us const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array3us const &components ) noexcept
     { glad_glColor3usv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4i const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4i const &components ) noexcept
     { glad_glColor4iv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4b const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4b const &components ) noexcept
     { glad_glColor4bv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4s const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4s const &components ) noexcept
     { glad_glColor4sv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4f const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4f const &components ) noexcept
     { glad_glColor4fv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4d const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4d const &components ) noexcept
     { glad_glColor4dv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4ui const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4ui const &components ) noexcept
     { glad_glColor4uiv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4ub const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4ub const &components ) noexcept
     { glad_glColor4ubv( components.data( ) ); }
-    SON8_OVERGLAD_PROC color( types::array4us const &components ) noexcept
+    SON8_OVERGLAD_PROC color( types::Array4us const &components ) noexcept
     { glad_glColor4usv( components.data( ) ); }
     SON8_OVERGLAD_PROC index( GLint i ) noexcept
     { glad_glIndexi( i ); }
@@ -421,15 +421,15 @@ namespace son8::overglad {
     { glad_glIndexf( i ); }
     SON8_OVERGLAD_PROC index( GLdouble i ) noexcept
     { glad_glIndexd( i ); }
-    SON8_OVERGLAD_PROC index( types::array1i const &index ) noexcept
+    SON8_OVERGLAD_PROC index( types::Array1i const &index ) noexcept
     { glad_glIndexiv( index.data( ) ); }
-    SON8_OVERGLAD_PROC index( types::array1s const &index ) noexcept
+    SON8_OVERGLAD_PROC index( types::Array1s const &index ) noexcept
     { glad_glIndexsv( index.data( ) ); }
-    SON8_OVERGLAD_PROC index( types::array1f const &index ) noexcept
+    SON8_OVERGLAD_PROC index( types::Array1f const &index ) noexcept
     { glad_glIndexfv( index.data( ) ); }
-    SON8_OVERGLAD_PROC index( types::array1d const &index ) noexcept
+    SON8_OVERGLAD_PROC index( types::Array1d const &index ) noexcept
     { glad_glIndexdv( index.data( ) ); }
-    SON8_OVERGLAD_PROC index( types::array1ub const &index ) noexcept
+    SON8_OVERGLAD_PROC index( types::Array1ub const &index ) noexcept
     { glad_glIndexubv( index.data( ) ); }
 
     // TODO: {EdgeFlag|TexCoord|Color|Index|Vertex}Pointer
@@ -451,25 +451,25 @@ namespace son8::overglad {
     { glad_glRectf( x1, y1, x2, y2 ); }
     SON8_OVERGLAD_PROC rect( GLdouble x1, GLdouble y1, GLdouble x2, GLdouble y2 ) noexcept
     { glad_glRectd( x1, y1, x2, y2 ); }
-    SON8_OVERGLAD_PROC rect( types::array2i const &v1, types::array2i const &v2 ) noexcept
+    SON8_OVERGLAD_PROC rect( types::Array2i const &v1, types::Array2i const &v2 ) noexcept
     { glad_glRectiv( v1.data( ), v2.data( ) ); }
-    SON8_OVERGLAD_PROC rect( types::array2s const &v1, types::array2s const &v2 ) noexcept
+    SON8_OVERGLAD_PROC rect( types::Array2s const &v1, types::Array2s const &v2 ) noexcept
     { glad_glRectsv( v1.data( ), v2.data( ) ); }
-    SON8_OVERGLAD_PROC rect( types::array2f const &v1, types::array2f const &v2 ) noexcept
+    SON8_OVERGLAD_PROC rect( types::Array2f const &v1, types::Array2f const &v2 ) noexcept
     { glad_glRectfv( v1.data( ), v2.data( ) ); }
-    SON8_OVERGLAD_PROC rect( types::array2d const &v1, types::array2d const &v2 ) noexcept
+    SON8_OVERGLAD_PROC rect( types::Array2d const &v1, types::Array2d const &v2 ) noexcept
     { glad_glRectdv( v1.data( ), v2.data( ) ); }
     SON8_OVERGLAD_PROC load_identity( ) noexcept
     { glad_glLoadIdentity( ); }
     SON8_OVERGLAD_PROC mode( enums::Matrix mode ) noexcept
     { glad_glMatrixMode( static_cast< GLenum >( mode ) ); }
-    SON8_OVERGLAD_PROC load_matrix( types::array16f const &m ) noexcept
+    SON8_OVERGLAD_PROC load_matrix( types::Array16f const &m ) noexcept
     { glad_glLoadMatrixf( m.data( ) ); }
-    SON8_OVERGLAD_PROC load_matrix( types::array16d const &m ) noexcept
+    SON8_OVERGLAD_PROC load_matrix( types::Array16d const &m ) noexcept
     { glad_glLoadMatrixd( m.data( ) ); }
-    SON8_OVERGLAD_PROC mult_matrix( types::array16f const &m ) noexcept
+    SON8_OVERGLAD_PROC mult_matrix( types::Array16f const &m ) noexcept
     { glad_glMultMatrixf( m.data( ) ); }
-    SON8_OVERGLAD_PROC mult_matrix( types::array16d const &m ) noexcept
+    SON8_OVERGLAD_PROC mult_matrix( types::Array16d const &m ) noexcept
     { glad_glMultMatrixd( m.data( ) ); }
     SON8_OVERGLAD_PROC rotate( GLfloat degrees, GLfloat x, GLfloat y, GLfloat z ) noexcept
     { glad_glRotatef( degrees, x, y, z ); }
@@ -494,7 +494,7 @@ namespace son8::overglad {
 
     // TODO: TexGen
 
-    SON8_OVERGLAD_PROC clip( enums::Plane plane, types::array4d const &eqn ) noexcept
+    SON8_OVERGLAD_PROC clip( enums::Plane plane, types::Array4d const &eqn ) noexcept
     { glad_glClipPlane( static_cast< GLenum >( plane ), eqn.data( ) ); }
     SON8_OVERGLAD_PROC raster_pos( GLint x, GLint y ) noexcept
     { glad_glRasterPos2i( x, y ); }
@@ -520,29 +520,29 @@ namespace son8::overglad {
     { glad_glRasterPos4f( x, y, z, w ); }
     SON8_OVERGLAD_PROC raster_pos( GLdouble x, GLdouble y, GLdouble z, GLdouble w ) noexcept
     { glad_glRasterPos4d( x, y, z, w ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array2i const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array2i const &coords ) noexcept
     { glad_glRasterPos2iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array2s const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array2s const &coords ) noexcept
     { glad_glRasterPos2sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array2f const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array2f const &coords ) noexcept
     { glad_glRasterPos2fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array2d const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array2d const &coords ) noexcept
     { glad_glRasterPos2dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array3i const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array3i const &coords ) noexcept
     { glad_glRasterPos3iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array3s const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array3s const &coords ) noexcept
     { glad_glRasterPos3sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array3f const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array3f const &coords ) noexcept
     { glad_glRasterPos3fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array3d const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array3d const &coords ) noexcept
     { glad_glRasterPos3dv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array4i const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array4i const &coords ) noexcept
     { glad_glRasterPos4iv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array4s const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array4s const &coords ) noexcept
     { glad_glRasterPos4sv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array4f const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array4f const &coords ) noexcept
     { glad_glRasterPos4fv( coords.data( ) ); }
-    SON8_OVERGLAD_PROC raster_pos( types::array4d const &coords ) noexcept
+    SON8_OVERGLAD_PROC raster_pos( types::Array4d const &coords ) noexcept
     { glad_glRasterPos4dv( coords.data( ) ); }
 
     // TODO: Material, Light, LightModel, ColorMaterial, ShadeModel
@@ -595,9 +595,9 @@ namespace son8::overglad {
 
     // TODO: GetClipPlane, GetLight+, GetMaterial+, GetTexEnv+, GetTexGen+, GetPixelMap+, GetMap+, GetPolygonStipple
 
-    SON8_OVERGLAD_PROC push_attrib( enums::Server bitfield ) noexcept
+    SON8_OVERGLAD_PROC push_attrib( field::Server bitfield ) noexcept
     { glad_glPushAttrib( static_cast< GLbitfield >( bitfield ) ); }
-    SON8_OVERGLAD_PROC push_attrib( enums::Client bitfield ) noexcept
+    SON8_OVERGLAD_PROC push_attrib( field::Client bitfield ) noexcept
     { glad_glPushClientAttrib( static_cast< GLbitfield >( bitfield ) ); }
     SON8_OVERGLAD_PROC pop_server_attrib( ) noexcept
     { glad_glPopAttrib( ); }

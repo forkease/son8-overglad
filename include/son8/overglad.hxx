@@ -23,11 +23,88 @@
 // for v functions
 #include <array>
 // for info log and maybe string related calls
+#include <cassert>
 #include <cstring>
 #include <string_view>
 
-#include <cassert>
 #include <type_traits>
+
+namespace son8::overglad::field {
+
+#ifdef SON8_OVERGLAD_VERSION_4_3
+    // `MemoryBarrier`
+    enum class Barrier : GLbitfield {
+        Attrib      = 0x00000001,
+        Element     = 0x00000002,
+        Uniform     = 0x00000004,
+        Fetch       = 0x00000008,
+        Image       = 0x00000020,
+        Command     = 0x00000040,
+        Pixel       = 0x00000080,
+        Texture     = 0x00000100,
+        Buffer      = 0x00000200,
+        Frame       = 0x00000400,
+        Feedback    = 0x00000800,
+        Counter     = 0x00001000,
+        Storage     = 0x00002000,
+        All         = 0xFFFFFFFF,
+    }; // enum class `Barrier`
+#endif // version 4.3
+    // `Clear`
+    enum class Clear : GLbitfield {
+        Depth   = 0x00000100,
+        Stencil = 0x00000400,
+        Color   = 0x00004000,
+#ifdef SON8_OVERGLAD_PROFILE_CORE
+        All     = Depth | Stencil | Color,
+#else
+        Accum   = 0x00000200,
+        All     = Depth | Accum | Stencil | Color,
+#endif // core
+    }; // enum class `Clear`
+
+    constexpr Clear operator|( Clear a, Clear b ) noexcept
+    { return static_cast< Clear >( static_cast< GLbitfield >( a ) | static_cast< GLbitfield >( b ) ); }
+
+#ifndef SON8_OVERGLAD_PROFILE_CORE
+    // `PushClientAttrib`
+    enum class Client : GLbitfield {
+        Pixel   = 0x00000001,
+        Vertex  = 0x00000002,
+        All     = 0xFFFFFFFF,
+    };
+#endif // not core
+
+#ifndef SON8_OVERGLAD_PROFILE_CORE
+    enum class Server : GLbitfield {
+        Current     = 0x00000001,
+        Point       = 0x00000002,
+        Line        = 0x00000004,
+        Polygon     = 0x00000008,
+        Stipple     = 0x00000010,
+        Pixel       = 0x00000020,
+        Lightning   = 0x00000040,
+        Fog         = 0x00000080,
+        Depth       = 0x00000100,
+        Accum       = 0x00000200,
+        Stencil     = 0x00000400,
+        Viewport    = 0x00000800,
+        Transform   = 0x00001000,
+        Enable      = 0x00002000,
+        Color       = 0x00004000,
+        Hint        = 0x00008000,
+        Eval        = 0x00010000,
+        List        = 0x00020000,
+        Texture     = 0x00040000,
+        Scissor     = 0x00080000,
+#   ifdef SON8_OVERGLAD_VERSION_1_5
+        Multisample = 0x20000000,
+#   endif // version 1.5
+        All         = 0xFFFFFFFF,
+    }; // enum class `Server`
+#endif // not core
+
+} // namespace `son8::overglad::field`
 
 namespace son8::overglad::enums {
 #ifdef SON8_OVERGLAD_VERSION_1_5
@@ -50,27 +127,6 @@ namespace son8::overglad::enums {
         Element = 0x8893,
     }; // enum class `Buffer`
 #endif // version 1.5
-
-#ifdef SON8_OVERGLAD_VERSION_4_3
-    // `MemoryBarrier`
-    enum class Barrier : GLbitfield {
-        Attrib      = 0x00000001,
-        Element     = 0x00000002,
-        Uniform     = 0x00000004,
-        Fetch       = 0x00000008,
-        Image       = 0x00000020,
-        Command     = 0x00000040,
-        Pixel       = 0x00000080,
-        Texture     = 0x00000100,
-        Buffer      = 0x00000200,
-        Frame       = 0x00000400,
-        Feedback    = 0x00000800,
-        Counter     = 0x00001000,
-        Storage     = 0x00002000,
-        All         = 0xFFFFFFFF,
-    }; // enum class `Barrier`
-#endif // version 4.3
-
     // `Enable, Disable, IsEnabled`
     enum class Capability : GLenum {
         Polygon_Smooth          = 0x0B41,
@@ -193,31 +249,6 @@ namespace son8::overglad::enums {
     }; // enum class `ClampColor`
 #   endif
 #endif//SON8_OVERGLAD_VERSION_3_3
-
-    // `Clear`
-    enum class Clearbit : GLbitfield {
-        Depth   = 0x00000100,
-        Stencil = 0x00000400,
-        Color   = 0x00004000,
-#ifdef SON8_OVERGLAD_PROFILE_CORE
-        All     = Depth | Stencil | Color,
-#else
-        Accum   = 0x00000200,
-        All     = Depth | Accum | Stencil | Color,
-#endif // core
-    }; // enum class `Clearbit`
-
-    constexpr Clearbit operator|( Clearbit a, Clearbit b ) noexcept
-    { return static_cast< Clearbit >( static_cast< GLbitfield >( a ) | static_cast< GLbitfield >( b ) ); }
-
-#ifndef SON8_OVERGLAD_PROFILE_CORE
-    // `PushClientAttrib`
-    enum class Client : GLbitfield {
-        Pixel   = 0x00000001,
-        Vertex  = 0x00000002,
-        All     = 0xFFFFFFFF,
-    };
-#endif // not core
 
 #ifndef SON8_OVERGLAD_PROFILE_CORE
     // `EnableClientState, DisableClientState`
@@ -445,35 +476,6 @@ namespace son8::overglad::enums {
         Feedback    = 0x1C01,
         Select      = 0x1C02,
     }; // enum class `Render`
-#endif // not core
-
-#ifndef SON8_OVERGLAD_PROFILE_CORE
-    enum class Server : GLbitfield {
-        Current     = 0x00000001,
-        Point       = 0x00000002,
-        Line        = 0x00000004,
-        Polygon     = 0x00000008,
-        Stipple     = 0x00000010,
-        Pixel       = 0x00000020,
-        Lightning   = 0x00000040,
-        Fog         = 0x00000080,
-        Depth       = 0x00000100,
-        Accum       = 0x00000200,
-        Stencil     = 0x00000400,
-        Viewport    = 0x00000800,
-        Transform   = 0x00001000,
-        Enable      = 0x00002000,
-        Color       = 0x00004000,
-        Hint        = 0x00008000,
-        Eval        = 0x00010000,
-        List        = 0x00020000,
-        Texture     = 0x00040000,
-        Scissor     = 0x00080000,
-#   ifdef SON8_OVERGLAD_VERSION_1_5
-        Multisample = 0x20000000,
-#   endif // version 1.5
-        All         = 0xFFFFFFFF,
-    }; // enum class `Server`
 #endif // not core
 
 #ifdef SON8_OVERGLAD_VERSION_2_1
