@@ -105,25 +105,31 @@ namespace son8::overglad {
     SON8_OVERGLAD_PROC source( types::Shader shader, types::Source view ) noexcept {
         GLchar const *pointer[1] = { view.data( ) };
         GLint length[1] = { static_cast< GLint >( view.size( )) };
-        glad_glShaderSource( shader, 1, pointer, length );
+        glad_glShaderSource( shader.index( ), 1, pointer, length );
     }
-    template< size_t Array_Size >
-    SON8_OVERGLAD_PROC sources( types::Shader shader, types::Sources< Array_Size > const &views ) noexcept {
-        static constexpr auto Count = views.size( );
-        static_assert( 2 <= Count,
-            "son8::overglad: sources() required at least 2 source chucks, maybe use types::Source" );
-        static_assert( Count <= 64,
-            "son8::overglad: sources() requires no more than 64 source chucks" );
-        GLchar const *pointers[Count];
-        GLint lengths[Count];
-        auto index = 0u;
+    SON8_OVERGLAD_PROC sources( types::Shader shader, types::Sources const &sources ) noexcept {
+        auto size = sources.size( );
+        using Lim = types::Sources;
+        assert( Lim::Min_Chunks <= size and size <= Lim::Max_Chunks and "sources requires to be in min and max range" );
+        // NOTE: sources that are out of min and max range would be completely ignored
+        if ( Lim::Min_Chunks > size or size > Lim::Max_Chunks ) { return; }
 
-        for ( auto i = 0u; i < Count; ++i ) {
-            pointers[i] = views[i].data( );
-            lengths[i] = views[i].size( );
+        using Ptr = GLchar const *;
+        using Len = GLint;
+
+        Ptr ptrs[Lim::Max_Chunks];
+        Len lens[Lim::Max_Chunks];
+
+        for ( std::size_t i = 0u; i < size; ++i ) {
+            ptrs[i] = sources.data( )[i].data( );
+            lens[i] = static_cast< Len >( sources.data( )[i].size( ));
         }
 
-        glad_glShaderSource( shader, Count, pointers, lengths );
+        glad_glShaderSource( shader.index( ), static_cast< GLsizei >( size ), ptrs, lens );
+    }
+
+    SON8_OVERGLAD_PROC sources( types::Shader shader, std::initializer_list< std::string_view > views ) {
+        sources( shader, types::Sources{ views });
     }
     SON8_OVERGLAD_PROC compile( types::Shader &shader ) noexcept
     { glad_glCompileShader( shader.index( )); }
