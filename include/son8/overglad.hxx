@@ -820,51 +820,6 @@ namespace son8::overglad::types {
     }; // class `Program`
 
     using Source = std::string_view;
-
-    class Sources final {
-        using View_ = std::string_view;
-        using Data_ = View_ const *;
-        using Size_ = std::size_t;
-        using Copy_ = Sources const &;
-        using Move_ = Sources &&;
-        template< typename Type >
-        using HasContiguousViews_ = std::enable_if_t<
-            std::is_convertible_v<
-                decltype( std::data( std::declval< Type const & >( ))),
-                Data_
-            >
-        >;
-        Data_ data_{ };
-        Size_ size_{ };
-    public:
-        inline static constexpr Size_ Max_Chunks = 64u;
-        inline static constexpr Size_ Min_Chunks = 2u;
-        Sources( ) noexcept = default;
-        Sources( View_ ) = delete;
-        Sources( Copy_ copy ) noexcept = default;
-        Sources( Move_ move ) noexcept = default;
-        auto operator=( Copy_ copy ) noexcept -> Sources & = default;
-        auto operator=( Move_ move ) noexcept -> Sources & = default;
-        // remove construction from temporaries (avoid `UB` for non-owning data)
-        template<
-            typename Range,
-            typename = std::enable_if_t< not std::is_lvalue_reference_v< Range >>
-        >
-        Sources( Range &&range ) = delete;
-        template< Size_ Size >
-        Sources( std::array< View_, Size > const &array ) noexcept
-        : data_{ array.data( )}, size_{ array.size( )} {
-            static_assert( Min_Chunks <= Size and Size <= Max_Chunks
-                , "Sources `std::array` constructor requires array size to be in range [2;64]" );
-        }
-        template< typename Range, typename = HasContiguousViews_< Range >>
-        Sources( Range const &range ) noexcept
-        : data_{ std::data( range )}, size_{ std::size( range )} { }
-        auto data( ) const noexcept -> Data_ { return data_; }
-        auto size( ) const noexcept -> Size_ { return size_; }
-        auto begin( ) const noexcept -> Data_ { return data_; }
-        auto end( ) const noexcept -> Data_ { return data_ + size_; }
-    };
     // Possibly just a temporary solution to simplify querying info logs
     template< unsigned Capacity = 1u << 10u >
     class Info final {

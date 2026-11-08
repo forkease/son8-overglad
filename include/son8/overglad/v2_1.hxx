@@ -107,29 +107,40 @@ namespace son8::overglad {
         GLint length[1] = { static_cast< GLint >( view.size( )) };
         glad_glShaderSource( shader.index( ), 1, pointer, length );
     }
-    SON8_OVERGLAD_PROC sources( types::Shader shader, types::Sources const &sources ) noexcept {
-        auto size = sources.size( );
-        using Lim = types::Sources;
-        assert( Lim::Min_Chunks <= size and size <= Lim::Max_Chunks and "sources requires to be in min and max range" );
-        // NOTE: sources that are out of min and max range would be completely ignored
-        if ( Lim::Min_Chunks > size or size > Lim::Max_Chunks ) { return; }
+    template< typename Range >
+    SON8_OVERGLAD_PROC sources( types::Shader shader, Range const &range ) noexcept {
+        static_assert( std::is_same_v< types::Source, std::string_view > );
+        using DerefType = decltype( *std::begin( std::declval< Range const& >() ) );
+        static_assert( std::is_convertible_v<
+            DerefType,
+            types::Source
+        >, "sources() range value type required to be convertible to std::string_view" );
+        static_assert( std::is_lvalue_reference_v< DerefType >,
+            "sources() range value type requires to be not a temporary value" );
+        using Size = decltype( std::size( range ));
+        static constexpr Size Max_Chunks = 64u;
+        Size size = std::size( range );
+        assert( size <= Max_Chunks );
+
+        if ( Max_Chunks < size ) return;
 
         using Ptr = GLchar const *;
         using Len = GLint;
+        Ptr ptrs[Max_Chunks];
+        Len lens[Max_Chunks];
 
-        Ptr ptrs[Lim::Max_Chunks];
-        Len lens[Lim::Max_Chunks];
-
-        for ( std::size_t i = 0u; i < size; ++i ) {
-            ptrs[i] = sources.data( )[i].data( );
-            lens[i] = static_cast< Len >( sources.data( )[i].size( ));
+        Size i = 0u;
+        for ( auto const &item : range ) {
+            types::Source view = item;
+            ptrs[i] = std::data( view );
+            lens[i] = static_cast< Len >( std::size( view ));
+            ++i;
         }
 
         glad_glShaderSource( shader.index( ), static_cast< GLsizei >( size ), ptrs, lens );
     }
-
-    SON8_OVERGLAD_PROC sources( types::Shader shader, std::initializer_list< std::string_view > views ) {
-        sources( shader, types::Sources{ views });
+    SON8_OVERGLAD_PROC sources( types::Shader shader, std::initializer_list< types::Source > list ) noexcept {
+        sources< std::initializer_list< types::Source > >( shader, list );
     }
     SON8_OVERGLAD_PROC compile( types::Shader &shader ) noexcept
     { glad_glCompileShader( shader.index( )); }
