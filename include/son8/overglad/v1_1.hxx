@@ -96,6 +96,17 @@ namespace son8::overglad {
         else if constexpr ( obj::is_pipeline( Type ) ) glad_glBindProgramPipeline( 0 );
     }
 
+    // special state get requests
+    template< typename Type, GLenum Param, unsigned Count >
+    SON8_OVERGLAD_PROC get( state::Getter_< Type, Param, Count > &out ) noexcept {
+        glad_glGetIntegerv( out.param( ), out.data( ));
+    }
+    template< typename Type, GLenum Param, unsigned Count >
+    SON8_OVERGLAD_FUNC get( state::Getter_< Type, Param, Count > &&out ) noexcept -> state::Getter_< Type, Param, Count > {
+        glad_glGetIntegerv( out.param( ), out.data( ));
+        return out;
+    }
+
     // Chapter 2: OpenGL Operation
 
     SON8_OVERGLAD_FUNC get( ) noexcept

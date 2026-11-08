@@ -932,6 +932,53 @@ namespace son8::overglad::types {
 
 } // namespace son8::overglad::types
 
+
+namespace son8::overglad::state {
+
+    template< typename Type, GLenum Param, unsigned Count >
+    class Getter_ final {
+        static_assert( Count, "Getter required to have at least 1 value" );
+        // NOTE: intentionally uninitialized on default construction
+        // \ as 0 is not a universal default state value,
+        // \ so zero-initializing does not provides any benefits
+        Type values_[Count];
+    public:
+        Getter_( ) noexcept = default;
+        constexpr auto param( ) const noexcept -> GLenum { return Param; }
+        auto data( ) & noexcept -> Type * { return values_; }
+        auto data( ) const & noexcept -> Type const * { return values_; }
+        template< unsigned count = Count, typename = std::enable_if_t< 1u == count >>
+        auto value( ) & noexcept -> Type & {
+            static_assert( 1u == count
+                , "state value() call requires parameter with only one value" );
+            return values_[0];
+        }
+        template< unsigned count = Count >
+        auto value( ) const & noexcept -> Type const & {
+            static_assert( 1u == count
+                , "state value() call requires parameter with only one value" );
+            return values_[0];
+        }
+        template< unsigned count = Count >
+        auto operator[]( unsigned i ) & noexcept -> Type & {
+            static_assert( 2u <= count
+                , "state array subscript operator requires parameter with two or more values" );
+            return values_[i];
+        }
+        template< unsigned count = Count >
+        auto operator[]( unsigned i ) const & noexcept -> Type const & {
+            static_assert( 2u <= count
+                , "state array subscript operator requires parameter with two or more values" );
+            return values_[i];
+        }
+    };
+
+    using ListMode = Getter_< GLint, 0x0B30u, 1u >;
+    using RenderMode = Getter_< GLint, 0x0C40u, 1u >;
+    using Viewport   = Getter_< GLint, 0x0BA2u, 4u >;
+
+} // namespace `son8::overglad::state`
+
 #define SON8_OVERGLAD_DEPR [[deprecated]] inline auto
 #define SON8_OVERGLAD_DISC inline auto
 #define SON8_OVERGLAD_FUNC [[nodiscard]] inline auto
