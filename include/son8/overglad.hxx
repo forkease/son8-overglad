@@ -944,9 +944,14 @@ namespace son8::overglad::state {
         Type values_[Count];
     public:
         Getter_( ) noexcept = default;
-        constexpr auto param( ) const noexcept -> GLenum { return Param; }
+        constexpr
+        auto param( ) const noexcept -> GLenum { return Param; }
+        constexpr
+        auto size( ) const noexcept -> std::size_t { return Count; }
         auto data( ) & noexcept -> Type * { return values_; }
         auto data( ) const & noexcept -> Type const * { return values_; }
+        auto begin( ) const & noexcept -> Type * { return values_; }
+        auto end( ) const & noexcept -> Type * { return values_ + Count; };
         template< unsigned count = Count, typename = std::enable_if_t< 1u == count >>
         auto value( ) & noexcept -> Type & {
             static_assert( 1u == count
@@ -976,6 +981,10 @@ namespace son8::overglad::state {
     using ListMode = Getter_< GLint, 0x0B30u, 1u >;
     using RenderMode = Getter_< GLint, 0x0C40u, 1u >;
     using Viewport   = Getter_< GLint, 0x0BA2u, 4u >;
+    using ZoomX = Getter_< GLfloat, 0x0D16u, 1u >;
+    using Renderer = Getter_< std::string_view, 0x1F01u, 1u >;
+    using Extensions = Getter_< std::string_view, 0x1F03u, 1u >;
+    using Version = Getter_< std::string_view, 0x1F02, 1u >;
 
 } // namespace `son8::overglad::state`
 

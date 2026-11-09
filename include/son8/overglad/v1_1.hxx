@@ -99,11 +99,17 @@ namespace son8::overglad {
     // special state get requests
     template< typename Type, GLenum Param, unsigned Count >
     SON8_OVERGLAD_PROC get( state::Getter_< Type, Param, Count > &out ) noexcept {
-        glad_glGetIntegerv( out.param( ), out.data( ));
+        if/*_*/ constexpr ( std::is_same_v< Type, GLint > ) { glad_glGetIntegerv( out.param( ), out.data( )); }
+        else if constexpr ( std::is_same_v< Type, GLfloat > ) { glad_glGetFloatv( out.param( ), out.data( )); }
+        else if constexpr ( std::is_same_v< Type, std::string_view > ) {
+            auto const *cStr = reinterpret_cast< char const * >( glad_glGetString( out.param( )));
+            *out.data( ) = ( cStr != nullptr ) ? cStr : "";
+        }
+        else { static_assert( Count == 0u, "get() incorrect or unsupported data type" ); }
     }
     template< typename Type, GLenum Param, unsigned Count >
     SON8_OVERGLAD_FUNC get( state::Getter_< Type, Param, Count > &&out ) noexcept -> state::Getter_< Type, Param, Count > {
-        glad_glGetIntegerv( out.param( ), out.data( ));
+        get( out );
         return out;
     }
 
