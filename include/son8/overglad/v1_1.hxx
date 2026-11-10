@@ -98,7 +98,7 @@ namespace son8::overglad {
 
     // special state get requests
     template< typename Type, GLenum Param, unsigned Count >
-    SON8_OVERGLAD_PROC get( state::Getter_< Type, Param, Count > &out ) noexcept {
+    SON8_OVERGLAD_PROC get( state::Get_< Param, Type, Count > &out ) noexcept {
         if/*_*/ constexpr ( std::is_same_v< Type, GLint > ) { glad_glGetIntegerv( out.param( ), out.data( )); }
         else if constexpr ( std::is_same_v< Type, GLfloat > ) { glad_glGetFloatv( out.param( ), out.data( )); }
         else if constexpr ( std::is_same_v< Type, std::string_view > ) {
@@ -108,7 +108,7 @@ namespace son8::overglad {
         else { static_assert( Count == 0u, "get() incorrect or unsupported data type" ); }
     }
     template< typename Type, GLenum Param, unsigned Count >
-    SON8_OVERGLAD_FUNC get( state::Getter_< Type, Param, Count > &&out ) noexcept -> state::Getter_< Type, Param, Count > {
+    SON8_OVERGLAD_FUNC get( SON8_OVERGLAD_WHY state::Get_< Param, Type, Count > &&out ) noexcept -> state::Get_< Param, Type, Count > {
         get( out );
         return out;
     }

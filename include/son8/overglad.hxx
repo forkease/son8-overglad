@@ -935,24 +935,18 @@ namespace son8::overglad::types {
 
 namespace son8::overglad::state {
 
-    template< typename Type, GLenum Param, unsigned Count >
-    class Getter_ final {
+    template< GLenum Param, typename Type, unsigned Count = 1u >
+    class Get_ final {
         static_assert( Count, "Getter required to have at least 1 value" );
+        using Flat_ = std::array< Type, Count >;
+        Flat_ values_;
+    public:
         // NOTE: intentionally uninitialized on default construction
         // \ as 0 is not a universal default state value,
         // \ so zero-initializing does not provides any benefits
-        Type values_[Count];
-    public:
-        Getter_( ) noexcept = default;
-        constexpr
-        auto param( ) const noexcept -> GLenum { return Param; }
-        constexpr
-        auto size( ) const noexcept -> std::size_t { return Count; }
-        auto data( ) & noexcept -> Type * { return values_; }
-        auto data( ) const & noexcept -> Type const * { return values_; }
-        auto begin( ) const & noexcept -> Type * { return values_; }
-        auto end( ) const & noexcept -> Type * { return values_ + Count; };
-        template< unsigned count = Count, typename = std::enable_if_t< 1u == count >>
+        Get_( ) noexcept { }
+        // templated accessors
+        template< unsigned count = Count >
         auto value( ) & noexcept -> Type & {
             static_assert( 1u == count
                 , "state value() call requires parameter with only one value" );
@@ -976,17 +970,138 @@ namespace son8::overglad::state {
                 , "state array subscript operator requires parameter with two or more values" );
             return values_[i];
         }
-    };
-
-    using ListMode = Getter_< GLint, 0x0B30u, 1u >;
-    using RenderMode = Getter_< GLint, 0x0C40u, 1u >;
-    using Viewport   = Getter_< GLint, 0x0BA2u, 4u >;
-    using ZoomX = Getter_< GLfloat, 0x0D16u, 1u >;
-    using Renderer = Getter_< std::string_view, 0x1F01u, 1u >;
-    using Extensions = Getter_< std::string_view, 0x1F03u, 1u >;
-    using Version = Getter_< std::string_view, 0x1F02, 1u >;
+        constexpr
+        auto param( ) const noexcept -> GLenum { return Param; }
+        constexpr
+        auto size( ) const noexcept -> std::size_t { return Count; }
+        // const accessors
+        auto array( ) const & noexcept -> Flat_ const & { return values_; }
+        auto data( ) const & noexcept -> Type const * { return values_.data( ); }
+        auto begin( ) const & noexcept -> Type const * { return data( ); }
+        auto end( ) const & noexcept -> Type const * { return data( ) + Count; }
+        // mutable accessors
+        auto array( ) & noexcept -> Flat_ & { return values_; }
+        auto data( ) & noexcept -> Type * { return values_.data( ); }
+        auto begin( ) & noexcept -> Type * { return data( ); }
+        auto end( ) & noexcept -> Type * { return data( ) + Count; }
+    }; // class `Getter_`
+    // version 1.1 states
+    // temp
+    using Renderer = Get_< 0x1F01u, std::string_view >;
+    using Version = Get_< 0x1F02, std::string_view >;
+    using Extensions = Get_< 0x1F03u, std::string_view >;
+#ifdef SON8_OVERGLAD_VERSION_1_1
+    // -- core
+    using PointSize                     = Get_< 0x0B11, GLfloat >;
+    using LineSmooth                    = Get_< 0x0B20, GLboolean >;
+    using LineWidth                     = Get_< 0x0B21, GLfloat >;
+    using PolygonMode                   = Get_< 0x0B40, GLint >;
+    using PolygonSmooth                 = Get_< 0x0B41, GLboolean >;
+    using CullFace                      = Get_< 0x0B44, GLboolean >;
+    using CullFaceMode                  = Get_< 0x0B45, GLint >;
+    using FrontFace                     = Get_< 0x0B46, GLint >;
+    using DepthRange                    = Get_< 0x0B70, GLfloat, 2u >;
+    using Viewport                      = Get_< 0x0BA2, GLint, 4u >;
+    using PolygonOffsetUnits            = Get_< 0x2A00, GLfloat >;
+    using PolygonOffsetPoint            = Get_< 0x2A01, GLboolean >;
+    using PolygonOffsetLine             = Get_< 0x2A02, GLboolean >;
+    using ClipPlane0                    = Get_< 0x3000, GLboolean >;
+    using ClipPlane1                    = Get_< 0x3001, GLboolean >;
+    using ClipPlane2                    = Get_< 0x3002, GLboolean >;
+    using ClipPlane3                    = Get_< 0x3003, GLboolean >;
+    using ClipPlane4                    = Get_< 0x3004, GLboolean >;
+    using ClipPlane5                    = Get_< 0x3005, GLboolean >;
+    using PolygonOffsetFill             = Get_< 0x8037, GLboolean >;
+    using PolygonOffsetFactor           = Get_< 0x8038, GLfloat >;
+    using TextureBinding1D              = Get_< 0x8068, GLint >;
+    using TextureBinding2D              = Get_< 0x8069, GLint >;
+    // -- comp
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    using CurrentColor                  = Get_< 0x0B00, GLfloat, 4u >;
+    using CurrentIndex                  = Get_< 0x0B01, GLint >;
+    using CurrentNormal                 = Get_< 0x0B02, GLfloat, 3u >;
+    using CurrentTextureCoords          = Get_< 0x0B03, GLfloat, 4u >;
+    using CurrentRasterColor            = Get_< 0x0B04, GLfloat, 4u >;
+    using CurrentRasterIndex            = Get_< 0x0B05, GLint >;
+    using CurrentRasterTextureCoords    = Get_< 0x0B06, GLfloat, 4u >;
+    using CurrentRasterPosition         = Get_< 0x0B07, GLfloat, 4u >;
+    using CurrentRasterPositionValid    = Get_< 0x0B08, GLboolean >;
+    using CurrentRasterDistance         = Get_< 0x0B09, GLfloat >;
+    using PointSmooth                   = Get_< 0x0B10, GLboolean >;
+    using LineStipple                   = Get_< 0x0B24, GLboolean >;
+    using LineStipplePattern            = Get_< 0x0B25, GLint >;
+    using LineStippleRepeat             = Get_< 0x0B26, GLint >;
+    using PolygonStipple                = Get_< 0x0B42, GLboolean >;
+    using EdgeFlag                      = Get_< 0x0B43, GLboolean >;
+    using Lighting                      = Get_< 0x0B50, GLboolean >;
+    using LightModelLocalViewer         = Get_< 0x0B51, GLboolean >;
+    using LightModelTwoSide             = Get_< 0x0B52, GLboolean >;
+    using LightModelAmbient             = Get_< 0x0B53, GLfloat >;
+    using ShadeModel                    = Get_< 0x0B54, GLint >;
+    using ColorMaterialFace             = Get_< 0x0B55, GLint >;
+    using ColorMaterialParameter        = Get_< 0x0B56, GLint >;
+    using ColorMaterial                 = Get_< 0x0B57, GLboolean >;
+    using Fog                           = Get_< 0x0B60, GLboolean >;
+    using FogIndex                      = Get_< 0x0B61, GLfloat >;
+    using FogDensity                    = Get_< 0x0B62, GLfloat >;
+    using FogStart                      = Get_< 0x0B63, GLfloat >;
+    using FogEnd                        = Get_< 0x0B64, GLfloat >;
+    using FogMode                       = Get_< 0x0B65, GLint >;
+    using FogColor                      = Get_< 0x0B66, GLfloat, 4u >;
+    using MatrixMode                    = Get_< 0x0BA0, GLint >;
+    using Normalize                     = Get_< 0x0BA1, GLboolean >;
+    using ModelviewStackDepth           = Get_< 0x0BA3, GLint >;
+    using ProjectionStackDepth          = Get_< 0x0BA4, GLint >;
+    using TextureStackDepth             = Get_< 0x0BA5, GLint >;
+    using ModelviewMatrix               = Get_< 0x0BA6, GLfloat, 16u >;
+    using ProjectionMatrix              = Get_< 0x0BA7, GLfloat, 16u >;
+    using TextureMatrix                 = Get_< 0x0BA8, GLfloat, 16u >;
+    using TextureGenS                   = Get_< 0x0C60, GLboolean >;
+    using TextureGenT                   = Get_< 0x0C61, GLboolean >;
+    using TextureGenR                   = Get_< 0x0C62, GLboolean >;
+    using TextureGenQ                   = Get_< 0x0C63, GLboolean >;
+    using Texture1D                     = Get_< 0x0DE0, GLboolean >;
+    using Texture2D                     = Get_< 0x0DE1, GLboolean >;
+    using Light0                        = Get_< 0x4000, GLboolean >;
+    using Light1                        = Get_< 0x4001, GLboolean >;
+    using Light2                        = Get_< 0x4002, GLboolean >;
+    using Light3                        = Get_< 0x4003, GLboolean >;
+    using Light4                        = Get_< 0x4004, GLboolean >;
+    using Light5                        = Get_< 0x4005, GLboolean >;
+    using Light6                        = Get_< 0x4006, GLboolean >;
+    using Light7                        = Get_< 0x4007, GLboolean >;
+    using VertexArray                   = Get_< 0x8074, GLboolean >;
+    using NormalArray                   = Get_< 0x8075, GLboolean >;
+    using ColorArray                    = Get_< 0x8076, GLboolean >;
+    using IndexArray                    = Get_< 0x8077, GLboolean >;
+    using TextureCoordArray             = Get_< 0x8078, GLboolean >;
+    using EdgeFlagArray                 = Get_< 0x8079, GLboolean >;
+    using VertexArraySize               = Get_< 0x807A, GLint >;
+    using VertexArrayType               = Get_< 0x807B, GLint >;
+    using VertexArrayStride             = Get_< 0x807C, GLint >;
+    using NormalArrayType               = Get_< 0x807E, GLint >;
+    using NormalArrayStride             = Get_< 0x807F, GLint >;
+    using ColorArraySize                = Get_< 0x8081, GLint >;
+    using ColorArrayType                = Get_< 0x8082, GLint >;
+    using ColorArrayStride              = Get_< 0x8083, GLint >;
+    using IndexArrayType                = Get_< 0x8085, GLint >;
+    using IndexArrayStride              = Get_< 0x8086, GLint >;
+    using TextureCoordArraySize         = Get_< 0x8088, GLint >;
+    using TextureCoordArrayType         = Get_< 0x8089, GLint >;
+    using TextureCoordArrayStride       = Get_< 0x808A, GLint >;
+    using EdgeFlagArrayStride           = Get_< 0x808C, GLint >;
+#   endif // not core profile
+#endif // version 1.1 states
 
 } // namespace `son8::overglad::state`
+
+// TODO: check if it actually fix this garbage
+// WHY `C++26` with it fake safety does this
+#if __cplusplus > 202302L and defined(__has_cpp_attribute) and __has_cpp_attribute(indeterminate)
+#define SON8_OVERGLAD_WHY [[indeterminate]];
+#else
+#define SON8_OVERGLAD_WHY
+#endif
 
 #define SON8_OVERGLAD_DEPR [[deprecated]] inline auto
 #define SON8_OVERGLAD_DISC inline auto
