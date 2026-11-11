@@ -986,10 +986,16 @@ namespace son8::overglad::state {
         auto end( ) & noexcept -> Type * { return data( ) + Count; }
     }; // class `Getter_`
     // version 1.1 states
-    // temp
     using Renderer = Get_< 0x1F01u, std::string_view >;
     using Version = Get_< 0x1F02, std::string_view >;
     using Extensions = Get_< 0x1F03u, std::string_view >;
+    // temp
+
+
+
+
+
+
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // -- core
     using PointSize                     = Get_< 0x0B11, GLfloat >;
@@ -1001,7 +1007,44 @@ namespace son8::overglad::state {
     using CullFaceMode                  = Get_< 0x0B45, GLint >;
     using FrontFace                     = Get_< 0x0B46, GLint >;
     using DepthRange                    = Get_< 0x0B70, GLfloat, 2u >;
+    using DepthTest                     = Get_< 0x0B71, GLboolean >;
+    using DepthWritemask                = Get_< 0x0B72, GLboolean >;
+    using DepthClearValue               = Get_< 0x0B73, GLint >;
+    using DepthFunc                     = Get_< 0x0B74, GLint >;
+    using StencilTest                   = Get_< 0x0B90, GLboolean >;
+    using StencilClearValue             = Get_< 0x0B91, GLint >;
+    using StencilFunc                   = Get_< 0x0B92, GLint >;
+    using StencilValueMask              = Get_< 0x0B93, GLint >;
+    using StencilFail                   = Get_< 0x0B94, GLint >;
+    using StencilPassDepthFail          = Get_< 0x0B95, GLint >;
+    using StencilPassDepthPass          = Get_< 0x0B96, GLint >;
+    using StencilRef                    = Get_< 0x0B97, GLint >;
+    using StencilWritemask              = Get_< 0x0B98, GLint >;
     using Viewport                      = Get_< 0x0BA2, GLint, 4u >;
+    using Dither                        = Get_< 0x0BD0, GLboolean >;
+    using BlendDst                      = Get_< 0x0BE0, GLint >;
+    using BlendSrc                      = Get_< 0x0BE1, GLint >;
+    using Blend                         = Get_< 0x0BE2, GLboolean >;
+    using LogicOpMode                   = Get_< 0x0BF0, GLint >;
+    using ColorLogicOp                  = Get_< 0x0BF2, GLboolean >;
+    using DrawBuffer                    = Get_< 0x0C01, GLint >;
+    using ReadBuffer                    = Get_< 0x0C02, GLint >;
+    using ScissorBox                    = Get_< 0x0C10, GLint, 4 >;
+    using ScissorTest                   = Get_< 0x0C11, GLboolean >;
+    using ColorClearValue               = Get_< 0x0C22, GLfloat, 4 >;
+    using ColorWritemask                = Get_< 0x0C23, GLboolean, 4 >;
+    using UnpackSwapBytes               = Get_< 0x0CF0, GLboolean >;
+    using UnpackLSBfirst                = Get_< 0x0CF1, GLboolean >;
+    using UnpackRowLength               = Get_< 0x0CF2, GLint >;
+    using UnpackSkipRows                = Get_< 0x0CF3, GLint >;
+    using UnpackSkipPixels              = Get_< 0x0CF4, GLint >;
+    using UnpackAlignment               = Get_< 0x0CF5, GLint >;
+    using PackSwapBytes                 = Get_< 0x0D00, GLboolean >;
+    using PackLSBfirst                  = Get_< 0x0D01, GLboolean >;
+    using PackRowLength                 = Get_< 0x0D02, GLint >;
+    using PackSkipRows                  = Get_< 0x0D03, GLint >;
+    using PackSkipPixels                = Get_< 0x0D04, GLint >;
+    using PackAlignment                 = Get_< 0x0D05, GLint >;
     using PolygonOffsetUnits            = Get_< 0x2A00, GLfloat >;
     using PolygonOffsetPoint            = Get_< 0x2A01, GLboolean >;
     using PolygonOffsetLine             = Get_< 0x2A02, GLboolean >;
@@ -1048,6 +1091,7 @@ namespace son8::overglad::state {
     using FogEnd                        = Get_< 0x0B64, GLfloat >;
     using FogMode                       = Get_< 0x0B65, GLint >;
     using FogColor                      = Get_< 0x0B66, GLfloat, 4u >;
+    using AccumClearValue               = Get_< 0x0B80, GLfloat, 4 >;
     using MatrixMode                    = Get_< 0x0BA0, GLint >;
     using Normalize                     = Get_< 0x0BA1, GLboolean >;
     using ModelviewStackDepth           = Get_< 0x0BA3, GLint >;
@@ -1056,10 +1100,43 @@ namespace son8::overglad::state {
     using ModelviewMatrix               = Get_< 0x0BA6, GLfloat, 16u >;
     using ProjectionMatrix              = Get_< 0x0BA7, GLfloat, 16u >;
     using TextureMatrix                 = Get_< 0x0BA8, GLfloat, 16u >;
+    using AlphaTest                     = Get_< 0x0BC0, GLboolean >;
+    using AlphaTestFunc                 = Get_< 0x0BC1, GLint >;
+    using AlphaTestRef                  = Get_< 0x0BC2, GLfloat >;
+    using IndexLogicOp                  = Get_< 0x0BF1, GLboolean >;
+    using IndexClearValue               = Get_< 0x0C20, GLfloat >;
+    using IndexWritemask                = Get_< 0x0C21, GLint >;
     using TextureGenS                   = Get_< 0x0C60, GLboolean >;
     using TextureGenT                   = Get_< 0x0C61, GLboolean >;
     using TextureGenR                   = Get_< 0x0C62, GLboolean >;
     using TextureGenQ                   = Get_< 0x0C63, GLboolean >;
+
+    // TODO table 8.3 from 4.6 comp profile spec `?_SIZE (0x0C70)`
+
+    using MapColor                      = Get_< 0x0D10, GLboolean >;
+    using MapStencil                    = Get_< 0x0D11, GLboolean >;
+    using IndexShift                    = Get_< 0x0D12, GLint >;
+    using IndexOffset                   = Get_< 0x0D13, GLint >;
+    using RedScale                      = Get_< 0x0D14, GLfloat >;
+    using RedBias                       = Get_< 0x0D15, GLfloat >;
+    using ZoomX                         = Get_< 0x0D16, GLfloat >;
+    using ZoomY                         = Get_< 0x0D17, GLfloat >;
+    using GreenScale                    = Get_< 0x0D18, GLfloat >;
+    using GreenBias                     = Get_< 0x0D19, GLfloat >;
+    using BlueScale                     = Get_< 0x0D1A, GLfloat >;
+    using BlueBias                      = Get_< 0x0D1B, GLfloat >;
+    using AlphaScale                    = Get_< 0x0D1C, GLfloat >;
+    using AlphaBias                     = Get_< 0x0D1D, GLfloat >;
+    using DepthScale                    = Get_< 0x0D1E, GLfloat >;
+    using DepthBias                     = Get_< 0x0D1F, GLfloat >;
+    using AutoNormal                    = Get_< 0x0D80, GLboolean >;
+
+    // TODO `MAP_1 (0x0D90-8)` and `MAP_2 (0x0DB0-8)`
+
+    using Map1GridDomain                = Get_< 0x0DD0, GLfloat >;
+    using Map1GridSegments              = Get_< 0x0DD1, GLfloat >;
+    using Map2GridDomain                = Get_< 0x0DD2, GLfloat >;
+    using Map2GridSegments              = Get_< 0x0DD3, GLfloat >;
     using Texture1D                     = Get_< 0x0DE0, GLboolean >;
     using Texture2D                     = Get_< 0x0DE1, GLboolean >;
     using Light0                        = Get_< 0x4000, GLboolean >;
