@@ -986,16 +986,6 @@ namespace son8::overglad::state {
         auto end( ) & noexcept -> Type * { return data( ) + Count; }
     }; // class `Getter_`
     // version 1.1 states
-    using Renderer = Get_< 0x1F01u, std::string_view >;
-    using Version = Get_< 0x1F02, std::string_view >;
-    using Extensions = Get_< 0x1F03u, std::string_view >;
-    // temp
-
-
-
-
-
-
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // -- core
     using PointSize                     = Get_< 0x0B11, GLfloat >;
@@ -1057,6 +1047,9 @@ namespace son8::overglad::state {
     using MaxTextureSize                = Get_< 0x0D33, GLint >;
     using MaxViewportDims               = Get_< 0x0D3A, GLint, 2u >;
     using SubpixelBits                  = Get_< 0x0D50, GLint >;
+    using Vendor                        = Get_< 0x1F00, std::string_view >;
+    using Renderer                      = Get_< 0x1F01, std::string_view >;
+    using Version                       = Get_< 0x1F02, std::string_view >;
     using PolygonOffsetUnits            = Get_< 0x2A00, GLfloat >;
     using PolygonOffsetPoint            = Get_< 0x2A01, GLboolean >;
     using PolygonOffsetLine             = Get_< 0x2A02, GLboolean >;
@@ -1070,7 +1063,7 @@ namespace son8::overglad::state {
     using PolygonOffsetFactor           = Get_< 0x8038, GLfloat >;
     using TextureBinding1D              = Get_< 0x8068, GLint >;
     using TextureBinding2D              = Get_< 0x8069, GLint >;
-    // -- comp
+    // -- compatibility
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     using CurrentColor                  = Get_< 0x0B00, GLfloat, 4u >;
     using CurrentIndex                  = Get_< 0x0B01, GLint >;
@@ -1188,6 +1181,7 @@ namespace son8::overglad::state {
     using FeedbackBufferSize            = Get_< 0x0DF1, GLint >;
     using FeedbackBufferType            = Get_< 0x0DF2, GLint >;
     using SelectionBufferSize           = Get_< 0x0DF4, GLint >;
+    using Extensions                    = Get_< 0x1F03, std::string_view >;
     using Light0                        = Get_< 0x4000, GLboolean >;
     using Light1                        = Get_< 0x4001, GLboolean >;
     using Light2                        = Get_< 0x4002, GLboolean >;
