@@ -6,10 +6,10 @@
  * splitted into separate headers: define (macros,values), header, loader and source
  *      by Oleg'Ease'Kharchuk
  */
-#ifndef SON8_OVERGLAD_GLAD_SON8_DEFINE_H
-#define SON8_OVERGLAD_GLAD_SON8_DEFINE_H
+#ifndef GLAD_SON8_DEFINE_H
+#define GLAD_SON8_DEFINE_H
 
 #include <glad/son8/gl/define/values.h>
 #include <glad/son8/gl/define/macros.h>
 
-#endif//SON8_OVERGLAD_GLAD_SON8_DEFINE_H
+#endif // INCLUDE GUARD

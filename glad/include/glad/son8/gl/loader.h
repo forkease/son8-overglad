@@ -6,12 +6,12 @@
  * splitted into separate headers: define (macros,values), header, loader and source
  *      by Oleg'Ease'Kharchuk
  */
-#ifndef SON8_OVERGLAD_GLAD_SON8_LOADER_H
-#define SON8_OVERGLAD_GLAD_SON8_LOADER_H
+#ifndef GLAD_SON8_LOADER_H
+#define GLAD_SON8_LOADER_H
 
 #include <glad/son8/gl/header.h>
 
-#ifndef GLAD_GL_H_
+#if defined(__cplusplus) && !defined(GLAD_GL_H_)
 extern "C" {
 #endif
 
@@ -23,8 +23,8 @@ typedef GLADapiproc (*GLADuserptrloadfunc)(void *userptr, const char *name);
 GLAD_API_CALL int gladLoadGLUserPtr( GLADuserptrloadfunc load, void *userptr);
 GLAD_API_CALL int gladLoadGL( GLADloadfunc load);
 
-#ifndef GLAD_GL_H_
+#if defined(__cplusplus) && !defined(GLAD_GL_H_)
 } // extern "C" {
 #endif
 
-#endif//SON8_OVERGLAD_GLAD_SON8_LOADER_H
+#endif // INCLUDE GUARD

@@ -6,12 +6,12 @@
  * splitted into separate headers: define (macros,values), header, loader and source
  *      by Oleg'Ease'Kharchuk
  */
-#ifndef SON8_OVERGLAD_GLAD_SON8_SOURCE_H
-#define SON8_OVERGLAD_GLAD_SON8_SOURCE_H
+#ifndef GLAD_SON8_SOURCE_H
+#define GLAD_SON8_SOURCE_H
 
 #include <glad/son8/gl/header.h>
 
-#ifndef GLAD_GL_H_
+#if defined(__cplusplus) && !defined(GLAD_GL_H_)
 extern "C" {
 #endif
 
@@ -2114,7 +2114,7 @@ GLAD_API_CALL PFNGLWINDOWPOS3IPROC glad_glWindowPos3i;
 GLAD_API_CALL PFNGLWINDOWPOS3IVPROC glad_glWindowPos3iv;
 GLAD_API_CALL PFNGLWINDOWPOS3SPROC glad_glWindowPos3s;
 GLAD_API_CALL PFNGLWINDOWPOS3SVPROC glad_glWindowPos3sv;
-#ifndef GLAD_GL_H_
+#if defined(__cplusplus) && !defined(GLAD_GL_H_)
 } // extern "C" {
 #endif
-#endif//SON8_OVERGLAD_GLAD_SON8_SOURCE_H
+#endif // INCLUDE GUARD
