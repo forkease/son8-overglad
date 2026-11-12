@@ -6,8 +6,8 @@
  * splitted into separate headers: define (macros,values), header, loader and source
  *      by Oleg'Ease'Kharchuk
  */
-#ifndef SON8_OVERGLAD_GLAD_SON8_HEADER_H
-#define SON8_OVERGLAD_GLAD_SON8_HEADER_H
+#ifndef GLAD_SON8_HEADER_H
+#define GLAD_SON8_HEADER_H
 
 #ifndef GLAD_PLATFORM_WIN32
   #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__)
@@ -51,6 +51,14 @@
   #define GLAD_API_PTR
 #endif
 
+#ifndef GLAPI
+#define GLAPI GLAD_API_CALL
+#endif
+
+#ifndef GLAPIENTRY
+#define GLAPIENTRY GLAD_API_PTR
+#endif
+
 #include <KHR/khrplatform.h>
 typedef unsigned int GLenum;
 typedef unsigned char GLboolean;
@@ -80,30 +88,14 @@ typedef unsigned int GLhandleARB;
 typedef khronos_uint16_t GLhalf;
 typedef khronos_uint16_t GLhalfARB;
 typedef khronos_int32_t GLfixed;
-#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ > 1060)
 typedef khronos_intptr_t GLintptr;
-#else
-typedef khronos_intptr_t GLintptr;
-#endif
-#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ > 1060)
 typedef khronos_intptr_t GLintptrARB;
-#else
-typedef khronos_intptr_t GLintptrARB;
-#endif
-#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ > 1060)
 typedef khronos_ssize_t GLsizeiptr;
-#else
-typedef khronos_ssize_t GLsizeiptr;
-#endif
-#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ > 1060)
 typedef khronos_ssize_t GLsizeiptrARB;
-#else
-typedef khronos_ssize_t GLsizeiptrARB;
-#endif
 typedef khronos_int64_t GLint64;
 typedef khronos_int64_t GLint64EXT;
 typedef khronos_uint64_t GLuint64;
 typedef khronos_uint64_t GLuint64EXT;
 typedef struct __GLsync *GLsync;
 
-#endif//SON8_OVERGLAD_GLAD_SON8_HEADER_H
+#endif // INCLUDE GUARD

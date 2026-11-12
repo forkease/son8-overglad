@@ -6,8 +6,8 @@
  * splitted into separate headers: define (macros,values), header, loader and source
  *      by Oleg'Ease'Kharchuk
  */
-#ifndef SON8_OVERGLAD_GLAD_SON8_DEFINE_GLOBAL_H
-#define SON8_OVERGLAD_GLAD_SON8_DEFINE_GLOBAL_H
+#ifndef GLAD_SON8_DEFINE_MACROS_H
+#define GLAD_SON8_DEFINE_MACROS_H
 
 #include <glad/son8/gl/source.h>
 
@@ -1060,4 +1060,4 @@
 #define glWindowPos3s glad_glWindowPos3s
 #define glWindowPos3sv glad_glWindowPos3sv
 
-#endif//SON8_OVERGLAD_GLAD_SON8_DEFINE_GLOBAL_H
+#endif // INCLUDE GUARD

@@ -6,8 +6,8 @@
  * splitted into separate headers: define (macros,values), header, loader and source
  *      by Oleg'Ease'Kharchuk
  */
-#ifndef SON8_OVERGLAD_GLAD_SON8_DEFINE_VALUES_H
-#define SON8_OVERGLAD_GLAD_SON8_DEFINE_VALUES_H
+#ifndef GLAD_SON8_DEFINE_VALUES_H
+#define GLAD_SON8_DEFINE_VALUES_H
 
 #define GL_2D 0x0600
 #define GL_2_BYTES 0x1407
@@ -1818,4 +1818,4 @@
 #define GL_ZOOM_X 0x0D16
 #define GL_ZOOM_Y 0x0D17
 
-#endif//SON8_OVERGLAD_GLAD_SON8_DEFINE_VALUES_H
+#endif // INCLUDE GUARD
