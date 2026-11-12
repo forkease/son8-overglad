@@ -3,6 +3,13 @@
 
 ## Branch: glad
 
+### v0.0.8 - 2026-11-12
+
+#### Fixed
+
+- `GLAPI` and `GLAPIENTRY` macros not exposed when including only split header (useful for example for debug callback)
+- incorrect inclusion of extern "C" for C compilers
+
 ### v0.0.7 - 2026-11-05
 > Breaking change
 
