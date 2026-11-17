@@ -8,7 +8,7 @@
 #define      SON8_OVERGLAD_VERSION_2_1
 #define      SON8_OVERGLAD_VERSION_3_3
 #define     SON8_OVERGLAD_PROFILE_COMP
-#define SON8_OVERGLAD_VERSION 0x0303CB
+#define SON8_OVERGLAD_VERSION 0x0303CBu
 #include      <son8/overglad/v1_1.hxx>
 #include      <son8/overglad/v1_5.hxx>
 #include      <son8/overglad/v2_1.hxx>

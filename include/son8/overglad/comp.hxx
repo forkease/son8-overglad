@@ -10,7 +10,7 @@
 #define      SON8_OVERGLAD_VERSION_4_3
 #define      SON8_OVERGLAD_VERSION_4_6
 #define     SON8_OVERGLAD_PROFILE_COMP
-#define SON8_OVERGLAD_VERSION 0x0406CB
+#define SON8_OVERGLAD_VERSION 0x0406CBu
 #include      <son8/overglad/v1_1.hxx>
 #include      <son8/overglad/v1_5.hxx>
 #include      <son8/overglad/v2_1.hxx>
