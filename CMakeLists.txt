@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.8...3.27 )
-project( overglad VERSION 0.9.0 LANGUAGES CXX )
+project( overglad VERSION 0.9.1 LANGUAGES CXX )
 set( SON8_LIB son8__${PROJECT_NAME} )
 # is definitions of glad opengl macros should be included
 option( SON8_OVERGLAD_INCLUDE_DEPRECATED "Enable glad and [[deprecated]] overglad entities" OFF )

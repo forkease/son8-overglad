@@ -9,7 +9,7 @@
 #define      SON8_OVERGLAD_VERSION_3_3
 #define      SON8_OVERGLAD_VERSION_4_3
 #define     SON8_OVERGLAD_PROFILE_CORE
-#define SON8_OVERGLAD_VERSION 0x0403CE
+#define SON8_OVERGLAD_VERSION 0x0403CEu
 #include      <son8/overglad/v1_1.hxx>
 #include      <son8/overglad/v1_5.hxx>
 #include      <son8/overglad/v2_1.hxx>
@@ -536,7 +536,7 @@ namespace son8::overglad {
     { glObjectPtrLabel( ptr, length, label ); }
     SON8_OVERGLAD_DEPR get_debug_message_log( GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types,
         GLuint *ids, GLenum *severities, GLsizei *lengths, GLchar *messageLog )
-    { glGetDebugMessageLog( count, bufSize, sources, types, ids, severities, lengths, messageLog ); }
+    { return glGetDebugMessageLog( count, bufSize, sources, types, ids, severities, lengths, messageLog ); }
     SON8_OVERGLAD_DEPR get_object_label( GLenum identifier, GLuint name, GLsizei bufSize, GLsizei *length, GLchar *label )
     { glGetObjectLabel( identifier, name, bufSize, length, label ); }
     SON8_OVERGLAD_DEPR get_object_ptr_label( GLvoid *ptr, GLsizei bufSize, GLsizei *length, GLchar *label )

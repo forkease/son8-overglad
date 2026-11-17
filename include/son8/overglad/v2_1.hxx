@@ -7,7 +7,7 @@
 #define      SON8_OVERGLAD_VERSION_1_5
 #define      SON8_OVERGLAD_VERSION_2_1
 #define     SON8_OVERGLAD_PROFILE_NONE
-#define SON8_OVERGLAD_VERSION 0x020100
+#define SON8_OVERGLAD_VERSION 0x020100u
 #include      <son8/overglad/v1_1.hxx>
 #include      <son8/overglad/v1_5.hxx>
 #endif         //SON8_OVERGLAD_DEFINED
@@ -193,6 +193,7 @@ namespace son8::overglad {
         static constexpr bool Is_Program = std::is_same_v< Target, types::Program >;
         static_assert( Is_Shader or Is_Program
             , "son8::overglad: info() required as a target Shader or Program types" );
+        using Size = decltype( log.size( ));
         auto prevSize = log.size( );
 
         if ( not log.append( prepend ) or not log.left( )) { return false; }
@@ -210,7 +211,7 @@ namespace son8::overglad {
         // \ log writes nothing, remove header
         if ( not written) { return log.truncate( prevSize ); }
 
-        bool result = log.commit( written );
+        bool result = log.commit( static_cast< Size >( written ));
         // NOTE: sometimes driver returns info log without new line character
         // \ do not like this behavior on some usage of log display, so fix this here
         if ( result and log.left( ) and log.view( ).back() != '\n' ) {

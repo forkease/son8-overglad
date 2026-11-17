@@ -8,7 +8,7 @@
 #define      SON8_OVERGLAD_VERSION_2_1
 #define      SON8_OVERGLAD_VERSION_3_3
 #define     SON8_OVERGLAD_PROFILE_CORE
-#define SON8_OVERGLAD_VERSION 0x0303CE
+#define SON8_OVERGLAD_VERSION 0x0303CEu
 #include      <son8/overglad/v1_1.hxx>
 #include      <son8/overglad/v1_5.hxx>
 #include      <son8/overglad/v2_1.hxx>
@@ -432,7 +432,7 @@ namespace son8::overglad {
     { glTexParameterIuiv( target, pname, params ); }
     SON8_OVERGLAD_DEPR generate_mipmap( GLenum target )
     { glGenerateMipmap( target ); }
-    SON8_OVERGLAD_DEPR bind_frag_data_location( GLuint program, GLuint colorNumber, GLint index, GLchar const *name )
+    SON8_OVERGLAD_DEPR bind_frag_data_location( GLuint program, GLuint colorNumber, GLuint index, GLchar const *name )
     { glBindFragDataLocationIndexed( program, colorNumber, index, name ); }
     SON8_OVERGLAD_DEPR bind_frag_data_location( GLuint program, GLuint colorNumber, GLchar const *name )
     { glBindFragDataLocation( program, colorNumber, name ); }

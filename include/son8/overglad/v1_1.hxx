@@ -5,7 +5,7 @@
 #define          SON8_OVERGLAD_DEFINED
 #define      SON8_OVERGLAD_VERSION_1_1
 #define     SON8_OVERGLAD_PROFILE_NONE
-#define SON8_OVERGLAD_VERSION 0x010100
+#define SON8_OVERGLAD_VERSION 0x010100u
 #endif         //SON8_OVERGLAD_DEFINED
 
 #include <son8/overglad.hxx>
@@ -587,7 +587,7 @@ namespace son8::overglad {
 
     SON8_OVERGLAD_PROC index_mask( GLuint mask ) noexcept
     { glad_glIndexMask( mask ); }
-    SON8_OVERGLAD_PROC clear_index( GLuint index ) noexcept
+    SON8_OVERGLAD_PROC clear_index( GLfloat index ) noexcept
     { glad_glClearIndex( index ); }
     SON8_OVERGLAD_PROC clear_accum( GLfloat r, GLfloat g, GLfloat b, GLfloat a ) noexcept
     { glad_glClearAccum( r, g, b, a ); }
@@ -948,8 +948,6 @@ namespace son8::overglad {
     { glDrawBuffer( buf ); }
     SON8_OVERGLAD_DEPR clear( GLbitfield buf )
     { glClear( buf ); }
-    SON8_OVERGLAD_DEPR clear_index( GLfloat index )
-    { glClearIndex( index ); }
     SON8_OVERGLAD_DEPR accum( GLenum op, GLfloat value )
     { glAccum( op, value ); }
     SON8_OVERGLAD_DEPR read_pixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *data )

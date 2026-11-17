@@ -3,6 +3,14 @@
 
 ## Branch: main
 
+### `v0.9.1` - 2026-11-12
+
+#### Added
+- shader sources passing via `source()` and `sources` procedures
+
+#### Fixed
+- merge glad `v0.0.8` changes
+
 ### `v0.9.0` - 2026-11-05
 > TODO: changes description
 

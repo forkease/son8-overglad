@@ -11,7 +11,7 @@
 #define      SON8_OVERGLAD_VERSION_4_3
 #define      SON8_OVERGLAD_VERSION_4_6
 #define     SON8_OVERGLAD_PROFILE_CORE
-#define SON8_OVERGLAD_VERSION 0x0406CE
+#define SON8_OVERGLAD_VERSION 0x0406CEu
 #endif                      // defined
 
 #include <glad/son8/gl/source.h>
@@ -884,7 +884,7 @@ namespace son8::overglad::types {
             if ( not isFullFit ) { view.remove_suffix( view.size( ) - left( )); }
 
             std::memcpy( c_writer( ), view.data( ), view.size( ));
-            commit_Unchecked( view.size( ));
+            commit_Unchecked( static_cast< Size_ >( view.size( )));
 
             return isFullFit;
         }
@@ -1550,9 +1550,9 @@ namespace son8::overglad {
     { glDisableVertexArrayAttrib( vaobj, index ); }
     SON8_OVERGLAD_DEPR vertex_array_binding_divisor( GLuint vaobj, GLuint bindingindex, GLuint divisor )
     { glVertexArrayBindingDivisor(vaobj, bindingindex, divisor ); }
-    SON8_OVERGLAD_DEPR multi_draw_arrays_indirect_count( GLenum mode, GLvoid const *indirect, GLintptr drawcount, GLintptr maxdrawcount, GLsizei stride )
+    SON8_OVERGLAD_DEPR multi_draw_arrays_indirect_count( GLenum mode, GLvoid const *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
     { glMultiDrawArraysIndirectCount( mode, indirect, drawcount, maxdrawcount, stride ); }
-    SON8_OVERGLAD_DEPR multi_draw_elements_indirect_count( GLenum mode, GLenum type, GLvoid const *indirect, GLintptr drawcount, GLintptr maxdrawcount, GLsizei stride )
+    SON8_OVERGLAD_DEPR multi_draw_elements_indirect_count( GLenum mode, GLenum type, GLvoid const *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride )
     { glMultiDrawElementsIndirectCount( mode, type, indirect, drawcount, maxdrawcount, stride ); }
     SON8_OVERGLAD_DEPR get_vertex_array( GLuint vaobj, GLenum pname, GLint *param )
     { glGetVertexArrayiv( vaobj, pname, param ); }
