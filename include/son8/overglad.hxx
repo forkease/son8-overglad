@@ -991,12 +991,12 @@ namespace son8::overglad::state {
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // -- core
     using PointSize                     = Get_< 0x0B11, GLfloat >;
-    using PointSizeRange                = Get_< 0x0B12, GLfloat, 2u >;
-    using PointSizeGranularity          = Get_< 0x0B13, GLfloat >;
+    using SmoothPointSizeRange          = Get_< 0x0B12, GLfloat, 2u >;
+    using SmoothPointSizeGranularity    = Get_< 0x0B13, GLfloat >;
     using LineSmooth                    = Get_< 0x0B20, GLboolean >;
     using LineWidth                     = Get_< 0x0B21, GLfloat >;
-    using LineWidthRange                = Get_< 0x0B22, GLfloat, 2 >;
-    using LineWidthGranularity          = Get_< 0x0B23, GLfloat >;
+    using SmoothLineWidthRange          = Get_< 0x0B22, GLfloat, 2 >;
+    using SmoothLineWidthGranularity    = Get_< 0x0B23, GLfloat >;
     using PolygonMode                   = Get_< 0x0B40, GLint, 2u >;
     using PolygonSmooth                 = Get_< 0x0B41, GLboolean >;
     using CullFace                      = Get_< 0x0B44, GLboolean >;
@@ -1217,24 +1217,50 @@ namespace son8::overglad::state {
 // version 1.5 states
 #ifdef SON8_OVERGLAD_VERSION_1_5
     // core
+    using BlendColor                        = Get_< 0x8005, GLfloat, 4u >;
+    using BlendEquation                     = Get_< 0x8009, GLint >;
+    using TextureBinding3D                  = Get_< 0x806A, GLint >;
+    using PackSkipImages                    = Get_< 0x806B, GLint >;
+    using PackImageHeight                   = Get_< 0x806C, GLint >;
+    using UnpackSkipImages                  = Get_< 0x806D, GLint >;
+    using UnpackImageHeight                 = Get_< 0x806E, GLint >;
     using Multisample                       = Get_< 0x809D, GLboolean >;
     using SampleAlphaToCoverage             = Get_< 0x809E, GLboolean >;
     using SampleAlphaToOne                  = Get_< 0x809F, GLboolean >;
+    using BlendDstRGB                       = Get_< 0x80C8, GLint >;
+    using BlendSrcRGB                       = Get_< 0x80C9, GLint >;
+    using BlendDstAlpha                     = Get_< 0x80CA, GLint >;
+    using BlendSrcAlpha                     = Get_< 0x80CB, GLint >;
     using SampleCoverage                    = Get_< 0x80A0, GLboolean >;
+    using SampleBuffers                     = Get_< 0x80A8, GLint >;
+    using Samples                           = Get_< 0x80A8, GLint >;
     using SampleCoverageValue               = Get_< 0x80AA, GLint >;
     using SampleCoverageInvert              = Get_< 0x80AB, GLboolean >;
+    using MaxElementsVertices               = Get_< 0x80E8, GLint >;
+    using MaxElementsIndices                = Get_< 0x80E9, GLint >;
+    using AliasedLineWidthRange             = Get_< 0x846E, GLfloat, 2u >;
+    using ActiveTexture                     = Get_< 0x84E0, GLint >;
+    using MaxTextureUnits                   = Get_< 0x84E2, GLint >;
+    using MaxTextureLODbias                 = Get_< 0x84FD, GLfloat >;
+    using TextureBindingCubeMap             = Get_< 0x8514, GLint >;
+    using MaxCubeMapTextureSize             = Get_< 0x8514, GLint >;
+    using NumCompressedTextureFormats       = Get_< 0x86A2, GLint >;
+    using CompressedTextureFormats          = Get_< 0x86A3, GLint >;
     using ElementArrayBufferBinding         = Get_< 0x8895, GLint >;
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // compatibility
     using RescaleNormal                     = Get_< 0x803A, GLboolean >;
+    using Texture3D                         = Get_< 0x806F, GLboolean >;
     using PointSizeMin                      = Get_< 0x8126, GLfloat >;
     using PointSizeMax                      = Get_< 0x8127, GLfloat >;
     using PointDistanceAttenuation          = Get_< 0x8129, GLfloat, 3u >;
+    using GenerateMipmapHint                = Get_< 0x81F8, GLint >;
     using LightModelColorControl            = Get_< 0x81F8, GLint >;
     using CurrentFogCoord                   = Get_< 0x8453, GLfloat, 3u >;
     using CurrentSecondaryColor             = Get_< 0x8459, GLfloat >;
     using CurrentRasterSecondaryColor       = Get_< 0x845F, GLfloat, 4u >;
     using ClientActiveTexture               = Get_< 0x84E1, GLint >;
+    using TextureCompressionHint            = Get_< 0x84EF, GLint >;
     using FogCoordSrc                       = Get_< 0x8450, GLint >;
     using FogCoordArrayType                 = Get_< 0x8454, GLint >;
     using FogCoordArrayStride               = Get_< 0x8455, GLint >;
@@ -1244,9 +1270,11 @@ namespace son8::overglad::state {
     using SecondaryColorArrayType           = Get_< 0x845B, GLint >;
     using SecondaryColorArrayStride         = Get_< 0x845C, GLint >;
     using SecondaryColorArray               = Get_< 0x845E, GLboolean >;
+    using AliasedPointSizeRange             = Get_< 0x846D, GLfloat, 2u >;
     using TransposeModelviewMatrix          = Get_< 0x84E3, GLfloat, 16u >;
     using TransposeProjectionMatrix         = Get_< 0x84E4, GLfloat, 16u >;
     using TransposeTextureMatrix            = Get_< 0x84E5, GLfloat, 16u >;
+    using TextureCubeMap                    = Get_< 0x8513, GLboolean >;
     using VertexArrayBufferBinding          = Get_< 0x8896, GLint >;
     using NormalArrayBufferBinding          = Get_< 0x8897, GLint >;
     using ColorArrayBufferBinding           = Get_< 0x8898, GLint >;
