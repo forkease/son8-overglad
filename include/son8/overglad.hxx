@@ -1,6 +1,8 @@
 #ifndef SON8_OVERGLAD_HXX
 #define SON8_OVERGLAD_HXX
-
+// NOTE: Always check for compatibility profile
+// \ as not defined SON8_OVERGLAD_CORE because
+// \ there are also none profile (versions 1.1, 1.5, and 2.1)
 #ifndef          SON8_OVERGLAD_DEFINED
 #define          SON8_OVERGLAD_DEFINED
 #define          SON8_OVERGLAD_INCLUDE
@@ -985,7 +987,7 @@ namespace son8::overglad::state {
         auto begin( ) & noexcept -> Type * { return data( ); }
         auto end( ) & noexcept -> Type * { return data( ) + Count; }
     }; // class `Getter_`
-    // version 1.1 states
+// version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // -- core
     using PointSize                     = Get_< 0x0B11, GLfloat >;
@@ -1063,8 +1065,8 @@ namespace son8::overglad::state {
     using PolygonOffsetFactor           = Get_< 0x8038, GLfloat >;
     using TextureBinding1D              = Get_< 0x8068, GLint >;
     using TextureBinding2D              = Get_< 0x8069, GLint >;
-    // -- compatibility
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // -- compatibility
     using CurrentColor                  = Get_< 0x0B00, GLfloat, 4u >;
     using CurrentIndex                  = Get_< 0x0B01, GLint >;
     using CurrentNormal                 = Get_< 0x0B02, GLfloat, 3u >;
@@ -1212,6 +1214,78 @@ namespace son8::overglad::state {
     using EdgeFlagArrayStride           = Get_< 0x808C, GLint >;
 #   endif // not core profile
 #endif // version 1.1 states
+// version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+    // core
+    using Multisample                       = Get_< 0x809D, GLboolean >;
+    using SampleAlphaToCoverage             = Get_< 0x809E, GLboolean >;
+    using SampleAlphaToOne                  = Get_< 0x809F, GLboolean >;
+    using SampleCoverage                    = Get_< 0x80A0, GLboolean >;
+    using SampleCoverageValue               = Get_< 0x80AA, GLint >;
+    using SampleCoverageInvert              = Get_< 0x80AB, GLboolean >;
+    using ElementArrayBufferBinding         = Get_< 0x8895, GLint >;
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+    using RescaleNormal                     = Get_< 0x803A, GLboolean >;
+    using PointSizeMin                      = Get_< 0x8126, GLfloat >;
+    using PointSizeMax                      = Get_< 0x8127, GLfloat >;
+    using PointDistanceAttenuation          = Get_< 0x8129, GLfloat, 3u >;
+    using LightModelColorControl            = Get_< 0x81F8, GLint >;
+    using CurrentFogCoord                   = Get_< 0x8453, GLfloat, 3u >;
+    using CurrentSecondaryColor             = Get_< 0x8459, GLfloat >;
+    using CurrentRasterSecondaryColor       = Get_< 0x845F, GLfloat, 4u >;
+    using ClientActiveTexture               = Get_< 0x84E1, GLint >;
+    using FogCoordSrc                       = Get_< 0x8450, GLint >;
+    using FogCoordArrayType                 = Get_< 0x8454, GLint >;
+    using FogCoordArrayStride               = Get_< 0x8455, GLint >;
+    using FogCoordArray                     = Get_< 0x8457, GLboolean >;
+    using ColorSum                          = Get_< 0x8458, GLboolean >;
+    using SecondaryColorArraySize           = Get_< 0x845A, GLint >;
+    using SecondaryColorArrayType           = Get_< 0x845B, GLint >;
+    using SecondaryColorArrayStride         = Get_< 0x845C, GLint >;
+    using SecondaryColorArray               = Get_< 0x845E, GLboolean >;
+    using TransposeModelviewMatrix          = Get_< 0x84E3, GLfloat, 16u >;
+    using TransposeProjectionMatrix         = Get_< 0x84E4, GLfloat, 16u >;
+    using TransposeTextureMatrix            = Get_< 0x84E5, GLfloat, 16u >;
+    using VertexArrayBufferBinding          = Get_< 0x8896, GLint >;
+    using NormalArrayBufferBinding          = Get_< 0x8897, GLint >;
+    using ColorArrayBufferBinding           = Get_< 0x8898, GLint >;
+    using IndexArrayBufferBinding           = Get_< 0x8899, GLint >;
+    using TextureCoordArrayBufferBinding    = Get_< 0x889A, GLint >;
+    using EdgeFlagArrayBufferBinding        = Get_< 0x889B, GLint >;
+    using SecondaryColorArrayBufferBinding  = Get_< 0x889C, GLint >;
+    using FogCoordArrayBufferBinding        = Get_< 0x889D, GLint >;
+
+#   endif // not core profile
+#endif // version 1.5 states
+// version 2.1 states
+#ifdef SON8_OVERGLAD_VERSION_2_1
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 2.1 states
+// version 3.3 states
+#ifdef SON8_OVERGLAD_VERSION_3_3
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 3.3 states
+// version 4.3 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 4.3 states
+// version 4.6 states
+#ifdef SON8_OVERGLAD_VERSION_4_6
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 4.6 states
 
 } // namespace `son8::overglad::state`
 
