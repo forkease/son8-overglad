@@ -1218,7 +1218,7 @@ namespace son8::overglad::state {
 #ifdef SON8_OVERGLAD_VERSION_1_5
     // core
     using BlendColor                        = Get_< 0x8005, GLfloat, 4u >;
-    using BlendEquation                     = Get_< 0x8009, GLint >;
+    using BlendEquationRGB                  = Get_< 0x8009, GLint >;
     using TextureBinding3D                  = Get_< 0x806A, GLint >;
     using PackSkipImages                    = Get_< 0x806B, GLint >;
     using PackImageHeight                   = Get_< 0x806C, GLint >;
@@ -1240,7 +1240,6 @@ namespace son8::overglad::state {
     using MaxElementsIndices                = Get_< 0x80E9, GLint >;
     using AliasedLineWidthRange             = Get_< 0x846E, GLfloat, 2u >;
     using ActiveTexture                     = Get_< 0x84E0, GLint >;
-    using MaxTextureUnits                   = Get_< 0x84E2, GLint >;
     using MaxTextureLODbias                 = Get_< 0x84FD, GLfloat >;
     using TextureBindingCubeMap             = Get_< 0x8514, GLint >;
     using MaxCubeMapTextureSize             = Get_< 0x8514, GLint >;
@@ -1271,6 +1270,7 @@ namespace son8::overglad::state {
     using SecondaryColorArrayStride         = Get_< 0x845C, GLint >;
     using SecondaryColorArray               = Get_< 0x845E, GLboolean >;
     using AliasedPointSizeRange             = Get_< 0x846D, GLfloat, 2u >;
+    using MaxTextureUnits                   = Get_< 0x84E2, GLint >;
     using TransposeModelviewMatrix          = Get_< 0x84E3, GLfloat, 16u >;
     using TransposeProjectionMatrix         = Get_< 0x84E4, GLfloat, 16u >;
     using TransposeTextureMatrix            = Get_< 0x84E5, GLfloat, 16u >;
@@ -1289,8 +1289,38 @@ namespace son8::overglad::state {
 // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_2_1
     // core
+    using VertexProgramPointSize        = Get_< 0x8642, GLboolean >;
+    using StencilBackFunc               = Get_< 0x8800, GLint >;
+    using StencilBackFail               = Get_< 0x8801, GLint >;
+    using StencilBackPassDepthFail      = Get_< 0x8802, GLint >;
+    using StencilBackPassDepthPass      = Get_< 0x8803, GLint >;
+    using MaxDrawBuffers                = Get_< 0x8824, GLint >;
+
+    // TODO: `DRAW_BUFFER_i (0-15) 0x8825-0x8834`
+
+    using BlendEquationAlpha            = Get_< 0x883D, GLint >;
+    using MaxVertexAttribs              = Get_< 0x8869, GLint >;
+    using MaxTextureImageUnits          = Get_< 0x8872, GLint >;
+    using PixelPackBufferBinding        = Get_< 0x88ED, GLint >;
+    using PixelUnpackBufferBinding      = Get_< 0x88EF, GLint >;
+    using MaxFragmentUniformComponents  = Get_< 0x8B49, GLint >;
+    using MaxVertexUniformComponents    = Get_< 0x8B4A, GLint >;
+    using MaxVaryingFloats              = Get_< 0x8B4B, GLint >;
+    using MaxVertexTextureImageUnits    = Get_< 0x8B4C, GLint >;
+    using MaxCombinedTextureImageUnits  = Get_< 0x8B4D, GLint >;
+    using FragmentShaderDerivativeHint  = Get_< 0x8B8B, GLint >;
+    using ShadingLanguageVersion        = Get_< 0x8B8C, std::string_view >;
+    using CurrentProgram                = Get_< 0x8B8D, GLint >;
+    using PointSpriteColorOrigin        = Get_< 0x8CA0, GLint >;
+    using StencilBackRef                = Get_< 0x8CA3, GLint >;
+    using StencilBackValueMask          = Get_< 0x8CA4, GLint >;
+
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // compatibility
+    using CurrentRasterSecondaryColor   = Get_< 0x845F, GLfloat, 4u >;
+    using VertexProgramTwoSide          = Get_< 0x8643, GLboolean >;
+    using MaxTextureCoords              = Get_< 0x8871, GLint >;
+    using PointSprite                   = Get_< 0x8861, GLboolean >;
 #   endif // not core profile
 #endif // version 2.1 states
 // version 3.3 states
