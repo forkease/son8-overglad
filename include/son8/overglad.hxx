@@ -936,7 +936,8 @@ namespace son8::overglad::types {
 
 
 namespace son8::overglad::state {
-
+    // NOTE: right now only `GetString, GetBoolean, GetInteger`,
+    // \ `GetInteger64, GetFloat` should be covered by `Get_` class
     template< GLenum Param, typename Type, unsigned Count = 1u >
     class Get_ final {
         static_assert( Count, "Getter required to have at least 1 value" );
@@ -1233,7 +1234,7 @@ namespace son8::overglad::state {
     using BlendSrcAlpha                     = Get_< 0x80CB, GLint >;
     using SampleCoverage                    = Get_< 0x80A0, GLboolean >;
     using SampleBuffers                     = Get_< 0x80A8, GLint >;
-    using Samples                           = Get_< 0x80A8, GLint >;
+    using Samples                           = Get_< 0x80A9, GLint >;
     using SampleCoverageValue               = Get_< 0x80AA, GLint >;
     using SampleCoverageInvert              = Get_< 0x80AB, GLboolean >;
     using MaxElementsVertices               = Get_< 0x80E8, GLint >;
@@ -1314,6 +1315,7 @@ namespace son8::overglad::state {
     using PointSpriteColorOrigin        = Get_< 0x8CA0, GLint >;
     using StencilBackRef                = Get_< 0x8CA3, GLint >;
     using StencilBackValueMask          = Get_< 0x8CA4, GLint >;
+    using StencilBackWriteMask          = Get_< 0x8CA5, GLint >;
 
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // compatibility
@@ -1326,8 +1328,72 @@ namespace son8::overglad::state {
 // version 3.3 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
     // core
+    using MajorVersion                              = Get_< 0x821B, GLint >;
+    using MinorVersion                              = Get_< 0x821C, GLint >;
+    using NumExtensions                             = Get_< 0x821D, GLint >;
+    using MaxRenderBufferSize                       = Get_< 0x84E8, GLint >;
+    using TextureBindingRectangle                   = Get_< 0x84F6, GLint >;
+    using MaxRectangleTextureSize                   = Get_< 0x84F8, GLint >;
+    using VertexArrayBinding                        = Get_< 0x85B5, GLint >;
+    using DepthClamp                                = Get_< 0x864F, GLboolean >;
+    using TextureCubeMapSeamless                    = Get_< 0x884F, GLboolean >;
+    using ArrayBufferBinding                        = Get_< 0x8894, GLint >;
+    using MaxDualSourceDrawBuffers                  = Get_< 0x88FC, GLint >;
+    using MaxArrayTextureLayers                     = Get_< 0x88FF, GLint >;
+    using MinProgramTexelOffset                     = Get_< 0x8904, GLint >;
+    using MaxProgramTexelOffset                     = Get_< 0x8905, GLint >;
+    using SamplerBinding                            = Get_< 0x8919, GLint >;
+    using ClampReadColor                            = Get_< 0x891C, GLint >;
+    using UniformBufferBinding                      = Get_< 0x8A28, GLint >;
+    using MaxVertexUniformBlocks                    = Get_< 0x8A2B, GLint >;
+    using MaxGeometryUniformBlocks                  = Get_< 0x8A2C, GLint >;
+    using MaxFragmentUniformBlocks                  = Get_< 0x8A2D, GLint >;
+    using MaxCombinedUniformBlocks                  = Get_< 0x8A2E, GLint >;
+    using MaxUniformBufferBindings                  = Get_< 0x8A2F, GLint >;
+    using MaxUniformBlockSize                       = Get_< 0x8A30, GLint >;
+    using MaxCombinedVertexUniformComponents        = Get_< 0x8A31, GLint >;
+    using MaxCombinedGeometryUniformComponents      = Get_< 0x8A32, GLint >;
+    using MaxCombinedFragmentUniformComponents      = Get_< 0x8A33, GLint >;
+    using UniformBufferOffsetAlignment              = Get_< 0x8A34, GLint >;
+    using MaxVaryingComponets                       = Get_< 0x8B4B, GLint >;
+    using TextureBinding1Darray                     = Get_< 0x8C1C, GLint >;
+    using TextureBinding2Darray                     = Get_< 0x8C1D, GLint >;
+    using MaxGeometryTextureImageUnits              = Get_< 0x8C29, GLint >;
+    using MaxTextureBufferSize                      = Get_< 0x8C2B, GLint >;
+    using TextureBindingBuffer                      = Get_< 0x8C2C, GLint >;
+    using MaxTransformFeedbackSeparateComponents    = Get_< 0x8C80, GLint >;
+    using MaxTransformFeedbackInterleavedComponents = Get_< 0x8C8A, GLint >;
+    using MaxTransformFeedbackSeparateAttribs       = Get_< 0x8C8B, GLint >;
+    using TransformFeedbackBufferBinding            = Get_< 0x8C8F, GLint >;
+    using DrawFramebufferBinding                    = Get_< 0x8CA6, GLint >;
+    using RenderbufferBinding                       = Get_< 0x8CA7, GLint >;
+    using ReadFramebufferBinding                    = Get_< 0x8CAA, GLint >;
+    using MaxColorAttachments                       = Get_< 0x8CDF, GLint >;
+    using MaxSamples                                = Get_< 0x8D57, GLint >;
+    using FramebufferSRGB                           = Get_< 0x8DB9, GLboolean >;
+    using MaxGeometryOutputVertices                 = Get_< 0x8DE0, GLint >;
+    using MaxGeometryTotalOutputComponents          = Get_< 0x8DE1, GLint >;
+    using QuadsFollowProvokingVertexConvention      = Get_< 0x8E4C, GLint >;
+    using ProvokingVertex                           = Get_< 0x8E4F, GLint >;
+    using SampleMask                                = Get_< 0x8E51, GLboolean >;
+    using MaxSampleMaskWords                        = Get_< 0x8E59, GLint >;
+    using CopyReadBuffer                            = Get_< 0x8F36, GLint >;
+    using CopyWriteBuffer                           = Get_< 0x8F37, GLint >;
+    using PrimitiveRestart                          = Get_< 0x8F9D, GLboolean >;
+    using PrimitiveRestartIndex                     = Get_< 0x8F9E, GLint >;
+    using TextureBinding2Dmultisample               = Get_< 0x9104, GLint >;
+    using TextureBinding2DmultisampleArray          = Get_< 0x9105, GLint >;
+    using MaxColorTextureSamples                    = Get_< 0x910E, GLint >;
+    using MaxDepthTextureSamples                    = Get_< 0x910F, GLint >;
+    using MaxIntegerSamples                         = Get_< 0x9110, GLint >;
+    using MaxServerWaitTimeout                      = Get_< 0x9111, GLint64 >;
+    using MaxGeometryInputComponents                = Get_< 0x9123, GLint >;
+    using MaxGeometryOutputComponents               = Get_< 0x9124, GLint >;
+    using MaxFragmentInputComponents                = Get_< 0x9125, GLint >;
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // compatibility
+    using ClampVertexColor                          = Get_< 0x891A, GLint >;
+    using ClampFragmentColor                        = Get_< 0x891B, GLint >;
 #   endif // not core profile
 #endif // version 3.3 states
 // version 4.3 states
