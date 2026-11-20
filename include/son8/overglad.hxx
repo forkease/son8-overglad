@@ -505,6 +505,8 @@ namespace son8::overglad::enums {
 #endif // version 1.5
 } // namespace son8::overglad::enums
 namespace son8::overglad::types {
+    using View       = std::string_view;
+    using Array2f    = std::array< GLfloat, 2 >;
 #ifndef SON8_OVERGLAD_PROFILE_CORE
     // `size 1`
     using Array1i    = std::array< GLint, 1 >;
@@ -516,7 +518,7 @@ namespace son8::overglad::types {
     // `size 2`
     using Array2i    = std::array< GLint, 2 >;
     using Array2s    = std::array< GLshort, 2 >;
-    using Array2f    = std::array< GLfloat, 2 >;
+
     using Array2d    = std::array< GLdouble, 2 >;
     // `size 3`
     using Array3i    = std::array< GLint, 3 >;
@@ -994,7 +996,7 @@ namespace son8::overglad::state {
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // -- core
     using PointSize                     = Get_< 0x0B11, GLfloat >;
-    using PointSizeRange          = Get_< 0x0B12, GLfloat, 2u >;
+
     using PointSizeGranularity    = Get_< 0x0B13, GLfloat >;
     using LineSmooth                    = Get_< 0x0B20, GLboolean >;
     using LineWidth                     = Get_< 0x0B21, GLfloat >;
@@ -1005,7 +1007,7 @@ namespace son8::overglad::state {
     using CullFace                      = Get_< 0x0B44, GLboolean >;
     using CullFaceMode                  = Get_< 0x0B45, GLint >;
     using FrontFace                     = Get_< 0x0B46, GLint >;
-    using DepthRange                    = Get_< 0x0B70, GLfloat, 2u >;
+
     using DepthTest                     = Get_< 0x0B71, GLboolean >;
     using DepthWritemask                = Get_< 0x0B72, GLboolean >;
     using DepthClearValue               = Get_< 0x0B73, GLfloat >;
@@ -1175,7 +1177,7 @@ namespace son8::overglad::state {
 
     // TODO `MAP_1 (0x0D90-8)` and `MAP_2 (0x0DB0-8)`
 
-    using Map1GridDomain                = Get_< 0x0DD0, GLfloat, 2u >;
+
     using Map1GridSegments              = Get_< 0x0DD1, GLint >;
     using Map2GridDomain                = Get_< 0x0DD2, GLfloat, 4u >;
     using Map2GridSegments              = Get_< 0x0DD3, GLint, 2u >;
@@ -1238,7 +1240,7 @@ namespace son8::overglad::state {
     using SampleCoverageInvert              = Get_< 0x80AB, GLboolean >;
     using MaxElementsVertices               = Get_< 0x80E8, GLint >;
     using MaxElementsIndices                = Get_< 0x80E9, GLint >;
-    using AliasedLineWidthRange             = Get_< 0x846E, GLfloat, 2u >;
+
     using ActiveTexture                     = Get_< 0x84E0, GLint >;
     using MaxTextureLODbias                 = Get_< 0x84FD, GLfloat >;
     using TextureBindingCubeMap             = Get_< 0x8514, GLint >;
@@ -1269,7 +1271,7 @@ namespace son8::overglad::state {
     using SecondaryColorArrayType           = Get_< 0x845B, GLint >;
     using SecondaryColorArrayStride         = Get_< 0x845C, GLint >;
     using SecondaryColorArray               = Get_< 0x845E, GLboolean >;
-    using AliasedPointSizeRange             = Get_< 0x846D, GLfloat, 2u >;
+
     using MaxTextureUnits                   = Get_< 0x84E2, GLint >;
     using TransposeModelviewMatrix          = Get_< 0x84E3, GLfloat, 16u >;
     using TransposeProjectionMatrix         = Get_< 0x84E4, GLfloat, 16u >;
@@ -1427,7 +1429,7 @@ namespace son8::overglad::state {
     using FragmentInterpolationOffsetBits       = Get_< 0x8E5D, GLint >;
     using MaxTransformFeedbackBuffers           = Get_< 0x8E70, GLint >;
     using PatchVertices                         = Get_< 0x8E72, GLint >;
-    using PatchDefaultInnerLevel                = Get_< 0x8E73, GLfloat, 2u >;
+
     using PatchDefaultOuterLevel                = Get_< 0x8E74, GLfloat, 4u >;
     using MaxPatchVertices                      = Get_< 0x8E7D, GLint >;
     using MaxTessGenLevel                       = Get_< 0x8E7E, GLint >;
@@ -1476,27 +1478,39 @@ namespace son8::overglad::state {
     using MaxTessControlAtomicCounters          = Get_< 0x92D4, GLint >;
     using DebugOutput                           = Get_< 0x92E0, GLboolean >;
     using MaxSampleCounts                       = Get_< 0x9380, GLint >;
-
-#   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
-#   endif // not core profile
 #endif // version 4.3 states
-// version 4.6 states
-#ifdef SON8_OVERGLAD_VERSION_4_6
-    // core
-#   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
-#   endif // not core profile
-#endif // version 4.6 states
+
+
+
+
+
+
+
     // needs to be redone in more lightweight fashion, above should be removed
     // `IsEnabled`
-    enum class Boolean : GLenum {
-
-    };
     enum class Is : GLenum {};
+    enum class Boolean : GLenum {};
     enum class Boolean4 : GLenum {};
     enum class Float : GLenum {};
-    enum class Float2 : GLenum {};
+    enum class Float2 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        PointSizeRange          = 0x0B12,
+        DepthRange              = 0x0B70,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        Map1GridDomain          = 0x0DD0,
+#   endif // not core profile
+#endif // version 1.1 states
+    // version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+        AliasedLineWidthRange   = 0x846E,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        AliasedPointSizeRange   = 0x846D,
+#   endif // not core profile
+#endif // version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+        PatchDefaultInnerLevel  = 0x8E73,
+#endif // version 4.3 states
+    };
     enum class Float3 : GLenum {};
     enum class Float4 : GLenum {};
     enum class Float16 : GLenum {};
@@ -1505,63 +1519,44 @@ namespace son8::overglad::state {
     enum class Integer4 : GLenum {};
     enum class Integer64 : GLenum {};
     enum class String : GLenum {
-    // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_1
-        // core
         Vendor                  = 0x1F00,
         Renderer                = 0x1F01,
         Version                 = 0x1F02,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         Extensions              = 0x1F03,
-    // compatibility
 #   endif // not core profile
 #endif // version 1.1 states
-    // version 2.1 states
 #   ifdef SON8_OVERGLAD_VERSION_2_1
-        // core
         ShadingLanguageVersion  = 0x8B8C,
 #endif // version 2.1 states
     };
-// version 1.1 states
+
+
+
+
 #ifdef SON8_OVERGLAD_VERSION_1_1
-    // core
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
 #   endif // not core profile
 #endif // version 1.1 states
-// version 1.5 states
 #ifdef SON8_OVERGLAD_VERSION_1_5
-    // core
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
 #   endif // not core profile
 #endif // version 1.5 states
-// version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_2_1
-    // core
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
 #   endif // not core profile
 #endif // version 2.1 states
-// version 3.3 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
-    // core
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
 #   endif // not core profile
 #endif // version 3.3 states
-// version 4.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_3
-    // core
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
 #   endif // not core profile
 #endif // version 4.3 states
-// version 4.6 states
 #ifdef SON8_OVERGLAD_VERSION_4_6
-    // core
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
 #   endif // not core profile
 #endif // version 4.6 states
 
