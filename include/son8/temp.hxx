@@ -26,6 +26,16 @@ namespace son8::overglad::state {
         enum Enum : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
+            Fog                         = 0x0B60,
+            Normalize                   = 0x0BA1,
+            Clip_Distance_0                  = 0x3000,
+            Clip_Distance_1                  = 0x3001,
+            Clip_Distance_2                  = 0x3002,
+            Clip_Distance_3                  = 0x3003,
+            Clip_Distance_4                  = 0x3004,
+            Clip_Distance_5                  = 0x3005,
+            Clip_Distance_6                  = 0x3006,
+            Clip_Distance_7                  = 0x3007,
             Vertex_Array            = 0x8074,
             Normal_Array            = 0x8075,
             Color_Array             = 0x8076,
@@ -36,7 +46,9 @@ namespace son8::overglad::state {
 #endif // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_5
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
+            RescaleNormal               = 0x803A,
             Fog_Coord_Array         = 0x8457,
+            Color_Sum                    = 0x8458,
             Secondary_Color_Array   = 0x845E,
 #   endif // not core profile
 #endif // version 1.5 states
@@ -45,6 +57,8 @@ namespace son8::overglad::state {
 #   endif // not core profile
 #endif // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
+            DepthClamp                  = 0x864F,
+            Primitive_Restart            = 0x8F9D,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
 #   endif // not core profile
 #endif // version 3.3 states
@@ -53,6 +67,7 @@ namespace son8::overglad::state {
 #   endif // not core profile
 #endif // version 4.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_6
+            Primitive_Restart_Fixed_Index = 0x8D69,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
 #   endif // not core profile
 #endif // version 4.6 states
@@ -95,12 +110,6 @@ namespace son8::overglad::state {
         PackLSBfirst                = 0x0D01,
         PolygonOffsetPoint          = 0x2A01,
         PolygonOffsetLine           = 0x2A02,
-        ClipPlane0                  = 0x3000,
-        ClipPlane1                  = 0x3001,
-        ClipPlane2                  = 0x3002,
-        ClipPlane3                  = 0x3003,
-        ClipPlane4                  = 0x3004,
-        ClipPlane5                  = 0x3005,
         PolygonOffsetFill           = 0x8037,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         Current_Raster_Position_Valid   = 0x0B08,
@@ -112,8 +121,6 @@ namespace son8::overglad::state {
         LightModelLocalViewer       = 0x0B51,
         LightModelTwoSide           = 0x0B52,
         ColorMaterial               = 0x0B57,
-        Fog                         = 0x0B60,
-        Normalize                   = 0x0BA1,
         AlphaTest                   = 0x0BC0,
         IndexLogicOp                = 0x0BF1,
         IndexMode                   = 0x0C30,
@@ -144,9 +151,7 @@ namespace son8::overglad::state {
         SampleCoverage              = 0x80A0,
         SampleCoverageInvert        = 0x80AB,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-        RescaleNormal               = 0x803A,
         Texture3D                   = 0x806F,
-        ColorSum                    = 0x8458,
         TextureCubeMap              = 0x8513,
 #   endif // not core profile
 #endif // version 1.5 states
@@ -158,11 +163,9 @@ namespace son8::overglad::state {
 #   endif // not core profile
 #endif // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
-        DepthClamp                  = 0x864F,
         TextureCubeMapSeamless      = 0x884F,
         FramebufferSRGB             = 0x8DB9,
         SampleMask                  = 0x8E51,
-        PrimitiveRestart            = 0x8F9D,
 #endif // version 3.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_3
         SampleShading               = 0x8C36,
@@ -191,10 +194,10 @@ namespace son8::overglad::state {
         PolygonOffsetFactor             = 0x8038,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         Current_Raster_Distance         = 0x0B09,
-        FogIndex                        = 0x0B61,
-        FogDensity                      = 0x0B62,
-        FogStart                        = 0x0B63,
-        FogEnd                          = 0x0B64,
+        Fog_Index                        = 0x0B61,
+        Fog_Density                      = 0x0B62,
+        Fog_Start                        = 0x0B63,
+        Fog_End                          = 0x0B64,
         AlphaTestRef                    = 0x0BC2,
         IndexClearValue                 = 0x0C20,
         RedScale                        = 0x0D14,
@@ -270,7 +273,7 @@ namespace son8::overglad::state {
         Current_Raster_Texture_Coords   = 0x0B06,
         Current_Raster_Position         = 0x0B07,
         LightModelAmbient               = 0x0B53,
-        FogColor                        = 0x0B66,
+        Fog_Color                        = 0x0B66,
         AccumClearValue                 = 0x0B80,
         Map2GridDomain                  = 0x0DD2,
 #   endif // not core profile
@@ -290,16 +293,16 @@ namespace son8::overglad::state {
     enum class Float16 : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-        ModelviewMatrix           = 0x0BA6,
-        ProjectionMatrix          = 0x0BA7,
-        TextureMatrix             = 0x0BA8,
+        Modelview_Matrix           = 0x0BA6,
+        Projection_Matrix          = 0x0BA7,
+        Texture_Matrix             = 0x0BA8,
 #   endif // not core profile
 #endif // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_5
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-        TransposeModelviewMatrix  = 0x84E3,
-        TransposeProjectionMatrix = 0x84E4,
-        TransposeTextureMatrix    = 0x84E5,
+        Transpose_Modelview_Matrix  = 0x84E3,
+        Transpose_Projection_Matrix = 0x84E4,
+        Transpose_Texture_Matrix    = 0x84E5,
 #   endif // not core profile
 #endif // version 1.5 states
     };
@@ -346,14 +349,14 @@ namespace son8::overglad::state {
         MaxListNesting                              = 0x0B31,
         ListBase                                    = 0x0B32,
         ListIndex                                   = 0x0B33,
-        ShadeModel                                  = 0x0B54,
+        Shade_Model                                  = 0x0B54,
         ColorMaterialFace                           = 0x0B55,
         ColorMaterialParameter                      = 0x0B56,
-        FogMode                                     = 0x0B65,
-        MatrixMode                                  = 0x0BA0,
-        ModelviewStackDepth                         = 0x0BA3,
-        ProjectionStackDepth                        = 0x0BA4,
-        TextureStackDepth                           = 0x0BA5,
+        Fog_Mode                                     = 0x0B65,
+        Matrix_Mode                                  = 0x0BA0,
+        Modelview_Stack_Depth                         = 0x0BA3,
+        Projection_Stack_Depth                        = 0x0BA4,
+        Texture_Stack_Depth                           = 0x0BA5,
         AttribStackDepth                            = 0x0BB0,
         ClientAttribStackDepth                      = 0x0BB1,
         AlphaTestFunc                               = 0x0BC1,
@@ -431,9 +434,9 @@ namespace son8::overglad::state {
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         GenerateMipmapHint                          = 0x81F8,
         LightModelColorControl                      = 0x81F8,
-        ClientActiveTexture                         = 0x84E1,
+        Client_Active_Texture                         = 0x84E1,
         TextureCompressionHint                      = 0x84EF,
-        FogCoordSrc                                 = 0x8450,
+        Fog_Coord_Src                                 = 0x8450,
         Fog_Coord_Array_Type                           = 0x8454,
         Fog_Coord_Array_Stride                         = 0x8455,
         Secondary_Color_Array_Size                     = 0x845A,
@@ -483,14 +486,14 @@ namespace son8::overglad::state {
         MaxRenderBufferSize                         = 0x84E8,
         TextureBindingRectangle                     = 0x84F6,
         MaxRectangleTextureSize                     = 0x84F8,
-        VertexArrayBinding                          = 0x85B5,
-        ArrayBufferBinding                          = 0x8894,
+        Vertex_Array_Binding                          = 0x85B5,
+        Array_Buffer_Binding                          = 0x8894,
         MaxDualSourceDrawBuffers                    = 0x88FC,
         MaxArrayTextureLayers                       = 0x88FF,
         MinProgramTexelOffset                       = 0x8904,
         MaxProgramTexelOffset                       = 0x8905,
         SamplerBinding                              = 0x8919,
-        ClampReadColor                              = 0x891C,
+        Clamp_Read_Color                              = 0x891C,
         UniformBufferBinding                        = 0x8A28,
         MaxVertexUniformBlocks                      = 0x8A2B,
         MaxGeometryUniformBlocks                    = 0x8A2C,
@@ -511,7 +514,7 @@ namespace son8::overglad::state {
         MaxTransformFeedbackSeparateComponents      = 0x8C80,
         MaxTransformFeedbackInterleavedComponents   = 0x8C8A,
         MaxTransformFeedbackSeparateAttribs         = 0x8C8B,
-        TransformFeedbackBufferBinding              = 0x8C8F,
+        Transform_Feedback_Buffer_Binding              = 0x8C8F,
         DrawFramebufferBinding                      = 0x8CA6,
         RenderbufferBinding                         = 0x8CA7,
         ReadFramebufferBinding                      = 0x8CAA,
@@ -520,11 +523,11 @@ namespace son8::overglad::state {
         MaxGeometryOutputVertices                   = 0x8DE0,
         MaxGeometryTotalOutputComponents            = 0x8DE1,
         QuadsFollowProvokingVertexConvention        = 0x8E4C,
-        ProvokingVertex                             = 0x8E4F,
+        Provoking_Vertex                             = 0x8E4F,
         MaxSampleMaskWords                          = 0x8E59,
         CopyReadBufferBinding                       = 0x8F36,
         CopyWriteBufferBinding                      = 0x8F37,
-        PrimitiveRestartIndex                       = 0x8F9E,
+        Primitive_Restart_Index                       = 0x8F9E,
         TextureBinding2Dmultisample                 = 0x9104,
         TextureBinding2DmultisampleArray            = 0x9105,
         MaxColorTextureSamples                      = 0x910E,
@@ -534,8 +537,8 @@ namespace son8::overglad::state {
         MaxGeometryOutputComponents                 = 0x9124,
         MaxFragmentInputComponents                  = 0x9125,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-        ClampVertexColor                            = 0x891A,
-        ClampFragmentColor                          = 0x891B,
+        Clamp_Vertex_Color                            = 0x891A,
+        Clamp_Fragment_Color                          = 0x891B,
 #   endif // not core profile
 #endif // version 3.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_3
@@ -558,7 +561,7 @@ namespace son8::overglad::state {
         MaxVertexUniformVectors                     = 0x8DFB,
         MaxCombinedTessControlUniformComponents     = 0x8E1E,
         MaxCombinedTessEvaluationUniformComponents  = 0x8E1F,
-        TransformFeedbackBinding                    = 0x8E25,
+        Transform_Feedback_Binding                    = 0x8E25,
         FragmentInterpolationOffsetBits             = 0x8E5D,
         MaxTransformFeedbackBuffers                 = 0x8E70,
         Patch_Vertices                               = 0x8E72,
@@ -576,7 +579,7 @@ namespace son8::overglad::state {
         MaxTessEvaluationUniformBlocks              = 0x8E8A,
         MaxImageUnits                               = 0x8F38,
         MaxCombinedShaderOutputResources            = 0x8F39,
-        DrawIndirectBufferBinding                   = 0x8F43,
+        Draw_Indirect_Buffer_Binding                   = 0x8F43,
         TextureBindingCubeMapArray                  = 0x900A,
         MaxImageSamples                             = 0x906D,
         MaxVertexImageUniforms                      = 0x90CA,
@@ -610,6 +613,9 @@ namespace son8::overglad::state {
         MaxSampleCounts                             = 0x9380,
 #endif // version 4.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_6
+        Parameter_Buffer_Binding = 0x80EF,
+        Clip_Origin = 0x935C,
+        Clip_Depth_Mode = 0x935D,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
 #   endif // not core profile
 #endif // version 4.6 states
