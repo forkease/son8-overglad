@@ -150,7 +150,15 @@ namespace son8::overglad {
         auto const *cStr = reinterpret_cast< char const * >( glad_glGetString( static_cast< GLenum >( param )));
         return cStr != nullptr ? cStr : "";
     }
-
+    SON8_OVERGLAD_FUNC get( state::Is capability ) noexcept -> bool {
+        return glad_glIsEnabled( capability.value( ));
+    }
+    SON8_OVERGLAD_PROC mode( state::Enable capability ) noexcept {
+        glad_glEnable( capability.value( ));
+    }
+    SON8_OVERGLAD_PROC mode( state::Disable capability ) noexcept {
+        glad_glDisable( capability.value( ));
+    }
 
     // Chapter 2: OpenGL Operation
 

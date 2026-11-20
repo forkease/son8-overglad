@@ -939,7 +939,6 @@ namespace son8::overglad::types {
 
 } // namespace son8::overglad::types
 
-
 namespace son8::overglad::state {
 // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_1
@@ -954,10 +953,27 @@ namespace son8::overglad::state {
     // core
     // TODO: `DRAW_BUFFER_i (0-15) 0x8825-0x8834`
 #endif // version 2.1 states
-    // TODO: `IsEnabled`, should use macro to list all `IsEnabled` related enums
-    // \ and use that macro to create Is, Enable, and Disable enum classes
-    // \ usage `::mode( state::Enable:: ), ::mode( state::Disable:: ), ::get( state::Is ) -> bool`
-    enum class Is : GLenum {};
+    // `IsEnabled`
+    template< unsigned Tag >
+    struct Capability_ {
+        static_assert( Tag < 3
+            , "son8::overglad implementation details IsState_ Tag requires to be 0,1, or 2" );
+        enum Enum : GLenum {
+            CullFace = 0x0B44,
+        };
+        constexpr Capability_( Enum init ) : value_{ init } { }
+        constexpr explicit operator GLenum( ) const noexcept { return value_; }
+        constexpr auto value( ) const noexcept -> GLenum { return value_; }
+        constexpr bool operator==( Capability_ other ) const noexcept { return value_ == other.value_; }
+        constexpr bool operator!=( Capability_ other ) const noexcept { return value_ != other.value_; }
+        constexpr bool operator==( GLenum value ) const noexcept { return value_ == value; }
+        constexpr bool operator!=( GLenum value ) const noexcept { return value_ != value; }
+    private:
+        Enum value_;
+    };
+    using Disable   = Capability_< 0 >;
+    using Enable    = Capability_< 1 >;
+    using Is        = Capability_< 2 >;
     // `GetBoolean`
     enum class Boolean : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
