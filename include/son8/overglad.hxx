@@ -988,12 +988,14 @@ namespace son8::overglad::state {
         auto begin( ) & noexcept -> Type * { return data( ); }
         auto end( ) & noexcept -> Type * { return data( ) + Count; }
     }; // class `Getter_`
+// TODO: maybe rename state that naturally belong to `IsEnabled`
+// \ with adding `Is` prefix to distinguish them from `GetBoolean`
 // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // -- core
     using PointSize                     = Get_< 0x0B11, GLfloat >;
-    using SmoothPointSizeRange          = Get_< 0x0B12, GLfloat, 2u >;
-    using SmoothPointSizeGranularity    = Get_< 0x0B13, GLfloat >;
+    using PointSizeRange          = Get_< 0x0B12, GLfloat, 2u >;
+    using PointSizeGranularity    = Get_< 0x0B13, GLfloat >;
     using LineSmooth                    = Get_< 0x0B20, GLboolean >;
     using LineWidth                     = Get_< 0x0B21, GLfloat >;
     using SmoothLineWidthRange          = Get_< 0x0B22, GLfloat, 2 >;
@@ -1394,6 +1396,120 @@ namespace son8::overglad::state {
     // compatibility
     using ClampVertexColor                          = Get_< 0x891A, GLint >;
     using ClampFragmentColor                        = Get_< 0x891B, GLint >;
+#   endif // not core profile
+#endif // version 3.3 states
+// version 4.3 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+    // core
+    using ProgramPipelineBinding                = Get_< 0x825A, GLint >;
+    using MaxViewports                          = Get_< 0x825B, GLint >;
+    using ViewportSubpixelBits                  = Get_< 0x825C, GLint >;
+    using ViewportBoundsRange                   = Get_< 0x825D, GLint >;
+    using LayerProvokingVertex                  = Get_< 0x825E, GLint >;
+    using ViewportIndexProvokingVertex          = Get_< 0x825F, GLint >;
+    using NumShadingLanguageVersions            = Get_< 0x82E9, GLint >;
+    using MaxTessControlInputComponents         = Get_< 0x886C, GLint >;
+    using MaxTessEvaluationInputComponents      = Get_< 0x886D, GLint >;
+    using ImplementationColorReadType           = Get_< 0x8B9A, GLint >;
+    using ImplementationColorReadFormat         = Get_< 0x8B9B, GLint >;
+    using SampleShading                         = Get_< 0x8C36, GLboolean >;
+    using MinShadingSampleValue                 = Get_< 0x8C37, GLfloat >;
+    using RasterizerDiscard                     = Get_< 0x8C89, GLboolean >;
+    using MaxElementIndex                       = Get_< 0x8D6B, GLint64 >;
+    using MaxVertexUniformVectors               = Get_< 0x8DFB, GLint >;
+    using TransformFeedbackBinding              = Get_< 0x8E25, GLint >;
+    using PatchVertices                         = Get_< 0x8E72, GLint >;
+    using PatchDefaultInnerLevel                = Get_< 0x8E73, GLfloat, 2u >;
+    using PatchDefaultOuterLevel                = Get_< 0x8E74, GLfloat, 4u >;
+    using MaxPatchVertices                      = Get_< 0x8E7D, GLint >;
+    using MaxTessGenLevel                       = Get_< 0x8E7E, GLint >;
+    using MaxTessControlUniformComponents       = Get_< 0x8E7F, GLint >;
+    using MaxTessEvaluationUniformComponents    = Get_< 0x8E80, GLint >;
+    using MaxTessControlTextureImageUnits       = Get_< 0x8E81, GLint >;
+    using MaxTessEvaluationTextureImageUnits    = Get_< 0x8E82, GLint >;
+    using MaxTessControlOutputComponents        = Get_< 0x8E83, GLint >;
+    using MaxTessPatchComponents                = Get_< 0x8E84, GLint >;
+    using MaxTessControlOutputTotalComponents   = Get_< 0x8E85, GLint >;
+    using MaxTessEvaluationOutputComponents     = Get_< 0x8E86, GLint >;
+    using MaxTessControlUniformBlocks           = Get_< 0x8E89, GLint >;
+    using MaxTessEvaluationUniformBlocks        = Get_< 0x8E8A, GLint >;
+    using DrawIndirectBufferBinding             = Get_< 0x8F43, GLint >;
+    using TextureBindingCubeMapArray            = Get_< 0x900A, GLint >;
+    using ShaderStorageBufferBinding            = Get_< 0x90D3, GLint >;
+    using MaxVertexShaderStorageBlocks          = Get_< 0x90D6, GLint >;
+    using MaxTessControlShaderStorageBlocks     = Get_< 0x90D8, GLint >;
+    using MaxTessEvaluationShaderStorageBlocks  = Get_< 0x90D9, GLint >;
+    using DispatchIndirectBufferBinding         = Get_< 0x90EF, GLint >;
+    using UnpackCompressedBlockWidth            = Get_< 0x9127, GLint >;
+    using UnpackCompressedBlockHeight           = Get_< 0x9128, GLint >;
+    using UnpackCompressedBlockDepth            = Get_< 0x9129, GLint >;
+    using UnpackCompressedBlockSize             = Get_< 0x912A, GLint >;
+    using PackCompressedBlockWidth              = Get_< 0x912B, GLint >;
+    using PackCompressedBlockHeight             = Get_< 0x912C, GLint >;
+    using PackCompressedBlockDepth              = Get_< 0x912D, GLint >;
+    using PackCompressedBlockSize               = Get_< 0x912E, GLint >;
+    using AtomicCounterBufferBinding            = Get_< 0x92C1, GLint >;
+    using MaxVertexAtomicCounterBuffers         = Get_< 0x92CC, GLint >;
+    using MaxTessControlAtomicCounterBuffers    = Get_< 0x92CD, GLint >;
+    using MaxTessEvaluationAtomicCounterBuffers = Get_< 0x92CE, GLint >;
+    using MaxVertexAtomicCounters               = Get_< 0x92D2, GLint >;
+    using MaxTessControlAtomicCounters          = Get_< 0x92D4, GLint >;
+
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 4.3 states
+// version 4.6 states
+#ifdef SON8_OVERGLAD_VERSION_4_6
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 4.6 states
+    // needs to be redone in more lightweight fashion, above should be removed
+    // `IsEnabled`
+    enum class Boolean : GLenum {
+
+    };
+    enum class Boolean4 : GLenum {};
+    enum class Double16: GLenum {};
+    enum class Float : GLenum {};
+    enum class Float2 : GLenum {};
+    enum class Float3 : GLenum {};
+    enum class Float4 : GLenum {};
+    enum class Float16 : GLenum {};
+    enum class Integer : GLenum {};
+    enum class Integer2 : GLenum {};
+    enum class Integer4 : GLenum {};
+    enum class Integer64 : GLenum {};
+    enum class Is : GLenum {};
+    enum class String : GLenum {};
+// version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_1
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 1.1 states
+// version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 1.5 states
+// version 2.1 states
+#ifdef SON8_OVERGLAD_VERSION_2_1
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
+#   endif // not core profile
+#endif // version 2.1 states
+// version 3.3 states
+#ifdef SON8_OVERGLAD_VERSION_3_3
+    // core
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+    // compatibility
 #   endif // not core profile
 #endif // version 3.3 states
 // version 4.3 states
