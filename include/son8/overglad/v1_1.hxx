@@ -112,6 +112,11 @@ namespace son8::overglad {
         get( out );
         return out;
     }
+    // TODO: remove above templated get functions after transition
+    SON8_OVERGLAD_FUNC get( state::String param ) noexcept -> std::string_view {
+        auto const *cStr = reinterpret_cast< char const * >( glad_glGetString( static_cast< GLenum >( param )));
+        return cStr != nullptr ? cStr : "";
+    }
 
     // Chapter 2: OpenGL Operation
 

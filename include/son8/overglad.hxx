@@ -1052,9 +1052,7 @@ namespace son8::overglad::state {
     using MaxTextureSize                = Get_< 0x0D33, GLint >;
     using MaxViewportDims               = Get_< 0x0D3A, GLint, 2u >;
     using SubpixelBits                  = Get_< 0x0D50, GLint >;
-    using Vendor                        = Get_< 0x1F00, std::string_view >;
-    using Renderer                      = Get_< 0x1F01, std::string_view >;
-    using Version                       = Get_< 0x1F02, std::string_view >;
+
     using PolygonOffsetUnits            = Get_< 0x2A00, GLfloat >;
     using PolygonOffsetPoint            = Get_< 0x2A01, GLboolean >;
     using PolygonOffsetLine             = Get_< 0x2A02, GLboolean >;
@@ -1186,7 +1184,6 @@ namespace son8::overglad::state {
     using FeedbackBufferSize            = Get_< 0x0DF1, GLint >;
     using FeedbackBufferType            = Get_< 0x0DF2, GLint >;
     using SelectionBufferSize           = Get_< 0x0DF4, GLint >;
-    using Extensions                    = Get_< 0x1F03, std::string_view >;
     using Light0                        = Get_< 0x4000, GLboolean >;
     using Light1                        = Get_< 0x4001, GLboolean >;
     using Light2                        = Get_< 0x4002, GLboolean >;
@@ -1312,7 +1309,7 @@ namespace son8::overglad::state {
     using MaxVertexTextureImageUnits    = Get_< 0x8B4C, GLint >;
     using MaxCombinedTextureImageUnits  = Get_< 0x8B4D, GLint >;
     using FragmentShaderDerivativeHint  = Get_< 0x8B8B, GLint >;
-    using ShadingLanguageVersion        = Get_< 0x8B8C, std::string_view >;
+
     using CurrentProgram                = Get_< 0x8B8D, GLint >;
     using PointSpriteColorOrigin        = Get_< 0x8CA0, GLint >;
     using StencilBackRef                = Get_< 0x8CA3, GLint >;
@@ -1379,8 +1376,8 @@ namespace son8::overglad::state {
     using ProvokingVertex                           = Get_< 0x8E4F, GLint >;
     using SampleMask                                = Get_< 0x8E51, GLboolean >;
     using MaxSampleMaskWords                        = Get_< 0x8E59, GLint >;
-    using CopyReadBuffer                            = Get_< 0x8F36, GLint >;
-    using CopyWriteBuffer                           = Get_< 0x8F37, GLint >;
+    using CopyReadBufferBinding                     = Get_< 0x8F36, GLint >;
+    using CopyWriteBufferBinding                    = Get_< 0x8F37, GLint >;
     using PrimitiveRestart                          = Get_< 0x8F9D, GLboolean >;
     using PrimitiveRestartIndex                     = Get_< 0x8F9E, GLint >;
     using TextureBinding2Dmultisample               = Get_< 0x9104, GLint >;
@@ -1401,12 +1398,17 @@ namespace son8::overglad::state {
 // version 4.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_3
     // core
+    using DebugOutputSynchronous                = Get_< 0x8242, GLint >;
+    using DebugNextLoggedMessageLength          = Get_< 0x8243, GLint >;
     using ProgramPipelineBinding                = Get_< 0x825A, GLint >;
     using MaxViewports                          = Get_< 0x825B, GLint >;
     using ViewportSubpixelBits                  = Get_< 0x825C, GLint >;
     using ViewportBoundsRange                   = Get_< 0x825D, GLint >;
+    using MaxDebugGroupStackDepth               = Get_< 0x826C, GLint >;
+    using DebugGroupStackDepth                  = Get_< 0x826D, GLint >;
     using LayerProvokingVertex                  = Get_< 0x825E, GLint >;
     using ViewportIndexProvokingVertex          = Get_< 0x825F, GLint >;
+    using MaxLabelLength                        = Get_< 0x82E8, GLint >;
     using NumShadingLanguageVersions            = Get_< 0x82E9, GLint >;
     using MaxTessControlInputComponents         = Get_< 0x886C, GLint >;
     using MaxTessEvaluationInputComponents      = Get_< 0x886D, GLint >;
@@ -1417,7 +1419,13 @@ namespace son8::overglad::state {
     using RasterizerDiscard                     = Get_< 0x8C89, GLboolean >;
     using MaxElementIndex                       = Get_< 0x8D6B, GLint64 >;
     using MaxVertexUniformVectors               = Get_< 0x8DFB, GLint >;
+    using MaxCombinedTessControlUniformComponents = Get_< 0x8E1E, GLint >;
+    using MaxCombinedTessEvaluationUniformComponents = Get_< 0x8E1F, GLint >;
     using TransformFeedbackBinding              = Get_< 0x8E25, GLint >;
+    using MinFragmentInterpolationOffset        = Get_< 0x8E5B, GLfloat >;
+    using MaxFragmentInterpolationOffset        = Get_< 0x8E5C, GLfloat >;
+    using FragmentInterpolationOffsetBits       = Get_< 0x8E5D, GLint >;
+    using MaxTransformFeedbackBuffers           = Get_< 0x8E70, GLint >;
     using PatchVertices                         = Get_< 0x8E72, GLint >;
     using PatchDefaultInnerLevel                = Get_< 0x8E73, GLfloat, 2u >;
     using PatchDefaultOuterLevel                = Get_< 0x8E74, GLfloat, 4u >;
@@ -1433,8 +1441,17 @@ namespace son8::overglad::state {
     using MaxTessEvaluationOutputComponents     = Get_< 0x8E86, GLint >;
     using MaxTessControlUniformBlocks           = Get_< 0x8E89, GLint >;
     using MaxTessEvaluationUniformBlocks        = Get_< 0x8E8A, GLint >;
+    using MaxImageUnits                         = Get_< 0x8F38, GLint >;
+    using MaxCombinedShaderOutputResources      = Get_< 0x8F39, GLint >;
     using DrawIndirectBufferBinding             = Get_< 0x8F43, GLint >;
     using TextureBindingCubeMapArray            = Get_< 0x900A, GLint >;
+    using MaxImageSamples                       = Get_< 0x906D, GLint >;
+    using MaxVertexImageUniforms                = Get_< 0x90CA, GLint >;
+    using MaxTessControlImageUniforms           = Get_< 0x90CB, GLint >;
+    using MaxTessEvaluationImageUniforms        = Get_< 0x90CC, GLint >;
+    using MaxGeometryImageUniforms              = Get_< 0x90CD, GLint >;
+    using MaxFragmentImageUniforms              = Get_< 0x90CE, GLint >;
+    using MaxCombinedImageUniforms              = Get_< 0x90CF, GLint >;
     using ShaderStorageBufferBinding            = Get_< 0x90D3, GLint >;
     using MaxVertexShaderStorageBlocks          = Get_< 0x90D6, GLint >;
     using MaxTessControlShaderStorageBlocks     = Get_< 0x90D8, GLint >;
@@ -1448,12 +1465,17 @@ namespace son8::overglad::state {
     using PackCompressedBlockHeight             = Get_< 0x912C, GLint >;
     using PackCompressedBlockDepth              = Get_< 0x912D, GLint >;
     using PackCompressedBlockSize               = Get_< 0x912E, GLint >;
+    using MaxDebugMessageLength                 = Get_< 0x9143, GLint >;
+    using MaxDebugLogMessages                   = Get_< 0x9144, GLint >;
+    using DebugLogggedMessages                  = Get_< 0x9145, GLint >;
     using AtomicCounterBufferBinding            = Get_< 0x92C1, GLint >;
     using MaxVertexAtomicCounterBuffers         = Get_< 0x92CC, GLint >;
     using MaxTessControlAtomicCounterBuffers    = Get_< 0x92CD, GLint >;
     using MaxTessEvaluationAtomicCounterBuffers = Get_< 0x92CE, GLint >;
     using MaxVertexAtomicCounters               = Get_< 0x92D2, GLint >;
     using MaxTessControlAtomicCounters          = Get_< 0x92D4, GLint >;
+    using DebugOutput                           = Get_< 0x92E0, GLboolean >;
+    using MaxSampleCounts                       = Get_< 0x9380, GLint >;
 
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // compatibility
@@ -1471,8 +1493,8 @@ namespace son8::overglad::state {
     enum class Boolean : GLenum {
 
     };
+    enum class Is : GLenum {};
     enum class Boolean4 : GLenum {};
-    enum class Double16: GLenum {};
     enum class Float : GLenum {};
     enum class Float2 : GLenum {};
     enum class Float3 : GLenum {};
@@ -1482,8 +1504,24 @@ namespace son8::overglad::state {
     enum class Integer2 : GLenum {};
     enum class Integer4 : GLenum {};
     enum class Integer64 : GLenum {};
-    enum class Is : GLenum {};
-    enum class String : GLenum {};
+    enum class String : GLenum {
+    // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        // core
+        Vendor                  = 0x1F00,
+        Renderer                = 0x1F01,
+        Version                 = 0x1F02,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        Extensions              = 0x1F03,
+    // compatibility
+#   endif // not core profile
+#endif // version 1.1 states
+    // version 2.1 states
+#   ifdef SON8_OVERGLAD_VERSION_2_1
+        // core
+        ShadingLanguageVersion  = 0x8B8C,
+#endif // version 2.1 states
+    };
 // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_1
     // core
