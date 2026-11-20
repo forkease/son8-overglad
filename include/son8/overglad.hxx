@@ -961,6 +961,7 @@ namespace son8::overglad::state {
         enum Enum : GLenum {
             CullFace = 0x0B44,
         };
+        constexpr Capability_( ) = delete;
         constexpr Capability_( Enum init ) : value_{ init } { }
         constexpr explicit operator GLenum( ) const noexcept { return value_; }
         constexpr auto value( ) const noexcept -> GLenum { return value_; }
