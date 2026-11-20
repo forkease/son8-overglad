@@ -506,10 +506,9 @@ namespace son8::overglad::enums {
 } // namespace son8::overglad::enums
 namespace son8::overglad::types {
     using View       = std::string_view;
-    using Array2f    = std::array< GLfloat, 2 >;
-#ifndef SON8_OVERGLAD_PROFILE_CORE
     // `size 1`
     using Array1i    = std::array< GLint, 1 >;
+    using Array1i64  = std::array< GLint64, 1 >;
     using Array1s    = std::array< GLshort, 1 >;
     using Array1f    = std::array< GLfloat, 1 >;
     using Array1d    = std::array< GLdouble, 1 >;
@@ -518,6 +517,7 @@ namespace son8::overglad::types {
     // `size 2`
     using Array2i    = std::array< GLint, 2 >;
     using Array2s    = std::array< GLshort, 2 >;
+    using Array2f    = std::array< GLfloat, 2 >;
 
     using Array2d    = std::array< GLdouble, 2 >;
     // `size 3`
@@ -525,6 +525,7 @@ namespace son8::overglad::types {
     using Array3b    = std::array< GLbyte, 3 >;
     using Array3s    = std::array< GLshort, 3 >;
     using Array3f    = std::array< GLfloat, 3 >;
+
     using Array3d    = std::array< GLdouble, 3 >;
     using Array3ui   = std::array< GLuint, 3 >;
     using Array3ub   = std::array< GLubyte, 3 >;
@@ -538,9 +539,11 @@ namespace son8::overglad::types {
     using Array4ui   = std::array< GLuint, 4 >;
     using Array4ub   = std::array< GLubyte, 4 >;
     using Array4us   = std::array< GLushort, 4 >;
+    using Array4bool = std::array< GLboolean, 4 >;
     // `size 16`
     using Array16f   = std::array< GLfloat, 16 >;
     using Array16d   = std::array< GLdouble, 16 >;
+#ifndef SON8_OVERGLAD_PROFILE_CORE
     // deprecated renamed aliases
     // `size 1`
     using array1i    [[deprecated( "renamed to start with capital letter" )]] = std::array< GLint, 1 >;
@@ -938,563 +941,188 @@ namespace son8::overglad::types {
 
 
 namespace son8::overglad::state {
-    // NOTE: right now only `GetString, GetBoolean, GetInteger`,
-    // \ `GetInteger64, GetFloat` should be covered by `Get_` class
-    template< GLenum Param, typename Type, unsigned Count = 1u >
-    class Get_ final {
-        static_assert( Count, "Getter required to have at least 1 value" );
-        using Flat_ = std::array< Type, Count >;
-        Flat_ values_;
-    public:
-        // NOTE: intentionally uninitialized on default construction
-        // \ as 0 is not a universal default state value,
-        // \ so zero-initializing does not provides any benefits
-        Get_( ) noexcept { }
-        // templated accessors
-        template< unsigned count = Count >
-        auto value( ) & noexcept -> Type & {
-            static_assert( 1u == count
-                , "state value() call requires parameter with only one value" );
-            return values_[0];
-        }
-        template< unsigned count = Count >
-        auto value( ) const & noexcept -> Type const & {
-            static_assert( 1u == count
-                , "state value() call requires parameter with only one value" );
-            return values_[0];
-        }
-        template< unsigned count = Count >
-        auto operator[]( unsigned i ) & noexcept -> Type & {
-            static_assert( 2u <= count
-                , "state array subscript operator requires parameter with two or more values" );
-            return values_[i];
-        }
-        template< unsigned count = Count >
-        auto operator[]( unsigned i ) const & noexcept -> Type const & {
-            static_assert( 2u <= count
-                , "state array subscript operator requires parameter with two or more values" );
-            return values_[i];
-        }
-        constexpr
-        auto param( ) const noexcept -> GLenum { return Param; }
-        constexpr
-        auto size( ) const noexcept -> std::size_t { return Count; }
-        // const accessors
-        auto array( ) const & noexcept -> Flat_ const & { return values_; }
-        auto data( ) const & noexcept -> Type const * { return values_.data( ); }
-        auto begin( ) const & noexcept -> Type const * { return data( ); }
-        auto end( ) const & noexcept -> Type const * { return data( ) + Count; }
-        // mutable accessors
-        auto array( ) & noexcept -> Flat_ & { return values_; }
-        auto data( ) & noexcept -> Type * { return values_.data( ); }
-        auto begin( ) & noexcept -> Type * { return data( ); }
-        auto end( ) & noexcept -> Type * { return data( ) + Count; }
-    }; // class `Getter_`
-// TODO: maybe rename state that naturally belong to `IsEnabled`
-// \ with adding `Is` prefix to distinguish them from `GetBoolean`
 // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_1
-    // -- core
-    using PointSize                     = Get_< 0x0B11, GLfloat >;
-
-    using PointSizeGranularity    = Get_< 0x0B13, GLfloat >;
-    using LineSmooth                    = Get_< 0x0B20, GLboolean >;
-    using LineWidth                     = Get_< 0x0B21, GLfloat >;
-    using SmoothLineWidthRange          = Get_< 0x0B22, GLfloat, 2 >;
-    using SmoothLineWidthGranularity    = Get_< 0x0B23, GLfloat >;
-    using PolygonMode                   = Get_< 0x0B40, GLint, 2u >;
-    using PolygonSmooth                 = Get_< 0x0B41, GLboolean >;
-    using CullFace                      = Get_< 0x0B44, GLboolean >;
-    using CullFaceMode                  = Get_< 0x0B45, GLint >;
-    using FrontFace                     = Get_< 0x0B46, GLint >;
-
-    using DepthTest                     = Get_< 0x0B71, GLboolean >;
-    using DepthWritemask                = Get_< 0x0B72, GLboolean >;
-    using DepthClearValue               = Get_< 0x0B73, GLfloat >;
-    using DepthFunc                     = Get_< 0x0B74, GLint >;
-    using StencilTest                   = Get_< 0x0B90, GLboolean >;
-    using StencilClearValue             = Get_< 0x0B91, GLint >;
-    using StencilFunc                   = Get_< 0x0B92, GLint >;
-    using StencilValueMask              = Get_< 0x0B93, GLint >;
-    using StencilFail                   = Get_< 0x0B94, GLint >;
-    using StencilPassDepthFail          = Get_< 0x0B95, GLint >;
-    using StencilPassDepthPass          = Get_< 0x0B96, GLint >;
-    using StencilRef                    = Get_< 0x0B97, GLint >;
-    using StencilWritemask              = Get_< 0x0B98, GLint >;
-    using Viewport                      = Get_< 0x0BA2, GLint, 4u >;
-    using Dither                        = Get_< 0x0BD0, GLboolean >;
-    using BlendDst                      = Get_< 0x0BE0, GLint >;
-    using BlendSrc                      = Get_< 0x0BE1, GLint >;
-    using Blend                         = Get_< 0x0BE2, GLboolean >;
-    using LogicOpMode                   = Get_< 0x0BF0, GLint >;
-    using ColorLogicOp                  = Get_< 0x0BF2, GLboolean >;
-    using DrawBuffer                    = Get_< 0x0C01, GLint >;
-    using ReadBuffer                    = Get_< 0x0C02, GLint >;
-    using ScissorBox                    = Get_< 0x0C10, GLint, 4u >;
-    using ScissorTest                   = Get_< 0x0C11, GLboolean >;
-    using ColorClearValue               = Get_< 0x0C22, GLfloat, 4u >;
-    using ColorWritemask                = Get_< 0x0C23, GLboolean, 4u >;
-    using Doublebuffer                  = Get_< 0x0C32, GLboolean >;
-    using Stereo                        = Get_< 0x0C33, GLboolean >;
-    using LineSmoothHint                = Get_< 0x0C52, GLint >;
-    using PolygonSmoothHint             = Get_< 0x0C53, GLint >;
-    using UnpackSwapBytes               = Get_< 0x0CF0, GLboolean >;
-    using UnpackLSBfirst                = Get_< 0x0CF1, GLboolean >;
-    using UnpackRowLength               = Get_< 0x0CF2, GLint >;
-    using UnpackSkipRows                = Get_< 0x0CF3, GLint >;
-    using UnpackSkipPixels              = Get_< 0x0CF4, GLint >;
-    using UnpackAlignment               = Get_< 0x0CF5, GLint >;
-    using PackSwapBytes                 = Get_< 0x0D00, GLboolean >;
-    using PackLSBfirst                  = Get_< 0x0D01, GLboolean >;
-    using PackRowLength                 = Get_< 0x0D02, GLint >;
-    using PackSkipRows                  = Get_< 0x0D03, GLint >;
-    using PackSkipPixels                = Get_< 0x0D04, GLint >;
-    using PackAlignment                 = Get_< 0x0D05, GLint >;
-    using MaxClipPlanes                 = Get_< 0x0D32, GLint >;
-    using MaxTextureSize                = Get_< 0x0D33, GLint >;
-    using MaxViewportDims               = Get_< 0x0D3A, GLint, 2u >;
-    using SubpixelBits                  = Get_< 0x0D50, GLint >;
-
-    using PolygonOffsetUnits            = Get_< 0x2A00, GLfloat >;
-    using PolygonOffsetPoint            = Get_< 0x2A01, GLboolean >;
-    using PolygonOffsetLine             = Get_< 0x2A02, GLboolean >;
-    using ClipPlane0                    = Get_< 0x3000, GLboolean >;
-    using ClipPlane1                    = Get_< 0x3001, GLboolean >;
-    using ClipPlane2                    = Get_< 0x3002, GLboolean >;
-    using ClipPlane3                    = Get_< 0x3003, GLboolean >;
-    using ClipPlane4                    = Get_< 0x3004, GLboolean >;
-    using ClipPlane5                    = Get_< 0x3005, GLboolean >;
-    using PolygonOffsetFill             = Get_< 0x8037, GLboolean >;
-    using PolygonOffsetFactor           = Get_< 0x8038, GLfloat >;
-    using TextureBinding1D              = Get_< 0x8068, GLint >;
-    using TextureBinding2D              = Get_< 0x8069, GLint >;
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
     // -- compatibility
-    using CurrentColor                  = Get_< 0x0B00, GLfloat, 4u >;
-    using CurrentIndex                  = Get_< 0x0B01, GLint >;
-    using CurrentNormal                 = Get_< 0x0B02, GLfloat, 3u >;
-    using CurrentTextureCoords          = Get_< 0x0B03, GLfloat, 4u >;
-    using CurrentRasterColor            = Get_< 0x0B04, GLfloat, 4u >;
-    using CurrentRasterIndex            = Get_< 0x0B05, GLint >;
-    using CurrentRasterTextureCoords    = Get_< 0x0B06, GLfloat, 4u >;
-    using CurrentRasterPosition         = Get_< 0x0B07, GLfloat, 4u >;
-    using CurrentRasterPositionValid    = Get_< 0x0B08, GLboolean >;
-    using CurrentRasterDistance         = Get_< 0x0B09, GLfloat >;
-    using PointSmooth                   = Get_< 0x0B10, GLboolean >;
-    using LineStipple                   = Get_< 0x0B24, GLboolean >;
-    using LineStipplePattern            = Get_< 0x0B25, GLint >;
-    using LineStippleRepeat             = Get_< 0x0B26, GLint >;
-    using ListMode                      = Get_< 0x0B30, GLint >;
-    using MaxListNesting                = Get_< 0x0B31, GLint >;
-    using ListBase                      = Get_< 0x0B32, GLint >;
-    using ListIndex                     = Get_< 0x0B33, GLint >;
-    using PolygonStipple                = Get_< 0x0B42, GLboolean >;
-    using EdgeFlag                      = Get_< 0x0B43, GLboolean >;
-    using Lighting                      = Get_< 0x0B50, GLboolean >;
-    using LightModelLocalViewer         = Get_< 0x0B51, GLboolean >;
-    using LightModelTwoSide             = Get_< 0x0B52, GLboolean >;
-    using LightModelAmbient             = Get_< 0x0B53, GLfloat, 4u >;
-    using ShadeModel                    = Get_< 0x0B54, GLint >;
-    using ColorMaterialFace             = Get_< 0x0B55, GLint >;
-    using ColorMaterialParameter        = Get_< 0x0B56, GLint >;
-    using ColorMaterial                 = Get_< 0x0B57, GLboolean >;
-    using Fog                           = Get_< 0x0B60, GLboolean >;
-    using FogIndex                      = Get_< 0x0B61, GLfloat >;
-    using FogDensity                    = Get_< 0x0B62, GLfloat >;
-    using FogStart                      = Get_< 0x0B63, GLfloat >;
-    using FogEnd                        = Get_< 0x0B64, GLfloat >;
-    using FogMode                       = Get_< 0x0B65, GLint >;
-    using FogColor                      = Get_< 0x0B66, GLfloat, 4u >;
-    using AccumClearValue               = Get_< 0x0B80, GLfloat, 4u >;
-    using MatrixMode                    = Get_< 0x0BA0, GLint >;
-    using Normalize                     = Get_< 0x0BA1, GLboolean >;
-    using ModelviewStackDepth           = Get_< 0x0BA3, GLint >;
-    using ProjectionStackDepth          = Get_< 0x0BA4, GLint >;
-    using TextureStackDepth             = Get_< 0x0BA5, GLint >;
-    using ModelviewMatrix               = Get_< 0x0BA6, GLfloat, 16u >;
-    using ProjectionMatrix              = Get_< 0x0BA7, GLfloat, 16u >;
-    using TextureMatrix                 = Get_< 0x0BA8, GLfloat, 16u >;
-    using AttribStackDepth              = Get_< 0x0BB0, GLint >;
-    using ClientAttribStackDepth        = Get_< 0x0BB1, GLint >;
-    using AlphaTest                     = Get_< 0x0BC0, GLboolean >;
-    using AlphaTestFunc                 = Get_< 0x0BC1, GLint >;
-    using AlphaTestRef                  = Get_< 0x0BC2, GLfloat >;
-    using IndexLogicOp                  = Get_< 0x0BF1, GLboolean >;
-    using AuxBuffers                    = Get_< 0x0C00, GLint >;
-    using IndexClearValue               = Get_< 0x0C20, GLfloat >;
-    using IndexWritemask                = Get_< 0x0C21, GLint >;
-    using IndexMode                     = Get_< 0x0C30, GLboolean >;
-    using RGBAmode                      = Get_< 0x0C31, GLboolean >;
-    using RenderMode                    = Get_< 0x0C40, GLint >;
-    using PerspectiveCorrectionHint     = Get_< 0x0C50, GLint >;
-    using PointSmoothHint               = Get_< 0x0C51, GLint >;
-    using FogHint                       = Get_< 0x0C54, GLint >;
-    using TextureGenS                   = Get_< 0x0C60, GLboolean >;
-    using TextureGenT                   = Get_< 0x0C61, GLboolean >;
-    using TextureGenR                   = Get_< 0x0C62, GLboolean >;
-    using TextureGenQ                   = Get_< 0x0C63, GLboolean >;
-
     // TODO table 8.3 from 4.6 comp profile spec `?_SIZE (0x0C70)`
-
-    using MapColor                      = Get_< 0x0D10, GLboolean >;
-    using MapStencil                    = Get_< 0x0D11, GLboolean >;
-    using IndexShift                    = Get_< 0x0D12, GLint >;
-    using IndexOffset                   = Get_< 0x0D13, GLint >;
-    using RedScale                      = Get_< 0x0D14, GLfloat >;
-    using RedBias                       = Get_< 0x0D15, GLfloat >;
-    using ZoomX                         = Get_< 0x0D16, GLfloat >;
-    using ZoomY                         = Get_< 0x0D17, GLfloat >;
-    using GreenScale                    = Get_< 0x0D18, GLfloat >;
-    using GreenBias                     = Get_< 0x0D19, GLfloat >;
-    using BlueScale                     = Get_< 0x0D1A, GLfloat >;
-    using BlueBias                      = Get_< 0x0D1B, GLfloat >;
-    using AlphaScale                    = Get_< 0x0D1C, GLfloat >;
-    using AlphaBias                     = Get_< 0x0D1D, GLfloat >;
-    using DepthScale                    = Get_< 0x0D1E, GLfloat >;
-    using DepthBias                     = Get_< 0x0D1F, GLfloat >;
-    using MaxEvalOrder                  = Get_< 0x0D30, GLint >;
-    using MaxLights                     = Get_< 0x0D31, GLint >;
-    using MaxPixelMapTable              = Get_< 0x0D34, GLint >;
-    using MaxAttribStackDepth           = Get_< 0x0D35, GLint >;
-    using MaxModelviewStackDepth        = Get_< 0x0D36, GLint >;
-    using MaxNameStackDepth             = Get_< 0x0D37, GLint >;
-    using MaxProjectionStackDepth       = Get_< 0x0D38, GLint >;
-    using MaxTextureStackDepth          = Get_< 0x0D39, GLint >;
-    using MaxClientAttribStackDepth     = Get_< 0x0D3B, GLint >;
-    using IndexBits                     = Get_< 0x0D51, GLint >;
-    using RedBits                       = Get_< 0x0D52, GLint >;
-    using GreenBits                     = Get_< 0x0D53, GLint >;
-    using BlueBits                      = Get_< 0x0D54, GLint >;
-    using AlphaBits                     = Get_< 0x0D55, GLint >;
-    using DepthBits                     = Get_< 0x0D56, GLint >;
-    using StencilBits                   = Get_< 0x0D57, GLint >;
-    using AccumRedBits                  = Get_< 0x0D58, GLint >;
-    using AccumGreenBits                = Get_< 0x0D59, GLint >;
-    using AccumBlueBits                 = Get_< 0x0D5A, GLint >;
-    using AccumAlphaBits                = Get_< 0x0D5B, GLint >;
-    using NameStackDepth                = Get_< 0x0D70, GLint >;
-    using AutoNormal                    = Get_< 0x0D80, GLboolean >;
-
     // TODO `MAP_1 (0x0D90-8)` and `MAP_2 (0x0DB0-8)`
-
-
-    using Map1GridSegments              = Get_< 0x0DD1, GLint >;
-    using Map2GridDomain                = Get_< 0x0DD2, GLfloat, 4u >;
-    using Map2GridSegments              = Get_< 0x0DD3, GLint, 2u >;
-    using Texture1D                     = Get_< 0x0DE0, GLboolean >;
-    using Texture2D                     = Get_< 0x0DE1, GLboolean >;
-    using FeedbackBufferSize            = Get_< 0x0DF1, GLint >;
-    using FeedbackBufferType            = Get_< 0x0DF2, GLint >;
-    using SelectionBufferSize           = Get_< 0x0DF4, GLint >;
-    using Light0                        = Get_< 0x4000, GLboolean >;
-    using Light1                        = Get_< 0x4001, GLboolean >;
-    using Light2                        = Get_< 0x4002, GLboolean >;
-    using Light3                        = Get_< 0x4003, GLboolean >;
-    using Light4                        = Get_< 0x4004, GLboolean >;
-    using Light5                        = Get_< 0x4005, GLboolean >;
-    using Light6                        = Get_< 0x4006, GLboolean >;
-    using Light7                        = Get_< 0x4007, GLboolean >;
-    using VertexArray                   = Get_< 0x8074, GLboolean >;
-    using NormalArray                   = Get_< 0x8075, GLboolean >;
-    using ColorArray                    = Get_< 0x8076, GLboolean >;
-    using IndexArray                    = Get_< 0x8077, GLboolean >;
-    using TextureCoordArray             = Get_< 0x8078, GLboolean >;
-    using EdgeFlagArray                 = Get_< 0x8079, GLboolean >;
-    using VertexArraySize               = Get_< 0x807A, GLint >;
-    using VertexArrayType               = Get_< 0x807B, GLint >;
-    using VertexArrayStride             = Get_< 0x807C, GLint >;
-    using NormalArrayType               = Get_< 0x807E, GLint >;
-    using NormalArrayStride             = Get_< 0x807F, GLint >;
-    using ColorArraySize                = Get_< 0x8081, GLint >;
-    using ColorArrayType                = Get_< 0x8082, GLint >;
-    using ColorArrayStride              = Get_< 0x8083, GLint >;
-    using IndexArrayType                = Get_< 0x8085, GLint >;
-    using IndexArrayStride              = Get_< 0x8086, GLint >;
-    using TextureCoordArraySize         = Get_< 0x8088, GLint >;
-    using TextureCoordArrayType         = Get_< 0x8089, GLint >;
-    using TextureCoordArrayStride       = Get_< 0x808A, GLint >;
-    using EdgeFlagArrayStride           = Get_< 0x808C, GLint >;
 #   endif // not core profile
 #endif // version 1.1 states
-// version 1.5 states
-#ifdef SON8_OVERGLAD_VERSION_1_5
-    // core
-    using BlendColor                        = Get_< 0x8005, GLfloat, 4u >;
-    using BlendEquationRGB                  = Get_< 0x8009, GLint >;
-    using TextureBinding3D                  = Get_< 0x806A, GLint >;
-    using PackSkipImages                    = Get_< 0x806B, GLint >;
-    using PackImageHeight                   = Get_< 0x806C, GLint >;
-    using UnpackSkipImages                  = Get_< 0x806D, GLint >;
-    using UnpackImageHeight                 = Get_< 0x806E, GLint >;
-    using Multisample                       = Get_< 0x809D, GLboolean >;
-    using SampleAlphaToCoverage             = Get_< 0x809E, GLboolean >;
-    using SampleAlphaToOne                  = Get_< 0x809F, GLboolean >;
-    using BlendDstRGB                       = Get_< 0x80C8, GLint >;
-    using BlendSrcRGB                       = Get_< 0x80C9, GLint >;
-    using BlendDstAlpha                     = Get_< 0x80CA, GLint >;
-    using BlendSrcAlpha                     = Get_< 0x80CB, GLint >;
-    using SampleCoverage                    = Get_< 0x80A0, GLboolean >;
-    using SampleBuffers                     = Get_< 0x80A8, GLint >;
-    using Samples                           = Get_< 0x80A9, GLint >;
-    using SampleCoverageValue               = Get_< 0x80AA, GLint >;
-    using SampleCoverageInvert              = Get_< 0x80AB, GLboolean >;
-    using MaxElementsVertices               = Get_< 0x80E8, GLint >;
-    using MaxElementsIndices                = Get_< 0x80E9, GLint >;
-
-    using ActiveTexture                     = Get_< 0x84E0, GLint >;
-    using MaxTextureLODbias                 = Get_< 0x84FD, GLfloat >;
-    using TextureBindingCubeMap             = Get_< 0x8514, GLint >;
-    using MaxCubeMapTextureSize             = Get_< 0x8514, GLint >;
-    using NumCompressedTextureFormats       = Get_< 0x86A2, GLint >;
-    using CompressedTextureFormats          = Get_< 0x86A3, GLint >;
-    using ElementArrayBufferBinding         = Get_< 0x8895, GLint >;
-#   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
-    using RescaleNormal                     = Get_< 0x803A, GLboolean >;
-    using Texture3D                         = Get_< 0x806F, GLboolean >;
-    using PointSizeMin                      = Get_< 0x8126, GLfloat >;
-    using PointSizeMax                      = Get_< 0x8127, GLfloat >;
-    using PointDistanceAttenuation          = Get_< 0x8129, GLfloat, 3u >;
-    using GenerateMipmapHint                = Get_< 0x81F8, GLint >;
-    using LightModelColorControl            = Get_< 0x81F8, GLint >;
-    using CurrentFogCoord                   = Get_< 0x8453, GLfloat, 3u >;
-    using CurrentSecondaryColor             = Get_< 0x8459, GLfloat >;
-    using CurrentRasterSecondaryColor       = Get_< 0x845F, GLfloat, 4u >;
-    using ClientActiveTexture               = Get_< 0x84E1, GLint >;
-    using TextureCompressionHint            = Get_< 0x84EF, GLint >;
-    using FogCoordSrc                       = Get_< 0x8450, GLint >;
-    using FogCoordArrayType                 = Get_< 0x8454, GLint >;
-    using FogCoordArrayStride               = Get_< 0x8455, GLint >;
-    using FogCoordArray                     = Get_< 0x8457, GLboolean >;
-    using ColorSum                          = Get_< 0x8458, GLboolean >;
-    using SecondaryColorArraySize           = Get_< 0x845A, GLint >;
-    using SecondaryColorArrayType           = Get_< 0x845B, GLint >;
-    using SecondaryColorArrayStride         = Get_< 0x845C, GLint >;
-    using SecondaryColorArray               = Get_< 0x845E, GLboolean >;
-
-    using MaxTextureUnits                   = Get_< 0x84E2, GLint >;
-    using TransposeModelviewMatrix          = Get_< 0x84E3, GLfloat, 16u >;
-    using TransposeProjectionMatrix         = Get_< 0x84E4, GLfloat, 16u >;
-    using TransposeTextureMatrix            = Get_< 0x84E5, GLfloat, 16u >;
-    using TextureCubeMap                    = Get_< 0x8513, GLboolean >;
-    using VertexArrayBufferBinding          = Get_< 0x8896, GLint >;
-    using NormalArrayBufferBinding          = Get_< 0x8897, GLint >;
-    using ColorArrayBufferBinding           = Get_< 0x8898, GLint >;
-    using IndexArrayBufferBinding           = Get_< 0x8899, GLint >;
-    using TextureCoordArrayBufferBinding    = Get_< 0x889A, GLint >;
-    using EdgeFlagArrayBufferBinding        = Get_< 0x889B, GLint >;
-    using SecondaryColorArrayBufferBinding  = Get_< 0x889C, GLint >;
-    using FogCoordArrayBufferBinding        = Get_< 0x889D, GLint >;
-
-#   endif // not core profile
-#endif // version 1.5 states
 // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_2_1
     // core
-    using VertexProgramPointSize        = Get_< 0x8642, GLboolean >;
-    using StencilBackFunc               = Get_< 0x8800, GLint >;
-    using StencilBackFail               = Get_< 0x8801, GLint >;
-    using StencilBackPassDepthFail      = Get_< 0x8802, GLint >;
-    using StencilBackPassDepthPass      = Get_< 0x8803, GLint >;
-    using MaxDrawBuffers                = Get_< 0x8824, GLint >;
-
     // TODO: `DRAW_BUFFER_i (0-15) 0x8825-0x8834`
-
-    using BlendEquationAlpha            = Get_< 0x883D, GLint >;
-    using MaxVertexAttribs              = Get_< 0x8869, GLint >;
-    using MaxTextureImageUnits          = Get_< 0x8872, GLint >;
-    using PixelPackBufferBinding        = Get_< 0x88ED, GLint >;
-    using PixelUnpackBufferBinding      = Get_< 0x88EF, GLint >;
-    using MaxFragmentUniformComponents  = Get_< 0x8B49, GLint >;
-    using MaxVertexUniformComponents    = Get_< 0x8B4A, GLint >;
-    using MaxVaryingFloats              = Get_< 0x8B4B, GLint >;
-    using MaxVertexTextureImageUnits    = Get_< 0x8B4C, GLint >;
-    using MaxCombinedTextureImageUnits  = Get_< 0x8B4D, GLint >;
-    using FragmentShaderDerivativeHint  = Get_< 0x8B8B, GLint >;
-
-    using CurrentProgram                = Get_< 0x8B8D, GLint >;
-    using PointSpriteColorOrigin        = Get_< 0x8CA0, GLint >;
-    using StencilBackRef                = Get_< 0x8CA3, GLint >;
-    using StencilBackValueMask          = Get_< 0x8CA4, GLint >;
-    using StencilBackWriteMask          = Get_< 0x8CA5, GLint >;
-
+#endif // version 2.1 states
+    // TODO: `IsEnabled`, should use macro to list all `IsEnabled` related enums
+    // \ and use that macro to create Is, Enable, and Disable enum classes
+    // \ usage `::mode( state::Enable:: ), ::mode( state::Disable:: ), ::get( state::Is ) -> bool`
+    enum class Is : GLenum {};
+    // `GetBoolean`
+    enum class Boolean : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        LineSmooth                  = 0x0B20,
+        PolygonSmooth               = 0x0B41,
+        CullFace                    = 0x0B44,
+        DepthTest                   = 0x0B71,
+        DepthWritemask              = 0x0B72,
+        StencilTest                 = 0x0B90,
+        Dither                      = 0x0BD0,
+        Blend                       = 0x0BE2,
+        ColorLogicOp                = 0x0BF2,
+        ScissorTest                 = 0x0C11,
+        Doublebuffer                = 0x0C32,
+        Stereo                      = 0x0C33,
+        UnpackSwapBytes             = 0x0CF0,
+        UnpackLSBfirst              = 0x0CF1,
+        PackSwapBytes               = 0x0D00,
+        PackLSBfirst                = 0x0D01,
+        PolygonOffsetPoint          = 0x2A01,
+        PolygonOffsetLine           = 0x2A02,
+        ClipPlane0                  = 0x3000,
+        ClipPlane1                  = 0x3001,
+        ClipPlane2                  = 0x3002,
+        ClipPlane3                  = 0x3003,
+        ClipPlane4                  = 0x3004,
+        ClipPlane5                  = 0x3005,
+        PolygonOffsetFill           = 0x8037,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
-    using CurrentRasterSecondaryColor   = Get_< 0x845F, GLfloat, 4u >;
-    using VertexProgramTwoSide          = Get_< 0x8643, GLboolean >;
-    using MaxTextureCoords              = Get_< 0x8871, GLint >;
-    using PointSprite                   = Get_< 0x8861, GLboolean >;
+        CurrentRasterPositionValid  = 0x0B08,
+        PointSmooth                 = 0x0B10,
+        LineStipple                 = 0x0B24,
+        PolygonStipple              = 0x0B42,
+        EdgeFlag                    = 0x0B43,
+        Lighting                    = 0x0B50,
+        LightModelLocalViewer       = 0x0B51,
+        LightModelTwoSide           = 0x0B52,
+        ColorMaterial               = 0x0B57,
+        Fog                         = 0x0B60,
+        Normalize                   = 0x0BA1,
+        AlphaTest                   = 0x0BC0,
+        IndexLogicOp                = 0x0BF1,
+        IndexMode                   = 0x0C30,
+        RGBAmode                    = 0x0C31,
+        TextureGenS                 = 0x0C60,
+        TextureGenT                 = 0x0C61,
+        TextureGenR                 = 0x0C62,
+        TextureGenQ                 = 0x0C63,
+        MapColor                    = 0x0D10,
+        MapStencil                  = 0x0D11,
+        AutoNormal                  = 0x0D80,
+        Texture1D                   = 0x0DE0,
+        Texture2D                   = 0x0DE1,
+        Light0                      = 0x4000,
+        Light1                      = 0x4001,
+        Light2                      = 0x4002,
+        Light3                      = 0x4003,
+        Light4                      = 0x4004,
+        Light5                      = 0x4005,
+        Light6                      = 0x4006,
+        Light7                      = 0x4007,
+        VertexArray                 = 0x8074,
+        NormalArray                 = 0x8075,
+        ColorArray                  = 0x8076,
+        IndexArray                  = 0x8077,
+        TextureCoordArray           = 0x8078,
+        EdgeFlagArray               = 0x8079,
+#   endif // not core profile
+#endif // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+        Multisample                 = 0x809D,
+        SampleAlphaToCoverage       = 0x809E,
+        SampleAlphaToOne            = 0x809F,
+        SampleCoverage              = 0x80A0,
+        SampleCoverageInvert        = 0x80AB,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        RescaleNormal               = 0x803A,
+        Texture3D                   = 0x806F,
+        FogCoordArray               = 0x8457,
+        ColorSum                    = 0x8458,
+        SecondaryColorArray         = 0x845E,
+        TextureCubeMap              = 0x8513,
+#   endif // not core profile
+#endif // version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_2_1
+        VertexProgramPointSize      = 0x8642,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        VertexProgramTwoSide        = 0x8643,
+        PointSprite                 = 0x8861,
 #   endif // not core profile
 #endif // version 2.1 states
-// version 3.3 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
-    // core
-    using MajorVersion                              = Get_< 0x821B, GLint >;
-    using MinorVersion                              = Get_< 0x821C, GLint >;
-    using NumExtensions                             = Get_< 0x821D, GLint >;
-    using MaxRenderBufferSize                       = Get_< 0x84E8, GLint >;
-    using TextureBindingRectangle                   = Get_< 0x84F6, GLint >;
-    using MaxRectangleTextureSize                   = Get_< 0x84F8, GLint >;
-    using VertexArrayBinding                        = Get_< 0x85B5, GLint >;
-    using DepthClamp                                = Get_< 0x864F, GLboolean >;
-    using TextureCubeMapSeamless                    = Get_< 0x884F, GLboolean >;
-    using ArrayBufferBinding                        = Get_< 0x8894, GLint >;
-    using MaxDualSourceDrawBuffers                  = Get_< 0x88FC, GLint >;
-    using MaxArrayTextureLayers                     = Get_< 0x88FF, GLint >;
-    using MinProgramTexelOffset                     = Get_< 0x8904, GLint >;
-    using MaxProgramTexelOffset                     = Get_< 0x8905, GLint >;
-    using SamplerBinding                            = Get_< 0x8919, GLint >;
-    using ClampReadColor                            = Get_< 0x891C, GLint >;
-    using UniformBufferBinding                      = Get_< 0x8A28, GLint >;
-    using MaxVertexUniformBlocks                    = Get_< 0x8A2B, GLint >;
-    using MaxGeometryUniformBlocks                  = Get_< 0x8A2C, GLint >;
-    using MaxFragmentUniformBlocks                  = Get_< 0x8A2D, GLint >;
-    using MaxCombinedUniformBlocks                  = Get_< 0x8A2E, GLint >;
-    using MaxUniformBufferBindings                  = Get_< 0x8A2F, GLint >;
-    using MaxUniformBlockSize                       = Get_< 0x8A30, GLint >;
-    using MaxCombinedVertexUniformComponents        = Get_< 0x8A31, GLint >;
-    using MaxCombinedGeometryUniformComponents      = Get_< 0x8A32, GLint >;
-    using MaxCombinedFragmentUniformComponents      = Get_< 0x8A33, GLint >;
-    using UniformBufferOffsetAlignment              = Get_< 0x8A34, GLint >;
-    using MaxVaryingComponets                       = Get_< 0x8B4B, GLint >;
-    using TextureBinding1Darray                     = Get_< 0x8C1C, GLint >;
-    using TextureBinding2Darray                     = Get_< 0x8C1D, GLint >;
-    using MaxGeometryTextureImageUnits              = Get_< 0x8C29, GLint >;
-    using MaxTextureBufferSize                      = Get_< 0x8C2B, GLint >;
-    using TextureBindingBuffer                      = Get_< 0x8C2C, GLint >;
-    using MaxTransformFeedbackSeparateComponents    = Get_< 0x8C80, GLint >;
-    using MaxTransformFeedbackInterleavedComponents = Get_< 0x8C8A, GLint >;
-    using MaxTransformFeedbackSeparateAttribs       = Get_< 0x8C8B, GLint >;
-    using TransformFeedbackBufferBinding            = Get_< 0x8C8F, GLint >;
-    using DrawFramebufferBinding                    = Get_< 0x8CA6, GLint >;
-    using RenderbufferBinding                       = Get_< 0x8CA7, GLint >;
-    using ReadFramebufferBinding                    = Get_< 0x8CAA, GLint >;
-    using MaxColorAttachments                       = Get_< 0x8CDF, GLint >;
-    using MaxSamples                                = Get_< 0x8D57, GLint >;
-    using FramebufferSRGB                           = Get_< 0x8DB9, GLboolean >;
-    using MaxGeometryOutputVertices                 = Get_< 0x8DE0, GLint >;
-    using MaxGeometryTotalOutputComponents          = Get_< 0x8DE1, GLint >;
-    using QuadsFollowProvokingVertexConvention      = Get_< 0x8E4C, GLint >;
-    using ProvokingVertex                           = Get_< 0x8E4F, GLint >;
-    using SampleMask                                = Get_< 0x8E51, GLboolean >;
-    using MaxSampleMaskWords                        = Get_< 0x8E59, GLint >;
-    using CopyReadBufferBinding                     = Get_< 0x8F36, GLint >;
-    using CopyWriteBufferBinding                    = Get_< 0x8F37, GLint >;
-    using PrimitiveRestart                          = Get_< 0x8F9D, GLboolean >;
-    using PrimitiveRestartIndex                     = Get_< 0x8F9E, GLint >;
-    using TextureBinding2Dmultisample               = Get_< 0x9104, GLint >;
-    using TextureBinding2DmultisampleArray          = Get_< 0x9105, GLint >;
-    using MaxColorTextureSamples                    = Get_< 0x910E, GLint >;
-    using MaxDepthTextureSamples                    = Get_< 0x910F, GLint >;
-    using MaxIntegerSamples                         = Get_< 0x9110, GLint >;
-    using MaxServerWaitTimeout                      = Get_< 0x9111, GLint64 >;
-    using MaxGeometryInputComponents                = Get_< 0x9123, GLint >;
-    using MaxGeometryOutputComponents               = Get_< 0x9124, GLint >;
-    using MaxFragmentInputComponents                = Get_< 0x9125, GLint >;
-#   ifndef SON8_OVERGLAD_PROFILE_CORE
-    // compatibility
-    using ClampVertexColor                          = Get_< 0x891A, GLint >;
-    using ClampFragmentColor                        = Get_< 0x891B, GLint >;
-#   endif // not core profile
+        DepthClamp                  = 0x864F,
+        TextureCubeMapSeamless      = 0x884F,
+        FramebufferSRGB             = 0x8DB9,
+        SampleMask                  = 0x8E51,
+        PrimitiveRestart            = 0x8F9D,
 #endif // version 3.3 states
-// version 4.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_3
-    // core
-    using DebugOutputSynchronous                = Get_< 0x8242, GLint >;
-    using DebugNextLoggedMessageLength          = Get_< 0x8243, GLint >;
-    using ProgramPipelineBinding                = Get_< 0x825A, GLint >;
-    using MaxViewports                          = Get_< 0x825B, GLint >;
-    using ViewportSubpixelBits                  = Get_< 0x825C, GLint >;
-    using ViewportBoundsRange                   = Get_< 0x825D, GLint >;
-    using MaxDebugGroupStackDepth               = Get_< 0x826C, GLint >;
-    using DebugGroupStackDepth                  = Get_< 0x826D, GLint >;
-    using LayerProvokingVertex                  = Get_< 0x825E, GLint >;
-    using ViewportIndexProvokingVertex          = Get_< 0x825F, GLint >;
-    using MaxLabelLength                        = Get_< 0x82E8, GLint >;
-    using NumShadingLanguageVersions            = Get_< 0x82E9, GLint >;
-    using MaxTessControlInputComponents         = Get_< 0x886C, GLint >;
-    using MaxTessEvaluationInputComponents      = Get_< 0x886D, GLint >;
-    using ImplementationColorReadType           = Get_< 0x8B9A, GLint >;
-    using ImplementationColorReadFormat         = Get_< 0x8B9B, GLint >;
-    using SampleShading                         = Get_< 0x8C36, GLboolean >;
-    using MinShadingSampleValue                 = Get_< 0x8C37, GLfloat >;
-    using RasterizerDiscard                     = Get_< 0x8C89, GLboolean >;
-    using MaxElementIndex                       = Get_< 0x8D6B, GLint64 >;
-    using MaxVertexUniformVectors               = Get_< 0x8DFB, GLint >;
-    using MaxCombinedTessControlUniformComponents = Get_< 0x8E1E, GLint >;
-    using MaxCombinedTessEvaluationUniformComponents = Get_< 0x8E1F, GLint >;
-    using TransformFeedbackBinding              = Get_< 0x8E25, GLint >;
-    using MinFragmentInterpolationOffset        = Get_< 0x8E5B, GLfloat >;
-    using MaxFragmentInterpolationOffset        = Get_< 0x8E5C, GLfloat >;
-    using FragmentInterpolationOffsetBits       = Get_< 0x8E5D, GLint >;
-    using MaxTransformFeedbackBuffers           = Get_< 0x8E70, GLint >;
-    using PatchVertices                         = Get_< 0x8E72, GLint >;
-
-    using PatchDefaultOuterLevel                = Get_< 0x8E74, GLfloat, 4u >;
-    using MaxPatchVertices                      = Get_< 0x8E7D, GLint >;
-    using MaxTessGenLevel                       = Get_< 0x8E7E, GLint >;
-    using MaxTessControlUniformComponents       = Get_< 0x8E7F, GLint >;
-    using MaxTessEvaluationUniformComponents    = Get_< 0x8E80, GLint >;
-    using MaxTessControlTextureImageUnits       = Get_< 0x8E81, GLint >;
-    using MaxTessEvaluationTextureImageUnits    = Get_< 0x8E82, GLint >;
-    using MaxTessControlOutputComponents        = Get_< 0x8E83, GLint >;
-    using MaxTessPatchComponents                = Get_< 0x8E84, GLint >;
-    using MaxTessControlOutputTotalComponents   = Get_< 0x8E85, GLint >;
-    using MaxTessEvaluationOutputComponents     = Get_< 0x8E86, GLint >;
-    using MaxTessControlUniformBlocks           = Get_< 0x8E89, GLint >;
-    using MaxTessEvaluationUniformBlocks        = Get_< 0x8E8A, GLint >;
-    using MaxImageUnits                         = Get_< 0x8F38, GLint >;
-    using MaxCombinedShaderOutputResources      = Get_< 0x8F39, GLint >;
-    using DrawIndirectBufferBinding             = Get_< 0x8F43, GLint >;
-    using TextureBindingCubeMapArray            = Get_< 0x900A, GLint >;
-    using MaxImageSamples                       = Get_< 0x906D, GLint >;
-    using MaxVertexImageUniforms                = Get_< 0x90CA, GLint >;
-    using MaxTessControlImageUniforms           = Get_< 0x90CB, GLint >;
-    using MaxTessEvaluationImageUniforms        = Get_< 0x90CC, GLint >;
-    using MaxGeometryImageUniforms              = Get_< 0x90CD, GLint >;
-    using MaxFragmentImageUniforms              = Get_< 0x90CE, GLint >;
-    using MaxCombinedImageUniforms              = Get_< 0x90CF, GLint >;
-    using ShaderStorageBufferBinding            = Get_< 0x90D3, GLint >;
-    using MaxVertexShaderStorageBlocks          = Get_< 0x90D6, GLint >;
-    using MaxTessControlShaderStorageBlocks     = Get_< 0x90D8, GLint >;
-    using MaxTessEvaluationShaderStorageBlocks  = Get_< 0x90D9, GLint >;
-    using DispatchIndirectBufferBinding         = Get_< 0x90EF, GLint >;
-    using UnpackCompressedBlockWidth            = Get_< 0x9127, GLint >;
-    using UnpackCompressedBlockHeight           = Get_< 0x9128, GLint >;
-    using UnpackCompressedBlockDepth            = Get_< 0x9129, GLint >;
-    using UnpackCompressedBlockSize             = Get_< 0x912A, GLint >;
-    using PackCompressedBlockWidth              = Get_< 0x912B, GLint >;
-    using PackCompressedBlockHeight             = Get_< 0x912C, GLint >;
-    using PackCompressedBlockDepth              = Get_< 0x912D, GLint >;
-    using PackCompressedBlockSize               = Get_< 0x912E, GLint >;
-    using MaxDebugMessageLength                 = Get_< 0x9143, GLint >;
-    using MaxDebugLogMessages                   = Get_< 0x9144, GLint >;
-    using DebugLogggedMessages                  = Get_< 0x9145, GLint >;
-    using AtomicCounterBufferBinding            = Get_< 0x92C1, GLint >;
-    using MaxVertexAtomicCounterBuffers         = Get_< 0x92CC, GLint >;
-    using MaxTessControlAtomicCounterBuffers    = Get_< 0x92CD, GLint >;
-    using MaxTessEvaluationAtomicCounterBuffers = Get_< 0x92CE, GLint >;
-    using MaxVertexAtomicCounters               = Get_< 0x92D2, GLint >;
-    using MaxTessControlAtomicCounters          = Get_< 0x92D4, GLint >;
-    using DebugOutput                           = Get_< 0x92E0, GLboolean >;
-    using MaxSampleCounts                       = Get_< 0x9380, GLint >;
+        SampleShading               = 0x8C36,
+        RasterizerDiscard           = 0x8C89,
+        DebugOutput                 = 0x92E0,
 #endif // version 4.3 states
-
-
-
-
-
-
-
-    // needs to be redone in more lightweight fashion, above should be removed
-    // `IsEnabled`
-    enum class Is : GLenum {};
-    enum class Boolean : GLenum {};
-    enum class Boolean4 : GLenum {};
-    enum class Float : GLenum {};
+#ifdef SON8_OVERGLAD_VERSION_4_6
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+#   endif // not core profile
+#endif // version 4.6 states
+    };
+    enum class Boolean4 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        ColorWritemask  = 0x0C23,
+#endif // version 1.1 states
+    };
+    // `GetFloat`
+    enum class Float : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        PointSize                       = 0x0B11,
+        PointSizeGranularity            = 0x0B13,
+        LineWidth                       = 0x0B21,
+        SmoothLineWidthGranularity      = 0x0B23,
+        DepthClearValue                 = 0x0B73,
+        PolygonOffsetUnits              = 0x2A00,
+        PolygonOffsetFactor             = 0x8038,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        CurrentRasterDistance           = 0x0B09,
+        FogIndex                        = 0x0B61,
+        FogDensity                      = 0x0B62,
+        FogStart                        = 0x0B63,
+        FogEnd                          = 0x0B64,
+        AlphaTestRef                    = 0x0BC2,
+        IndexClearValue                 = 0x0C20,
+        RedScale                        = 0x0D14,
+        RedBias                         = 0x0D15,
+        ZoomX                           = 0x0D16,
+        ZoomY                           = 0x0D17,
+        GreenScale                      = 0x0D18,
+        GreenBias                       = 0x0D19,
+        BlueScale                       = 0x0D1A,
+        BlueBias                        = 0x0D1B,
+        AlphaScale                      = 0x0D1C,
+        AlphaBias                       = 0x0D1D,
+        DepthScale                      = 0x0D1E,
+        DepthBias                       = 0x0D1F,
+#   endif // not core profile
+#endif // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+        MaxTextureLODbias          = 0x84FD,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        PointSizeMin                    = 0x8126,
+        PointSizeMax                    = 0x8127,
+        CurrentSecondaryColor           = 0x8459,
+#   endif // not core profile
+#endif // version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+        MinShadingSampleValue           = 0x8C37,
+        MinFragmentInterpolationOffset  = 0x8E5B,
+        MaxFragmentInterpolationOffset  = 0x8E5C,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+#   endif // not core profile
+#endif // version 4.3 states
+    };
     enum class Float2 : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
         PointSizeRange          = 0x0B12,
+        SmoothLineWidthRange    = 0x0B22,
         DepthRange              = 0x0B70,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         Map1GridDomain          = 0x0DD0,
@@ -1511,13 +1139,400 @@ namespace son8::overglad::state {
         PatchDefaultInnerLevel  = 0x8E73,
 #endif // version 4.3 states
     };
-    enum class Float3 : GLenum {};
-    enum class Float4 : GLenum {};
-    enum class Float16 : GLenum {};
-    enum class Integer : GLenum {};
-    enum class Integer2 : GLenum {};
-    enum class Integer4 : GLenum {};
-    enum class Integer64 : GLenum {};
+    enum class Float3 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        CurrentNormal               = 0x0B02,
+#   endif // not core profile
+#endif // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        PointDistanceAttenuation    = 0x8129,
+        CurrentFogCoord             = 0x8453,
+#   endif // not core profile
+#endif // version 1.5 states
+    };
+    enum class Float4 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        ColorClearValue               = 0x0C22,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        CurrentColor                  = 0x0B00,
+        CurrentTextureCoords          = 0x0B03,
+        CurrentRasterColor            = 0x0B04,
+        CurrentRasterTextureCoords    = 0x0B06,
+        CurrentRasterPosition         = 0x0B07,
+        LightModelAmbient             = 0x0B53,
+        FogColor                      = 0x0B66,
+        AccumClearValue               = 0x0B80,
+        Map2GridDomain                = 0x0DD2,
+#   endif // not core profile
+#endif // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+        BlendColor                    = 0x8005,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        CurrentRasterSecondaryColor   = 0x845F,
+#   endif // not core profile
+#endif // version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+        PatchDefaultOuterLevel         = 0x8E74,
+#endif // version 4.3 states
+    };
+    enum class Float16 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        ModelviewMatrix           = 0x0BA6,
+        ProjectionMatrix          = 0x0BA7,
+        TextureMatrix             = 0x0BA8,
+#   endif // not core profile
+#endif // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        TransposeModelviewMatrix  = 0x84E3,
+        TransposeProjectionMatrix = 0x84E4,
+        TransposeTextureMatrix    = 0x84E5,
+#   endif // not core profile
+#endif // version 1.5 states
+    };
+    // `GetInteger`
+    enum class Integer : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        CullFaceMode                                = 0x0B45,
+        FrontFace                                   = 0x0B46,
+        DepthFunc                                   = 0x0B74,
+        StencilClearValue                           = 0x0B91,
+        StencilFunc                                 = 0x0B92,
+        StencilValueMask                            = 0x0B93,
+        StencilFail                                 = 0x0B94,
+        StencilPassDepthFail                        = 0x0B95,
+        StencilPassDepthPass                        = 0x0B96,
+        StencilRef                                  = 0x0B97,
+        StencilWritemask                            = 0x0B98,
+        BlendDst                                    = 0x0BE0,
+        BlendSrc                                    = 0x0BE1,
+        LogicOpMode                                 = 0x0BF0,
+        DrawBuffer                                  = 0x0C01,
+        ReadBuffer                                  = 0x0C02,
+        LineSmoothHint                              = 0x0C52,
+        PolygonSmoothHint                           = 0x0C53,
+        UnpackRowLength                             = 0x0CF2,
+        UnpackSkipRows                              = 0x0CF3,
+        UnpackSkipPixels                            = 0x0CF4,
+        UnpackAlignment                             = 0x0CF5,
+        PackRowLength                               = 0x0D02,
+        PackSkipRows                                = 0x0D03,
+        PackSkipPixels                              = 0x0D04,
+        PackAlignment                               = 0x0D05,
+        MaxClipPlanes                               = 0x0D32,
+        MaxTextureSize                              = 0x0D33,
+        SubpixelBits                                = 0x0D50,
+        TextureBinding1D                            = 0x8068,
+        TextureBinding2D                            = 0x8069,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        CurrentIndex                                = 0x0B01,
+        CurrentRasterIndex                          = 0x0B05,
+        LineStipplePattern                          = 0x0B25,
+        LineStippleRepeat                           = 0x0B26,
+        ListMode                                    = 0x0B30,
+        MaxListNesting                              = 0x0B31,
+        ListBase                                    = 0x0B32,
+        ListIndex                                   = 0x0B33,
+        ShadeModel                                  = 0x0B54,
+        ColorMaterialFace                           = 0x0B55,
+        ColorMaterialParameter                      = 0x0B56,
+        FogMode                                     = 0x0B65,
+        MatrixMode                                  = 0x0BA0,
+        ModelviewStackDepth                         = 0x0BA3,
+        ProjectionStackDepth                        = 0x0BA4,
+        TextureStackDepth                           = 0x0BA5,
+        AttribStackDepth                            = 0x0BB0,
+        ClientAttribStackDepth                      = 0x0BB1,
+        AlphaTestFunc                               = 0x0BC1,
+        AuxBuffers                                  = 0x0C00,
+        IndexWritemask                              = 0x0C21,
+        RenderMode                                  = 0x0C40,
+        PerspectiveCorrectionHint                   = 0x0C50,
+        PointSmoothHint                             = 0x0C51,
+        FogHint                                     = 0x0C54,
+        IndexShift                                  = 0x0D12,
+        IndexOffset                                 = 0x0D13,
+        MaxEvalOrder                                = 0x0D30,
+        MaxLights                                   = 0x0D31,
+        MaxPixelMapTable                            = 0x0D34,
+        MaxAttribStackDepth                         = 0x0D35,
+        MaxModelviewStackDepth                      = 0x0D36,
+        MaxNameStackDepth                           = 0x0D37,
+        MaxProjectionStackDepth                     = 0x0D38,
+        MaxTextureStackDepth                        = 0x0D39,
+        MaxClientAttribStackDepth                   = 0x0D3B,
+        IndexBits                                   = 0x0D51,
+        RedBits                                     = 0x0D52,
+        GreenBits                                   = 0x0D53,
+        BlueBits                                    = 0x0D54,
+        AlphaBits                                   = 0x0D55,
+        DepthBits                                   = 0x0D56,
+        StencilBits                                 = 0x0D57,
+        AccumRedBits                                = 0x0D58,
+        AccumGreenBits                              = 0x0D59,
+        AccumBlueBits                               = 0x0D5A,
+        AccumAlphaBits                              = 0x0D5B,
+        NameStackDepth                              = 0x0D70,
+        Map1GridSegments                            = 0x0DD1,
+        FeedbackBufferSize                          = 0x0DF1,
+        FeedbackBufferType                          = 0x0DF2,
+        SelectionBufferSize                         = 0x0DF4,
+        VertexArraySize                             = 0x807A,
+        VertexArrayType                             = 0x807B,
+        VertexArrayStride                           = 0x807C,
+        NormalArrayType                             = 0x807E,
+        NormalArrayStride                           = 0x807F,
+        ColorArraySize                              = 0x8081,
+        ColorArrayType                              = 0x8082,
+        ColorArrayStride                            = 0x8083,
+        IndexArrayType                              = 0x8085,
+        IndexArrayStride                            = 0x8086,
+        TextureCoordArraySize                       = 0x8088,
+        TextureCoordArrayType                       = 0x8089,
+        TextureCoordArrayStride                     = 0x808A,
+        EdgeFlagArrayStride                         = 0x808C,
+#   endif // not core profile
+#endif // version 1.1 states
+#ifdef SON8_OVERGLAD_VERSION_1_5
+        BlendEquationRGB                            = 0x8009,
+        TextureBinding3D                            = 0x806A,
+        PackSkipImages                              = 0x806B,
+        PackImageHeight                             = 0x806C,
+        UnpackSkipImages                            = 0x806D,
+        UnpackImageHeight                           = 0x806E,
+        BlendDstRGB                                 = 0x80C8,
+        BlendSrcRGB                                 = 0x80C9,
+        BlendDstAlpha                               = 0x80CA,
+        BlendSrcAlpha                               = 0x80CB,
+        SampleBuffers                               = 0x80A8,
+        Samples                                     = 0x80A9,
+        SampleCoverageValue                         = 0x80AA,
+        MaxElementsVertices                         = 0x80E8,
+        MaxElementsIndices                          = 0x80E9,
+        ActiveTexture                               = 0x84E0,
+        TextureBindingCubeMap                       = 0x8514,
+        MaxCubeMapTextureSize                       = 0x8514,
+        NumCompressedTextureFormats                 = 0x86A2,
+        CompressedTextureFormats                    = 0x86A3,
+        ElementArrayBufferBinding                   = 0x8895,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        GenerateMipmapHint                          = 0x81F8,
+        LightModelColorControl                      = 0x81F8,
+        ClientActiveTexture                         = 0x84E1,
+        TextureCompressionHint                      = 0x84EF,
+        FogCoordSrc                                 = 0x8450,
+        FogCoordArrayType                           = 0x8454,
+        FogCoordArrayStride                         = 0x8455,
+        SecondaryColorArraySize                     = 0x845A,
+        SecondaryColorArrayType                     = 0x845B,
+        SecondaryColorArrayStride                   = 0x845C,
+        MaxTextureUnits                             = 0x84E2,
+        VertexArrayBufferBinding                    = 0x8896,
+        NormalArrayBufferBinding                    = 0x8897,
+        ColorArrayBufferBinding                     = 0x8898,
+        IndexArrayBufferBinding                     = 0x8899,
+        TextureCoordArrayBufferBinding              = 0x889A,
+        EdgeFlagArrayBufferBinding                  = 0x889B,
+        SecondaryColorArrayBufferBinding            = 0x889C,
+        FogCoordArrayBufferBinding                  = 0x889D,
+#   endif // not core profile
+#endif // version 1.5 states
+#ifdef SON8_OVERGLAD_VERSION_2_1
+        StencilBackFunc                             = 0x8800,
+        StencilBackFail                             = 0x8801,
+        StencilBackPassDepthFail                    = 0x8802,
+        StencilBackPassDepthPass                    = 0x8803,
+        MaxDrawBuffers                              = 0x8824,
+        BlendEquationAlpha                          = 0x883D,
+        MaxVertexAttribs                            = 0x8869,
+        MaxTextureImageUnits                        = 0x8872,
+        PixelPackBufferBinding                      = 0x88ED,
+        PixelUnpackBufferBinding                    = 0x88EF,
+        MaxFragmentUniformComponents                = 0x8B49,
+        MaxVertexUniformComponents                  = 0x8B4A,
+        MaxVaryingFloats                            = 0x8B4B,
+        MaxVertexTextureImageUnits                  = 0x8B4C,
+        MaxCombinedTextureImageUnits                = 0x8B4D,
+        FragmentShaderDerivativeHint                = 0x8B8B,
+        CurrentProgram                              = 0x8B8D,
+        PointSpriteColorOrigin                      = 0x8CA0,
+        StencilBackRef                              = 0x8CA3,
+        StencilBackValueMask                        = 0x8CA4,
+        StencilBackWriteMask                        = 0x8CA5,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        MaxTextureCoords                            = 0x8871,
+#   endif // not core profile
+#endif // version 2.1 states
+#ifdef SON8_OVERGLAD_VERSION_3_3
+        MajorVersion                                = 0x821B,
+        MinorVersion                                = 0x821C,
+        NumExtensions                               = 0x821D,
+        MaxRenderBufferSize                         = 0x84E8,
+        TextureBindingRectangle                     = 0x84F6,
+        MaxRectangleTextureSize                     = 0x84F8,
+        VertexArrayBinding                          = 0x85B5,
+        ArrayBufferBinding                          = 0x8894,
+        MaxDualSourceDrawBuffers                    = 0x88FC,
+        MaxArrayTextureLayers                       = 0x88FF,
+        MinProgramTexelOffset                       = 0x8904,
+        MaxProgramTexelOffset                       = 0x8905,
+        SamplerBinding                              = 0x8919,
+        ClampReadColor                              = 0x891C,
+        UniformBufferBinding                        = 0x8A28,
+        MaxVertexUniformBlocks                      = 0x8A2B,
+        MaxGeometryUniformBlocks                    = 0x8A2C,
+        MaxFragmentUniformBlocks                    = 0x8A2D,
+        MaxCombinedUniformBlocks                    = 0x8A2E,
+        MaxUniformBufferBindings                    = 0x8A2F,
+        MaxUniformBlockSize                         = 0x8A30,
+        MaxCombinedVertexUniformComponents          = 0x8A31,
+        MaxCombinedGeometryUniformComponents        = 0x8A32,
+        MaxCombinedFragmentUniformComponents        = 0x8A33,
+        UniformBufferOffsetAlignment                = 0x8A34,
+        MaxVaryingComponets                         = 0x8B4B,
+        TextureBinding1Darray                       = 0x8C1C,
+        TextureBinding2Darray                       = 0x8C1D,
+        MaxGeometryTextureImageUnits                = 0x8C29,
+        MaxTextureBufferSize                        = 0x8C2B,
+        TextureBindingBuffer                        = 0x8C2C,
+        MaxTransformFeedbackSeparateComponents      = 0x8C80,
+        MaxTransformFeedbackInterleavedComponents   = 0x8C8A,
+        MaxTransformFeedbackSeparateAttribs         = 0x8C8B,
+        TransformFeedbackBufferBinding              = 0x8C8F,
+        DrawFramebufferBinding                      = 0x8CA6,
+        RenderbufferBinding                         = 0x8CA7,
+        ReadFramebufferBinding                      = 0x8CAA,
+        MaxColorAttachments                         = 0x8CDF,
+        MaxSamples                                  = 0x8D57,
+        MaxGeometryOutputVertices                   = 0x8DE0,
+        MaxGeometryTotalOutputComponents            = 0x8DE1,
+        QuadsFollowProvokingVertexConvention        = 0x8E4C,
+        ProvokingVertex                             = 0x8E4F,
+        MaxSampleMaskWords                          = 0x8E59,
+        CopyReadBufferBinding                       = 0x8F36,
+        CopyWriteBufferBinding                      = 0x8F37,
+        PrimitiveRestartIndex                       = 0x8F9E,
+        TextureBinding2Dmultisample                 = 0x9104,
+        TextureBinding2DmultisampleArray            = 0x9105,
+        MaxColorTextureSamples                      = 0x910E,
+        MaxDepthTextureSamples                      = 0x910F,
+        MaxIntegerSamples                           = 0x9110,
+        MaxGeometryInputComponents                  = 0x9123,
+        MaxGeometryOutputComponents                 = 0x9124,
+        MaxFragmentInputComponents                  = 0x9125,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        ClampVertexColor                            = 0x891A,
+        ClampFragmentColor                          = 0x891B,
+#   endif // not core profile
+#endif // version 3.3 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+        DebugOutputSynchronous                      = 0x8242,
+        DebugNextLoggedMessageLength                = 0x8243,
+        ProgramPipelineBinding                      = 0x825A,
+        MaxViewports                                = 0x825B,
+        ViewportSubpixelBits                        = 0x825C,
+        ViewportBoundsRange                         = 0x825D,
+        MaxDebugGroupStackDepth                     = 0x826C,
+        DebugGroupStackDepth                        = 0x826D,
+        LayerProvokingVertex                        = 0x825E,
+        ViewportIndexProvokingVertex                = 0x825F,
+        MaxLabelLength                              = 0x82E8,
+        NumShadingLanguageVersions                  = 0x82E9,
+        MaxTessControlInputComponents               = 0x886C,
+        MaxTessEvaluationInputComponents            = 0x886D,
+        ImplementationColorReadType                 = 0x8B9A,
+        ImplementationColorReadFormat               = 0x8B9B,
+        MaxVertexUniformVectors                     = 0x8DFB,
+        MaxCombinedTessControlUniformComponents     = 0x8E1E,
+        MaxCombinedTessEvaluationUniformComponents  = 0x8E1F,
+        TransformFeedbackBinding                    = 0x8E25,
+        FragmentInterpolationOffsetBits             = 0x8E5D,
+        MaxTransformFeedbackBuffers                 = 0x8E70,
+        PatchVertices                               = 0x8E72,
+        MaxPatchVertices                            = 0x8E7D,
+        MaxTessGenLevel                             = 0x8E7E,
+        MaxTessControlUniformComponents             = 0x8E7F,
+        MaxTessEvaluationUniformComponents          = 0x8E80,
+        MaxTessControlTextureImageUnits             = 0x8E81,
+        MaxTessEvaluationTextureImageUnits          = 0x8E82,
+        MaxTessControlOutputComponents              = 0x8E83,
+        MaxTessPatchComponents                      = 0x8E84,
+        MaxTessControlOutputTotalComponents         = 0x8E85,
+        MaxTessEvaluationOutputComponents           = 0x8E86,
+        MaxTessControlUniformBlocks                 = 0x8E89,
+        MaxTessEvaluationUniformBlocks              = 0x8E8A,
+        MaxImageUnits                               = 0x8F38,
+        MaxCombinedShaderOutputResources            = 0x8F39,
+        DrawIndirectBufferBinding                   = 0x8F43,
+        TextureBindingCubeMapArray                  = 0x900A,
+        MaxImageSamples                             = 0x906D,
+        MaxVertexImageUniforms                      = 0x90CA,
+        MaxTessControlImageUniforms                 = 0x90CB,
+        MaxTessEvaluationImageUniforms              = 0x90CC,
+        MaxGeometryImageUniforms                    = 0x90CD,
+        MaxFragmentImageUniforms                    = 0x90CE,
+        MaxCombinedImageUniforms                    = 0x90CF,
+        ShaderStorageBufferBinding                  = 0x90D3,
+        MaxVertexShaderStorageBlocks                = 0x90D6,
+        MaxTessControlShaderStorageBlocks           = 0x90D8,
+        MaxTessEvaluationShaderStorageBlocks        = 0x90D9,
+        DispatchIndirectBufferBinding               = 0x90EF,
+        UnpackCompressedBlockWidth                  = 0x9127,
+        UnpackCompressedBlockHeight                 = 0x9128,
+        UnpackCompressedBlockDepth                  = 0x9129,
+        UnpackCompressedBlockSize                   = 0x912A,
+        PackCompressedBlockWidth                    = 0x912B,
+        PackCompressedBlockHeight                   = 0x912C,
+        PackCompressedBlockDepth                    = 0x912D,
+        PackCompressedBlockSize                     = 0x912E,
+        MaxDebugMessageLength                       = 0x9143,
+        MaxDebugLogMessages                         = 0x9144,
+        DebugLogggedMessages                        = 0x9145,
+        AtomicCounterBufferBinding                  = 0x92C1,
+        MaxVertexAtomicCounterBuffers               = 0x92CC,
+        MaxTessControlAtomicCounterBuffers          = 0x92CD,
+        MaxTessEvaluationAtomicCounterBuffers       = 0x92CE,
+        MaxVertexAtomicCounters                     = 0x92D2,
+        MaxTessControlAtomicCounters                = 0x92D4,
+        MaxSampleCounts                             = 0x9380,
+#endif // version 4.3 states
+#ifdef SON8_OVERGLAD_VERSION_4_6
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+#   endif // not core profile
+#endif // version 4.6 states
+    };
+    enum class Integer2 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        PolygonMode         = 0x0B40,
+        MaxViewportDims     = 0x0D3A,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+        Map2GridSegments    = 0x0DD3,
+#   endif // not core profile
+#endif // version 1.1 states
+    };
+    enum class Integer4 : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_1_1
+        Viewport    = 0x0BA2,
+        ScissorBox  = 0x0C10,
+#endif // version 1.1 states
+    };
+    // `GetInteger64`
+    enum class Long : GLenum {
+#ifdef SON8_OVERGLAD_VERSION_3_3
+        MaxServerWaitTimeout    = 0x9111,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+#   endif // not core profile
+#endif // version 3.3 states
+#ifdef SON8_OVERGLAD_VERSION_4_3
+        MaxElementIndex         = 0x8D6B,
+#   ifndef SON8_OVERGLAD_PROFILE_CORE
+#   endif // not core profile
+#endif // version 4.3 states
+    };
+    // `GetString`
     enum class String : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
         Vendor                  = 0x1F00,
@@ -1559,6 +1574,10 @@ namespace son8::overglad::state {
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
 #   endif // not core profile
 #endif // version 4.6 states
+
+
+
+
 
 } // namespace `son8::overglad::state`
 

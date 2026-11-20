@@ -95,32 +95,60 @@ namespace son8::overglad {
         else if constexpr ( obj::is_vertex( Type ) ) glad_glBindVertexArray( 0 );
         else if constexpr ( obj::is_pipeline( Type ) ) glad_glBindProgramPipeline( 0 );
     }
-
-    // special state get requests
-    template< typename Type, GLenum Param, unsigned Count >
-    SON8_OVERGLAD_PROC get( state::Get_< Param, Type, Count > &out ) noexcept {
-        if/*_*/ constexpr ( std::is_same_v< Type, GLint > ) { glad_glGetIntegerv( out.param( ), out.data( )); }
-        else if constexpr ( std::is_same_v< Type, GLfloat > ) { glad_glGetFloatv( out.param( ), out.data( )); }
-        else if constexpr ( std::is_same_v< Type, std::string_view > ) {
-            auto const *cStr = reinterpret_cast< char const * >( glad_glGetString( out.param( )));
-            *out.data( ) = ( cStr != nullptr ) ? cStr : "";
-        }
-        else { static_assert( Count == 0u, "get() incorrect or unsupported data type" ); }
-    }
-    template< typename Type, GLenum Param, unsigned Count >
-    SON8_OVERGLAD_FUNC get( SON8_OVERGLAD_WHY state::Get_< Param, Type, Count > &&out ) noexcept -> state::Get_< Param, Type, Count > {
-        get( out );
+    // state get requests
+    SON8_OVERGLAD_FUNC get( state::Boolean4 param ) noexcept -> types::Array4bool {
+        types::Array4bool out;
+        glad_glGetBooleanv( static_cast< GLenum >( param ), out.data( ));
         return out;
     }
-    // TODO: remove above templated get functions after transition
-    SON8_OVERGLAD_FUNC get( state::String param ) noexcept -> types::View {
-        auto const *cStr = reinterpret_cast< char const * >( glad_glGetString( static_cast< GLenum >( param )));
-        return cStr != nullptr ? cStr : "";
+    SON8_OVERGLAD_FUNC get( state::Float param ) noexcept -> types::Array1f {
+        types::Array1f out;
+        glad_glGetFloatv( static_cast< GLenum >( param ), out.data( ));
+        return out;
     }
     SON8_OVERGLAD_FUNC get( state::Float2 param ) noexcept -> types::Array2f {
         types::Array2f out;
         glad_glGetFloatv( static_cast< GLenum >( param ), out.data( ));
         return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Float3 param ) noexcept -> types::Array3f {
+        types::Array3f out;
+        glad_glGetFloatv( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Float4 param ) noexcept -> types::Array4f {
+        types::Array4f out;
+        glad_glGetFloatv( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Float16 param ) noexcept -> types::Array16f {
+        types::Array16f out;
+        glad_glGetFloatv( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Long param ) noexcept -> types::Array1i64 {
+        types::Array1i64 out;
+        glad_glGetInteger64v( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Integer param ) noexcept -> types::Array1i {
+        types::Array1i out;
+        glad_glGetIntegerv( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Integer2 param ) noexcept -> types::Array2i {
+        types::Array2i out;
+        glad_glGetIntegerv( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::Integer4 param ) noexcept -> types::Array4i {
+        types::Array4i out;
+        glad_glGetIntegerv( static_cast< GLenum >( param ), out.data( ));
+        return out;
+    }
+    SON8_OVERGLAD_FUNC get( state::String param ) noexcept -> types::View {
+        auto const *cStr = reinterpret_cast< char const * >( glad_glGetString( static_cast< GLenum >( param )));
+        return cStr != nullptr ? cStr : "";
     }
 
 
