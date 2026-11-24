@@ -12,11 +12,6 @@ namespace son8::overglad::state {
     // TODO `MAP_1 (0x0D90-8)` and `MAP_2 (0x0DB0-8)`
 #   endif // not core profile
 #endif // version 1.1 states
-// version 2.1 states
-#ifdef SON8_OVERGLAD_VERSION_2_1
-    // core
-    // TODO: `DRAW_BUFFER_i (0-15) 0x8825-0x8834`
-#endif // version 2.1 states
     // `IsEnabled`
     template< unsigned Tag >
     struct Capability_ {
@@ -27,6 +22,10 @@ namespace son8::overglad::state {
 #ifdef SON8_OVERGLAD_VERSION_1_1
             Polygon_Smooth               = 0x0B41,
             Cull_Face                    = 0x0B44,
+            Depth_Test                   = 0x0B71,
+            Stencil_Test                 = 0x0B90,
+            Dither                      = 0x0BD0,
+            Color_Logic_Op                = 0x0BF2,
             Polygon_Offset_Point          = 0x2A01,
             Polygon_Offset_Line           = 0x2A02,
             Polygon_Offset_Fill           = 0x8037,
@@ -39,6 +38,12 @@ namespace son8::overglad::state {
             Color_Material               = 0x0B57,
             Fog                         = 0x0B60,
             Normalize                   = 0x0BA1,
+            Alpha_Test                   = 0x0BC0,
+            Index_Logic_Op                = 0x0BF1,
+            Texture_Gen_S                 = 0x0C60,
+            Texture_Gen_T                 = 0x0C61,
+            Texture_Gen_R                 = 0x0C62,
+            Texture_Gen_Q                 = 0x0C63,
             Texture_1D                   = 0x0DE0,
             Texture_2D                   = 0x0DE1,
             Clip_Distance_0                  = 0x3000,
@@ -85,6 +90,7 @@ namespace son8::overglad::state {
 #   endif // not core profile
 #endif // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
+            Framebuffer_SRGB             = 0x8DB9,
             Depth_Clamp                  = 0x864F,
             Sample_Mask                  = 0x8E51,
             Primitive_Restart            = 0x8F9D,
@@ -122,12 +128,8 @@ namespace son8::overglad::state {
     // `GetBoolean`
     enum class Boolean : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
-        DepthTest                   = 0x0B71,
-        DepthWritemask              = 0x0B72,
-        StencilTest                 = 0x0B90,
-        Dither                      = 0x0BD0,
+        Depth_Writemask              = 0x0B72,
         Blend                       = 0x0BE2,
-        ColorLogicOp                = 0x0BF2,
         ScissorTest                 = 0x0C11,
         Doublebuffer                = 0x0C32,
         Stereo                      = 0x0C33,
@@ -140,14 +142,8 @@ namespace son8::overglad::state {
         Edge_Flag                    = 0x0B43,
         Light_Model_Local_Viewer       = 0x0B51,
         Light_Model_Two_Side           = 0x0B52,
-        AlphaTest                   = 0x0BC0,
-        IndexLogicOp                = 0x0BF1,
         IndexMode                   = 0x0C30,
         RGBAmode                    = 0x0C31,
-        TextureGenS                 = 0x0C60,
-        TextureGenT                 = 0x0C61,
-        TextureGenR                 = 0x0C62,
-        TextureGenQ                 = 0x0C63,
         MapColor                    = 0x0D10,
         MapStencil                  = 0x0D11,
         AutoNormal                  = 0x0D80,
@@ -164,7 +160,6 @@ namespace son8::overglad::state {
 #endif // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
         TextureCubeMapSeamless      = 0x884F,
-        FramebufferSRGB             = 0x8DB9,
 #endif // version 3.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_3
         DebugOutput                 = 0x92E0,
@@ -187,7 +182,7 @@ namespace son8::overglad::state {
         PointSizeGranularity            = 0x0B13,
         Line_Width                       = 0x0B21,
         SmoothLineWidthGranularity      = 0x0B23,
-        DepthClearValue                 = 0x0B73,
+        Depth_Clear_Value                 = 0x0B73,
         Polygon_Offset_Units              = 0x2A00,
         Polygon_Offset_Factor             = 0x8038,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
@@ -196,8 +191,8 @@ namespace son8::overglad::state {
         Fog_Density                      = 0x0B62,
         Fog_Start                        = 0x0B63,
         Fog_End                          = 0x0B64,
-        AlphaTestRef                    = 0x0BC2,
-        IndexClearValue                 = 0x0C20,
+        Alpha_Test_Ref                    = 0x0BC2,
+        Index_Clear_Value                 = 0x0C20,
         RedScale                        = 0x0D14,
         RedBias                         = 0x0D15,
         ZoomX                           = 0x0D16,
@@ -268,7 +263,7 @@ namespace son8::overglad::state {
 
     enum class Float4 : GLenum {
 #ifdef SON8_OVERGLAD_VERSION_1_1
-        ColorClearValue                 = 0x0C22,
+        Color_Clear_Value                 = 0x0C22,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         Current_Color                   = 0x0B00,
         Current_Texture_Coords          = 0x0B03,
@@ -277,12 +272,12 @@ namespace son8::overglad::state {
         Current_Raster_Position         = 0x0B07,
         Light_Model_Ambient               = 0x0B53,
         Fog_Color                        = 0x0B66,
-        AccumClearValue                 = 0x0B80,
+        Accum_Clear_Value                 = 0x0B80,
         Map2GridDomain                  = 0x0DD2,
 #   endif // not core profile
 #endif // version 1.1 states
 #ifdef SON8_OVERGLAD_VERSION_1_5
-        BlendColor                      = 0x8005,
+        Blend_Color                      = 0x8005,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         Current_Secondary_Color         = 0x8459,
         Current_Raster_Secondary_Color  = 0x845F, // TODO: not sure if 1.5
@@ -314,20 +309,20 @@ namespace son8::overglad::state {
 #ifdef SON8_OVERGLAD_VERSION_1_1
         Cull_Face_Mode                                = 0x0B45,
         Front_Face                                   = 0x0B46,
-        DepthFunc                                   = 0x0B74,
-        StencilClearValue                           = 0x0B91,
-        StencilFunc                                 = 0x0B92,
-        StencilValueMask                            = 0x0B93,
-        StencilFail                                 = 0x0B94,
-        StencilPassDepthFail                        = 0x0B95,
-        StencilPassDepthPass                        = 0x0B96,
-        StencilRef                                  = 0x0B97,
-        StencilWritemask                            = 0x0B98,
+        Depth_Func                                   = 0x0B74,
+        Stencil_Clear_Value                           = 0x0B91,
+        Stencil_Func                                 = 0x0B92,
+        Stencil_Value_Mask                            = 0x0B93,
+        Stencil_Fail                                 = 0x0B94,
+        Stencil_Pass_Depth_Fail                        = 0x0B95,
+        Stencil_Pass_Depth_Pass                        = 0x0B96,
+        Stencil_Ref                                  = 0x0B97,
+        Stencil_Writemask                            = 0x0B98,
         BlendDst                                    = 0x0BE0,
         BlendSrc                                    = 0x0BE1,
-        LogicOpMode                                 = 0x0BF0,
-        DrawBuffer                                  = 0x0C01,
-        ReadBuffer                                  = 0x0C02,
+        Logic_Op_Mode                                 = 0x0BF0,
+        Draw_Buffer                                  = 0x0C01,
+        Read_Buffer                                  = 0x0C02,
         LineSmoothHint                              = 0x0C52,
         PolygonSmoothHint                           = 0x0C53,
         UnpackRowLength                             = 0x0CF2,
@@ -362,9 +357,9 @@ namespace son8::overglad::state {
         Texture_Stack_Depth                           = 0x0BA5,
         AttribStackDepth                            = 0x0BB0,
         ClientAttribStackDepth                      = 0x0BB1,
-        AlphaTestFunc                               = 0x0BC1,
+        Alpha_Test_Func                               = 0x0BC1,
         AuxBuffers                                  = 0x0C00,
-        IndexWritemask                              = 0x0C21,
+        Index_Writemask                              = 0x0C21,
         RenderMode                                  = 0x0C40,
         PerspectiveCorrectionHint                   = 0x0C50,
         PointSmoothHint                             = 0x0C51,
@@ -427,7 +422,7 @@ namespace son8::overglad::state {
         Samples                                     = 0x80A9,
         MaxElementsVertices                         = 0x80E8,
         MaxElementsIndices                          = 0x80E9,
-        ActiveTexture                               = 0x84E0,
+        Active_Texture                               = 0x84E0,
         Texture_Binding_Cube_Map                       = 0x8514,
         MaxCubeMapTextureSize                       = 0x851C,
         NumCompressedTextureFormats                 = 0x86A2,
@@ -456,12 +451,29 @@ namespace son8::overglad::state {
 #   endif // not core profile
 #endif // version 1.5 states
 #ifdef SON8_OVERGLAD_VERSION_2_1
-        StencilBackFunc                             = 0x8800,
-        StencilBackFail                             = 0x8801,
-        StencilBackPassDepthFail                    = 0x8802,
-        StencilBackPassDepthPass                    = 0x8803,
+        Stencil_Back_Func                             = 0x8800,
+        Stencil_Back_Fail                             = 0x8801,
+        Stencil_Back_Pass_Depth_Fail                    = 0x8802,
+        Stencil_Back_Pass_Depth_Pass                    = 0x8803,
         MaxDrawBuffers                              = 0x8824,
+        Draw_Buffer_0 = 0x8825,
+        Draw_Buffer_1 = 0x8826,
+        Draw_Buffer_2 = 0x8827,
+        Draw_Buffer_3 = 0x8828,
+        Draw_Buffer_4 = 0x8829,
+        Draw_Buffer_5 = 0x882A,
+        Draw_Buffer_6 = 0x882B,
+        Draw_Buffer_7 = 0x882C,
+        Draw_Buffer_8 = 0x882D,
+        Draw_Buffer_9 = 0x882E,
+        Draw_Buffer_10 = 0x882F,
+        Draw_Buffer_11 = 0x8830,
+        Draw_Buffer_12 = 0x8831,
+        Draw_Buffer_13 = 0x8832,
+        Draw_Buffer_14 = 0x8833,
+        Draw_Buffer_15 = 0x8834,
         BlendEquationAlpha                          = 0x883D,
+
         MaxVertexAttribs                            = 0x8869,
         MaxTextureImageUnits                        = 0x8872,
         PixelPackBufferBinding                      = 0x88ED,
@@ -474,9 +486,9 @@ namespace son8::overglad::state {
         FragmentShaderDerivativeHint                = 0x8B8B,
         CurrentProgram                              = 0x8B8D,
         Point_Sprite_Color_Origin                      = 0x8CA0,
-        StencilBackRef                              = 0x8CA3,
-        StencilBackValueMask                        = 0x8CA4,
-        StencilBackWriteMask                        = 0x8CA5,
+        Stencil_Back_Ref                              = 0x8CA3,
+        Stencil_Back_Value_Mask                        = 0x8CA4,
+        Stencil_Back_Writemask                        = 0x8CA5,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
         MaxTextureCoords                            = 0x8871,
 #   endif // not core profile
@@ -517,9 +529,9 @@ namespace son8::overglad::state {
         MaxTransformFeedbackInterleavedComponents   = 0x8C8A,
         MaxTransformFeedbackSeparateAttribs         = 0x8C8B,
         Transform_Feedback_Buffer_Binding              = 0x8C8F,
-        DrawFramebufferBinding                      = 0x8CA6,
+        Draw_Framebuffer_Binding                      = 0x8CA6,
         RenderbufferBinding                         = 0x8CA7,
-        ReadFramebufferBinding                      = 0x8CAA,
+        Read_Framebuffer_Binding                      = 0x8CAA,
         MaxColorAttachments                         = 0x8CDF,
         MaxSamples                                  = 0x8D57,
         MaxGeometryOutputVertices                   = 0x8DE0,
