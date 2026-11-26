@@ -86,7 +86,9 @@ namespace son8::overglad::state {
 #   endif // not core profile
 #endif // version 1.5 states
 #ifdef SON8_OVERGLAD_VERSION_2_1
+            Vertex_Program_Point_Size      = 0x8642,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
+            Vertex_Program_Two_Side        = 0x8643,
             Point_Sprite                 = 0x8861,
 #   endif // not core profile
 #endif // version 2.1 states
@@ -153,9 +155,7 @@ namespace son8::overglad::state {
         Sample_Coverage_Invert        = 0x80AB,
 #endif // version 1.5 states
 #ifdef SON8_OVERGLAD_VERSION_2_1
-        VertexProgramPointSize      = 0x8642,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
-        VertexProgramTwoSide        = 0x8643,
 #   endif // not core profile
 #endif // version 2.1 states
 #ifdef SON8_OVERGLAD_VERSION_3_3
@@ -165,6 +165,8 @@ namespace son8::overglad::state {
         DebugOutput                 = 0x92E0,
 #endif // version 4.3 states
 #ifdef SON8_OVERGLAD_VERSION_4_6
+        Transform_Feedback_Paused = 0x8E23,
+        Transform_Feedback_Active = 0x8E24,
 #   ifndef SON8_OVERGLAD_PROFILE_CORE
 #   endif // not core profile
 #endif // version 4.6 states
@@ -473,7 +475,6 @@ namespace son8::overglad::state {
         Draw_Buffer_14 = 0x8833,
         Draw_Buffer_15 = 0x8834,
         BlendEquationAlpha                          = 0x883D,
-
         MaxVertexAttribs                            = 0x8869,
         MaxTextureImageUnits                        = 0x8872,
         Pixel_Pack_Buffer_Binding                      = 0x88ED,
@@ -484,7 +485,7 @@ namespace son8::overglad::state {
         MaxVertexTextureImageUnits                  = 0x8B4C,
         MaxCombinedTextureImageUnits                = 0x8B4D,
         FragmentShaderDerivativeHint                = 0x8B8B,
-        CurrentProgram                              = 0x8B8D,
+        Current_Program                              = 0x8B8D,
         Point_Sprite_Color_Origin                      = 0x8CA0,
         Stencil_Back_Ref                              = 0x8CA3,
         Stencil_Back_Value_Mask                        = 0x8CA4,
@@ -508,7 +509,7 @@ namespace son8::overglad::state {
         MaxProgramTexelOffset                       = 0x8905,
         Sampler_Binding                              = 0x8919,
         Clamp_Read_Color                              = 0x891C,
-        UniformBufferBinding                        = 0x8A28,
+        Uniform_Buffer_Binding                        = 0x8A28,
         MaxVertexUniformBlocks                      = 0x8A2B,
         MaxGeometryUniformBlocks                    = 0x8A2C,
         MaxFragmentUniformBlocks                    = 0x8A2D,
@@ -558,7 +559,7 @@ namespace son8::overglad::state {
 #ifdef SON8_OVERGLAD_VERSION_4_3
         DebugOutputSynchronous                      = 0x8242,
         DebugNextLoggedMessageLength                = 0x8243,
-        ProgramPipelineBinding                      = 0x825A,
+        Program_Pipeline_Binding                      = 0x825A,
         MaxViewports                                = 0x825B,
         ViewportSubpixelBits                        = 0x825C,
         ViewportBoundsRange                         = 0x825D,
@@ -602,7 +603,7 @@ namespace son8::overglad::state {
         MaxGeometryImageUniforms                    = 0x90CD,
         MaxFragmentImageUniforms                    = 0x90CE,
         MaxCombinedImageUniforms                    = 0x90CF,
-        ShaderStorageBufferBinding                  = 0x90D3,
+        Shader_Storage_Buffer_Binding                  = 0x90D3,
         MaxVertexShaderStorageBlocks                = 0x90D6,
         MaxTessControlShaderStorageBlocks           = 0x90D8,
         MaxTessEvaluationShaderStorageBlocks        = 0x90D9,
@@ -618,7 +619,7 @@ namespace son8::overglad::state {
         MaxDebugMessageLength                       = 0x9143,
         MaxDebugLogMessages                         = 0x9144,
         DebugLogggedMessages                        = 0x9145,
-        AtomicCounterBufferBinding                  = 0x92C1,
+        Atomic_Counter_Buffer_Binding                  = 0x92C1,
         MaxVertexAtomicCounterBuffers               = 0x92CC,
         MaxTessControlAtomicCounterBuffers          = 0x92CD,
         MaxTessEvaluationAtomicCounterBuffers       = 0x92CE,
